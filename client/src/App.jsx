@@ -1,29 +1,36 @@
 import './styles.css'
 import {useContext} from 'react'
+import { Outlet } from 'react-router-dom'
 import {UserContext} from './context/UserContext'
 import { Toaster } from 'react-hot-toast'
 import Auth from './components/Auth'
+import Nav from './components/Nav'
 
 
 function App() {
 
-  // const { user } = useContext(UserContext)
+const user = 1
 
   return (
-    <div className='text-2xl text-black'>
+    <div className='bg-ocean h-screen w-screen select-none'>
+
       <Toaster />
-      { 0 ? 
+
+      { user ? 
         <div className='h-full w-full flex flex-col sm:flex-row'>
+            <Nav />
             <div className='p-4 w-full h-full'>
-              {/* <Outlet /> */}
-              <h1>Orka</h1>
+              <Outlet />
             </div>
         </div>
+
         :
+
         <div className='h-full flex items-center justify-center'>
           <Auth />
         </div>
-        }
+      }
+
     </div>
   )
 }
