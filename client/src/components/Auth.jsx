@@ -105,38 +105,32 @@ function Auth() {
               <div className='flex flex-col mr-2'>
                 <div className='flex flex-col'>
                   <label htmlFor="username" className='text-xl'>Email</label>
-                  <input
-                    id="email"
+                  <input id="email"
                     name="email"
                     type="email"
                     onChange={formik.handleChange}
                     value={formik.values.email}
                     className='text-black my-2 p-1 text-lg'
-                    placeholder='email'
-                  />
+                    placeholder='email'/>
                 </div>
                 <label htmlFor="password" className='text-xl'>Password</label>
-                <input
-                  id="password"
+                <input id="password"
                   name="password"
                   type="password"
                   onChange={formik.handleChange}
                   value={formik.values.password}
                   className='text-black my-2 p-1 text-lg'
-                  placeholder='password'
-                />
+                  placeholder='password'/>
               </div>
               <div className='flex flex-col ml-2'>
                 <label htmlFor="account_name" className='text-xl'>Account Name</label>
-                <input
-                    id="account_name"
+                <input id="account_name"
                     name="account_name"
                     type="account_name"
                     onChange={formik.handleChange}
                     value={formik.values.account_name}
                     className='text-black my-2 p-1 text-lg'
-                    placeholder='account name'
-                />
+                    placeholder='account name'/>
               </div>
             </div>
             <button type="submit" className='mt-4 bg-white text-black'>Create Account</button>
