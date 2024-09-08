@@ -1,8 +1,7 @@
 
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { useFormik } from "formik";
-import { useNavigate } from 'react-router-dom'
-// import { UserContext } from '../context/UserContext'
+
 import toast from 'react-hot-toast'
 
 function Auth() {
@@ -12,9 +11,7 @@ function Auth() {
 
 
 
-  const handleNewUser = () => {
-
-  }
+  const handleNewUser = () => setNewUser(!newUser)
 
   const formik = useFormik({
       initialValues: newUser ? 

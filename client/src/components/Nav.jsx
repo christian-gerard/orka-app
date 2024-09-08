@@ -43,13 +43,17 @@ function Nav() {
 
                         {/* Page Navigation */}
                         <div className='py-4'>
-                            <span className='mx-2 italic text-lg hover:text-ocean' >Projects</span>
+                            <NavLink to='/projects'>
+                                <span className='mx-2 italic text-lg hover:text-ocean' >Projects</span>
+                            </NavLink>
 
                         </div>
                                 
                         {/* Account Navigation */}
                         <div className='border-t border-white py-2'>
-                            <span className='mr-2 italic text-md hover:text-ocean border p-[0.25em]' >Settings</span>
+                            <NavLink to='/settings'>
+                                <span className='mr-2 italic text-md hover:text-ocean border p-[0.25em]' >Settings</span>
+                            </NavLink>
                             <span className='mx-2 italic text-md hover:text-ocean border p-[0.25em]' >Logout</span>
                         </div>
 

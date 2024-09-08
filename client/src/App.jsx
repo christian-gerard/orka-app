@@ -9,10 +9,10 @@ import Nav from './components/Nav'
 
 function App() {
 
-const user = 1
+const user = 0
 
   return (
-    <div className='bg-ocean h-screen w-screen select-none'>
+    <div className='h-screen w-screen select-none'>
 
       <Toaster />
 
