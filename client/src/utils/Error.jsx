@@ -3,7 +3,7 @@
 function Error() {
 
     return(
-        <h1>ERROR</h1>
+        <h1>Something went wrong....</h1>
     )
 }
 

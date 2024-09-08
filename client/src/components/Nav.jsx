@@ -6,10 +6,7 @@ import { NavLink } from 'react-router-dom'
 function Nav() {
 
     const [navOpen, setNavOpen] = useState(false)
-
-    const handleNav = () => {
-        setNavOpen(!navOpen)
-    }
+    const handleNav = () => setNavOpen(!navOpen)
  
     return(
         <div className='bg-black text-white'>
