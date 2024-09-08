@@ -1,14 +1,6 @@
 import { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 
-// import MenuIcon from '@mui/icons-material/Menu';
-// import GridViewIcon from '@mui/icons-material/GridView';
-// import DetailsIcon from '@mui/icons-material/Details';
-// import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
-// import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-// import SettingsIcon from '@mui/icons-material/Settings';
-// import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-// import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 
 function Nav() {
@@ -54,38 +46,14 @@ function Nav() {
 
                         {/* Page Navigation */}
                         <div className='py-4'>
-
-
-                                Dashboard
-
-
-
-                                Projects
-
-
-
-                                Clients
-
-
-
-                                Tasks
-
-
-
-
-                                Budgets
-
+                            <span className='mx-2 italic text-lg hover:text-ocean' >Projects</span>
 
                         </div>
                                 
                         {/* Account Navigation */}
-                        <div className='border-t border-white py-2 '>
-
-                                Settings
-
-
-                                Logout
-
+                        <div className='border-t border-white py-2'>
+                            <span className='mr-2 italic text-md hover:text-ocean border p-[0.25em]' >Settings</span>
+                            <span className='mx-2 italic text-md hover:text-ocean border p-[0.25em]' >Logout</span>
                         </div>
 
                     </div>
