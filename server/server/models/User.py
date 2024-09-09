@@ -16,9 +16,8 @@ class User(models.Model):
     )
 
     user_type = models.IntegerField(
-        
-    )
 
+    )
     
     def __str__(self):
         return self.email
