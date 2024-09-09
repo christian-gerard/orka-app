@@ -15,6 +15,10 @@ class User(models.Model):
         max_length= 100
     )
 
+    user_type = models.IntegerField(
+        
+    )
+
     
     def __str__(self):
         return self.email
