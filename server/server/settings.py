@@ -10,17 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9h=i2_uhk2f5f6auzqcxixhu6dc__x_z==rvdp)9qmk=^h^qnm'
+SECRET_KEY = 'django-insecure-8%aq-oj3z#12e_r1br_(*7te8)fly*-&uxtiefewnyq9p^8r!v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'server',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
