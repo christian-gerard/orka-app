@@ -18,6 +18,11 @@ class User(models.Model):
     user_type = models.IntegerField(
 
     )
+
+    password = models.CharField(
+        max_length = 100,
+        default = "password12!"
+    )
     
     def __str__(self):
         return self.email
