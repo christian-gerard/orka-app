@@ -48,7 +48,29 @@ class ModelTest(TestCase):
         self.assertTrue(user.is_staff)
 
     def test_create_account(self):
-        account = models.Account.objects.create()
+        account = models.Account.objects.create(
+            name="Test Account",
+            type="Test Type",
+        )
 
-        self.assertEqual(str(account), account.name)
+        self.assertEqual(account.name, "Test Account")
+
+    def test_create_useraccount(self):
+        account = models.Account.objects.create(
+            name="Test Account",
+            type="Test Type",
+        )
+        user = get_user_model().objects.create_user(
+            "test@example.com",
+            "testpass123"
+        )
+        user_account = models.UserAccount.objects.create(
+            account=account,
+            user=user,
+            status='admin',
+        )
+        self.assertTrue(user_account.user)
+        self.assertTrue(user_account.account)
+
+
 
