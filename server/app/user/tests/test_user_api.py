@@ -13,7 +13,6 @@ TOKEN_URL = reverse('user:token')
 ME_URL = reverse('user:me')
 
 
-
 def create_user(**params):
     """Create and Return a new user"""
     return get_user_model().objects.create_user(**params)
@@ -98,7 +97,7 @@ class PublicUserApiTests(TestCase):
 
     def test_create_token_blank_password(self):
         """Test posting a blank password produces an error"""
-        payload = {'email':'test@example.com', 'password': ''}
+        payload = {'email': 'test@example.com', 'password': ''}
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)
@@ -109,6 +108,7 @@ class PublicUserApiTests(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateUserAPITests(TestCase):
     """Test API requests that require auth"""
@@ -149,11 +149,3 @@ class PrivateUserAPITests(TestCase):
         self.assertEqual(self.user.first_name, payload['first_name'])
         self.assertTrue(self.user.check_password(payload['password']))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-
-
-
-
-
-
-
-
