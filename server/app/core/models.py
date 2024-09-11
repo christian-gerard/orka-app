@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin
 )
+from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -45,3 +46,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Account(models.Model):
+    """Account Object"""
+    name = models.CharField(max_length=255),
+    industry = models.CharField(max_length=255),
+    address1 = models.CharField(max_length=255),
+    address2 = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    zip = models.IntegerField()
+
+
+
+
