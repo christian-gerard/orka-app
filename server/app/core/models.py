@@ -49,11 +49,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Account(models.Model):
+    """Account Objects"""
+
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
 
 
 class UserAccount(models.Model):
+    """User + Account Relationship / Object"""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
