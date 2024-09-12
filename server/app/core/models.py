@@ -54,6 +54,9 @@ class Account(models.Model):
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class UserAccount(models.Model):
     """User + Account Relationship / Object"""
@@ -61,6 +64,9 @@ class UserAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     status = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.user.first_name + "  <>  " + self.account.name
 
 
 
