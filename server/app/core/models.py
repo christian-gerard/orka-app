@@ -8,7 +8,6 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin
 )
-from django.conf import settings
 
 
 class UserManager(BaseUserManager):

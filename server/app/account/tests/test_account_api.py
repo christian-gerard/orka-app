@@ -1,8 +1,6 @@
 """
 Tests Account API
 """
-from decimal import Decimal
-
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -14,9 +12,8 @@ from core.models import Account
 
 from account.serializers import AccountSerializer
 
-import pdb
-
 ACCOUNT_URL = reverse("account:account-list")
+
 
 def create_account(**params):
     """Create and Return sample account"""
@@ -29,6 +26,7 @@ def create_account(**params):
 
     account = Account.objects.create(**defaults)
     return account
+
 
 class PublicAccountAPITests(TestCase):
     """Test Unauthenticated API Requests"""
@@ -86,13 +84,10 @@ class PrivateAccountAPITests(TestCase):
             type="RESTRICTED",
         )
 
-
         res = self.client.get(ACCOUNT_URL)
 
         queryset = Account.objects.filter(user=self.user)
         serializer = AccountSerializer(queryset, many=True)
 
-
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
-

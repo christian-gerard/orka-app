@@ -7,8 +7,6 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.test import Client
 
-import pdb
-
 
 class AdminSiteTests(TestCase):
     """Test for Django admin."""
