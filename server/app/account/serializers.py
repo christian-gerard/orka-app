@@ -22,3 +22,11 @@ class AccountSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
 
+class AccountDetailSerializer(AccountSerializer):
+    """Serializes Account Detail Data"""
+
+    class Meta(AccountSerializer.Meta):
+        pass
+
+
+

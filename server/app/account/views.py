@@ -12,7 +12,7 @@ from account import serializers
 
 class AccountViewSet(viewsets.ModelViewSet):
     """View for Manage Account APIs"""
-    serializer_class = serializers.AccountSerializer
+    serializer_class = serializers.AccountDetailSerializer
     queryset = Account.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -21,4 +21,9 @@ class AccountViewSet(viewsets.ModelViewSet):
         """Retrieves Accounts for Authenticated User"""
         return self.queryset.filter(user=self.request.user).order_by('id')
 
+    def get_serializer_class(self):
+        """Return the serializer per request"""
+        if self.action == 'list':
+            return serializers.AccountSerializer
+        return self.serializer_class
 

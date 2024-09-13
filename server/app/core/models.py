@@ -58,6 +58,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
+    def __str__(self):
+        return self.email
+
 
 class Client(models.Model):
     """Client Model"""
@@ -67,9 +70,12 @@ class Client(models.Model):
     industry = models.CharField(max_length=255)
     ein = models.CharField(max_length=10)
     address_one = models.CharField(max_length=300)
-    address_two = models.CharField(max_length=300)
+    address_two = models.CharField(max_length=300, default=None)
     city = models.CharField(max_length=300)
     state = models.CharField(max_length=300)
     zip_code = models.CharField(max_length=300)
 
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
