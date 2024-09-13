@@ -48,12 +48,18 @@ class ModelTest(TestCase):
         self.assertTrue(user.is_staff)
 
     def test_create_account(self):
+        user = get_user_model().objects.create_superuser(
+            'test@example.com', 'test123'
+        )
         account = models.Account.objects.create(
             name="Test Account",
             type="Test Type",
         )
 
+        account.users.set([user])
+
         self.assertEqual(account.name, "Test Account")
+        self.assertTrue(account.users)
 
     def test_create_client(self):
         account = models.Account.objects.create(

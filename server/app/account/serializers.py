@@ -18,7 +18,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ['id', 'name', 'type']
+        fields = ['id', 'name', 'type', 'users']
         read_only_fields = ["id"]
 
 
@@ -26,7 +26,7 @@ class AccountDetailSerializer(AccountSerializer):
     """Serializes Account Detail Data"""
 
     class Meta(AccountSerializer.Meta):
-        pass
+        fields = AccountSerializer.Meta.fields + ['clients', 'users']
 
 
 

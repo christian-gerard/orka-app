@@ -93,10 +93,9 @@ class PrivateAccountAPITests(TestCase):
             type="RESTRICTED",
         )
 
-
         res = self.client.get(ACCOUNT_URL)
 
-        queryset = Account.objects.filter(user=self.user)
+        queryset = Account.objects.filter(users=self.user)
         serializer = AccountSerializer(queryset, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -104,7 +103,7 @@ class PrivateAccountAPITests(TestCase):
 
     def test_get_account_detail(self):
         """Test get account detail"""
-        account = create_account(user=self.user)
+        account = create_account()
 
         url = detail_url(account.id)
         res = self.client.get(url)

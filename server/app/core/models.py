@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, default="Last")
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    accounts = models.ManyToManyField(Account)
+    accounts = models.ManyToManyField(Account, related_name='users')
 
     objects = UserManager()
 
@@ -75,7 +75,22 @@ class Client(models.Model):
     state = models.CharField(max_length=300)
     zip_code = models.CharField(max_length=300)
 
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, related_name='clients', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Project(models.Model):
+    """Project Model"""
+
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    deadline = models.DateField()
+    project_type = models.CharField(max_length=255)
+
+    users = models.ManyToManyField(User, related_name='projects')
+    client = models.ForeignKey(Client, related_name='projects', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
