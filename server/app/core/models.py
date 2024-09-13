@@ -57,3 +57,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Client(models.Model):
+    """Client Model"""
+
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    industry = models.CharField(max_length=255)
+    ein = models.CharField(max_length=10)
+    address_one = models.CharField(max_length=300)
+    address_two = models.CharField(max_length=300)
+    city = models.CharField(max_length=300)
+    state = models.CharField(max_length=300)
+    zip_code = models.CharField(max_length=300)
+
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)

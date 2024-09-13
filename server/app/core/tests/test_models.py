@@ -55,6 +55,13 @@ class ModelTest(TestCase):
 
         self.assertEqual(account.name, "Test Account")
 
+    def test_create_client(self):
+        client = models.Client.objects.create(
+            name="Test Client"
+        )
+
+        self.assertEqual(client.name, "Test Client")
+
 
 
 
