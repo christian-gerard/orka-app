@@ -5,6 +5,7 @@ from decimal import Decimal
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 from rest_framework import status
 from rest_framework.test import APIClient
@@ -14,7 +15,6 @@ from core.models import Account
 from account.serializers import AccountSerializer
 
 ACCOUNT_URL = reverse("account:account-list")
-
 
 def create_account(**params):
     """Create and Return sample account"""
@@ -55,13 +55,15 @@ class PrivateAccountAPITests(TestCase):
 
     def test_retrieve_account(self):
         """Test Retrieving a list of accounts"""
-        create_account()
-        create_account()
+        a1 = create_account()
+
+        a1.save()
+
+        self.user.accounts.add(a1)
 
         res = self.client.get(ACCOUNT_URL)
 
-        accounts = Account.objects.all().order_by('-id')
-        serializer = AccountSerializer(accounts, many=True)
+        serializer = AccountSerializer(self.user.accounts, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
