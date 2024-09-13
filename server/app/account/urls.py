@@ -12,7 +12,7 @@ from rest_framework.routers import DefaultRouter
 from account import views
 
 router = DefaultRouter()
-router.register('accounts', views.AccountViewSet)
+router.register('', views.AccountViewSet)
 
 app_name = 'account'
 
