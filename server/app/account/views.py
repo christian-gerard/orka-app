@@ -19,6 +19,6 @@ class AccountViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
-        return self.queryset.order_by('-id')
+        return self.queryset.filter(user=self.request.user).order_by('id')
 
 
