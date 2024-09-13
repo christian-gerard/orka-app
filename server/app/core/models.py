@@ -34,18 +34,6 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin):
-    """User in the system"""
-
-    email = models.EmailField(max_length=250, unique=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255, default="Last")
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-
-    objects = UserManager()
-
-    USERNAME_FIELD = 'email'
 
 
 class Account(models.Model):
@@ -57,25 +45,16 @@ class Account(models.Model):
     def __str__(self):
         return self.name
 
+class User(AbstractBaseUser, PermissionsMixin):
+    """User in the system"""
 
-class UserAccount(models.Model):
-    """User + Account Relationship / Object"""
+    email = models.EmailField(max_length=250, unique=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255, default="Last")
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    accounts = models.ManyToManyField(Account)
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    status = models.CharField(max_length=255)
+    objects = UserManager()
 
-    def __str__(self):
-        return self.user.first_name + "  <>  " + self.account.name
-
-
-
-
-
-
-
-
-
-
-
-
+    USERNAME_FIELD = 'email'
