@@ -55,11 +55,11 @@ class PrivateAccountAPITests(TestCase):
 
     def test_retrieve_account(self):
         """Test Retrieving a list of accounts"""
-        a1 = create_account()
 
-        a1.save()
-
-        self.user.accounts.add(a1)
+        self.user.accounts.create(
+            name="Testing Testing",
+            type="NEW TEST TYPE",
+        )
 
         res = self.client.get(ACCOUNT_URL)
 
@@ -69,4 +69,26 @@ class PrivateAccountAPITests(TestCase):
 
     def test_account_list_limited_to_user(self):
         """Test Retrieving Accounts only returns accounts connected a user"""
+        other_user = get_user_model().objects.create_user(
+            "othertest@example.com",
+            "testpass123"
+        )
+
+        other_user.accounts.create(
+            name="SHOULDNT BE ABLE TO SEE THIS",
+            type="RESTRICTED",
+        )
+
+        self.user.accounts.create(
+            name="Test2",
+            type="Test Type"
+        )
+
+        res = self.client.get(ACCOUNT_URL)
+
+        queryset = self.user.accounts.all()
+        serializer = AccountSerializer(queryset, many=True)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
 

@@ -34,8 +34,6 @@ class UserManager(BaseUserManager):
         return user
 
 
-
-
 class Account(models.Model):
     """Account Objects"""
 
@@ -44,6 +42,7 @@ class Account(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system"""
