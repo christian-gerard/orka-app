@@ -14,6 +14,8 @@ from core.models import Account
 
 from account.serializers import AccountSerializer
 
+import pdb
+
 ACCOUNT_URL = reverse("account:account-list")
 
 def create_account(**params):
@@ -74,20 +76,22 @@ class PrivateAccountAPITests(TestCase):
             "testpass123"
         )
 
+        self.user.accounts.create(
+            name="Current User Account",
+            type="-----"
+        )
+
         other_user.accounts.create(
-            name="SHOULDNT BE ABLE TO SEE THIS",
+            name="RESTRICTED ACCOUNT",
             type="RESTRICTED",
         )
 
-        self.user.accounts.create(
-            name="Test2",
-            type="Test Type"
-        )
 
         res = self.client.get(ACCOUNT_URL)
 
-        queryset = self.user.accounts.all()
+        queryset = Account.objects.filter(user=self.user)
         serializer = AccountSerializer(queryset, many=True)
+
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
