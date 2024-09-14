@@ -34,11 +34,27 @@ class UserManager(BaseUserManager):
         return user
 
 
+class AccountManager(models.Manager):
+    """Manager for Accounts"""
+
+    def create_account(self, name, type, users, **extra_fields):
+        """Create, Save and Return a New Account"""
+        if not user:
+            raise ValueError("Accounts must include at least 1 user")
+        account = self.model(name=name, type=type, **extra_fields)
+        account.users.set([user])
+        account.save(using=self._db)
+
+        return account
+
+
 class Account(models.Model):
     """Account Objects"""
 
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
+
+    objects = AccountManager()
 
     def __str__(self):
         return self.name

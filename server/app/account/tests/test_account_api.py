@@ -25,7 +25,7 @@ def detail_url(account_id):
     """Return detail url for specific account"""
     return reverse('account:account-detail', args=[account_id])
 
-def create_account(**params):
+def create_account(user, **params):
     """Create and Return sample account"""
     defaults = {
         "name": "Test Account",
@@ -35,6 +35,7 @@ def create_account(**params):
     defaults.update(params)
 
     account = Account.objects.create(**defaults)
+    account.users.set([user])
     return account
 
 class PublicAccountAPITests(TestCase):
@@ -67,7 +68,7 @@ class PrivateAccountAPITests(TestCase):
 
         self.user.accounts.create(
             name="Testing Testing",
-            type="NEW TEST TYPE",
+            type="NEW TEST TYPE"
         )
 
         res = self.client.get(ACCOUNT_URL)
@@ -103,7 +104,7 @@ class PrivateAccountAPITests(TestCase):
 
     def test_get_account_detail(self):
         """Test get account detail"""
-        account = create_account()
+        account = create_account(self.user)
 
         url = detail_url(account.id)
         res = self.client.get(url)

@@ -45,8 +45,31 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
+class AccountAdmin(admin.ModelAdmin):
+    """Define the admin pages for Accounts"""
+    ordering = ['id']
+    list_display = ['name', 'type', 'get_users']
+    fieldsets = (
+        (None, {'fields': ('name', 'type',)}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': (
+                'name',
+                'type',
+            )
+        }),
+    )
+
+    def get_users(self, obj):
+        return ", ".join([user.email for user in obj.users.all()])
+    get_users.short_description = 'Users'
+
+
 admin.site.register(models.User, UserAdmin)
-admin.site.register(models.Account)
+admin.site.register(models.Account, AccountAdmin)
 admin.site.register(models.Client)
 admin.site.register(models.Project)
 
