@@ -8,7 +8,6 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin
 )
-from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -91,7 +90,11 @@ class Client(models.Model):
     state = models.CharField(max_length=300)
     zip_code = models.CharField(max_length=300)
 
-    account = models.ForeignKey(Account, related_name='clients', on_delete=models.CASCADE)
+    account = models.ForeignKey(
+        Account,
+        related_name='clients',
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.name
@@ -106,7 +109,11 @@ class Project(models.Model):
     project_type = models.CharField(max_length=255)
 
     users = models.ManyToManyField(User, related_name='projects')
-    client = models.ForeignKey(Client, related_name='projects', on_delete=models.CASCADE)
+    client = models.ForeignKey(
+        Client,
+        related_name='projects',
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.name

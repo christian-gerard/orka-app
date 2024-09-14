@@ -1,8 +1,6 @@
 """
 Tests Account API
 """
-from decimal import Decimal
-
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -17,17 +15,15 @@ from account.serializers import (
     AccountDetailSerializer,
 )
 
-import pdb
-
 ACCOUNT_URL = reverse("account:account-list")
 
 CLIENT_URL = reverse("account:account-list") + "clients/"
 
-pdb.set_trace()
 
 def detail_url(account_id):
     """Return detail url for specific account"""
     return reverse('account:account-detail', args=[account_id])
+
 
 def create_account(user, **params):
     """Create and Return sample account"""
@@ -41,6 +37,7 @@ def create_account(user, **params):
     account = Account.objects.create(**defaults)
     account.users.set([user])
     return account
+
 
 class PublicAccountAPITests(TestCase):
     """Test Unauthenticated API Requests"""
@@ -118,6 +115,17 @@ class PrivateAccountAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def test_get_client_list(self):
-        """Test Client Details"""
+    def test_create_account(self):
+        """Testing Post Method on account api"""
 
+        payload = {
+            "name": "Test Account",
+            "type": "New Account Testing",
+        }
+
+        res = self.client.post(ACCOUNT_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        account = Account.objects.get(id=res.data['id'])
+        for k, v in payload.items():
+            self.assertEqual(getattr(account, k), v)

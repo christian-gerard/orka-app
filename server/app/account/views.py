@@ -28,6 +28,10 @@ class AccountViewSet(viewsets.ModelViewSet):
             return AccountSerializer
         return self.serializer_class
 
+    def perform_create(self, serializer):
+        """Create a new recipe"""
+        serializer.save()
+
 
 class ClientViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
@@ -45,4 +49,3 @@ class ClientViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return ClientSerializer
         return self.serializer_class
-

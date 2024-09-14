@@ -8,10 +8,6 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Project
-
-from project.serializers import Serializer
-
 PROJECT_URL = reverse('project:project-list')
 
 
