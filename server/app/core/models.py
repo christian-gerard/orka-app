@@ -37,7 +37,7 @@ class UserManager(BaseUserManager):
 class AccountManager(models.Manager):
     """Manager for Accounts"""
 
-    def create_account(self, name, type, users, **extra_fields):
+    def create_account(self, name, type, user, **extra_fields):
         """Create, Save and Return a New Account"""
         if not user:
             raise ValueError("Accounts must include at least 1 user")

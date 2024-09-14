@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
     ordering = ['id']
     list_display = ['email']
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password', 'accounts')}),
         (
             _('Permissions'),
             {
@@ -48,9 +48,10 @@ class UserAdmin(BaseUserAdmin):
 class AccountAdmin(admin.ModelAdmin):
     """Define the admin pages for Accounts"""
     ordering = ['id']
-    list_display = ['name', 'type', 'get_users']
+    list_display = ['name', 'type',]
+    filter_horizontal = ('users',)
     fieldsets = (
-        (None, {'fields': ('name', 'type',)}),
+        (None, {'fields': ('name', 'type',  )}),
     )
 
     add_fieldsets = (
@@ -59,13 +60,12 @@ class AccountAdmin(admin.ModelAdmin):
             'fields': (
                 'name',
                 'type',
+
             )
         }),
     )
 
-    def get_users(self, obj):
-        return ", ".join([user.email for user in obj.users.all()])
-    get_users.short_description = 'Users'
+
 
 
 admin.site.register(models.User, UserAdmin)
