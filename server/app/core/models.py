@@ -34,11 +34,27 @@ class UserManager(BaseUserManager):
         return user
 
 
+class AccountManager(models.Manager):
+    """Manager for Accounts"""
+
+    def create_account(self, name, type, user, **extra_fields):
+        """Create, Save and Return a New Account"""
+        if not user:
+            raise ValueError("Accounts must include at least 1 user")
+        account = self.model(name=name, type=type, **extra_fields)
+        account.users.set([user])
+        account.save(using=self._db)
+
+        return account
+
+
 class Account(models.Model):
     """Account Objects"""
 
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
+
+    objects = AccountManager()
 
     def __str__(self):
         return self.name
@@ -52,11 +68,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, default="Last")
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    accounts = models.ManyToManyField(Account)
+    accounts = models.ManyToManyField(Account, related_name='users')
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+    def __str__(self):
+        return self.email
 
 
 class Client(models.Model):
@@ -67,9 +86,27 @@ class Client(models.Model):
     industry = models.CharField(max_length=255)
     ein = models.CharField(max_length=10)
     address_one = models.CharField(max_length=300)
-    address_two = models.CharField(max_length=300)
+    address_two = models.CharField(max_length=300, default=None)
     city = models.CharField(max_length=300)
     state = models.CharField(max_length=300)
     zip_code = models.CharField(max_length=300)
 
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, related_name='clients', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class Project(models.Model):
+    """Project Model"""
+
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    deadline = models.DateField()
+    project_type = models.CharField(max_length=255)
+
+    users = models.ManyToManyField(User, related_name='projects')
+    client = models.ForeignKey(Client, related_name='projects', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
