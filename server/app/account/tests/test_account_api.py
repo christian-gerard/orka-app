@@ -10,6 +10,8 @@ from rest_framework.test import APIClient
 
 from core.models import Account
 
+import pdb
+
 from account.serializers import (
     AccountSerializer,
     AccountDetailSerializer,
@@ -129,3 +131,5 @@ class PrivateAccountAPITests(TestCase):
         account = Account.objects.get(id=res.data['id'])
         for k, v in payload.items():
             self.assertEqual(getattr(account, k), v)
+        self.assertEqual(account.users.first(), self.user)
+
