@@ -128,5 +128,11 @@ class Contact(models.Model):
     poc = models.BooleanField(default=False)
     description = models.TextField()
 
+    client = models.ForeignKey(
+        Client,
+        related_name='contacts',
+        on_delete=models.CASCADE
+    )
+
     def __str__(self):
         return self.first_name

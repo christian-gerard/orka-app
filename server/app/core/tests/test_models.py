@@ -79,11 +79,37 @@ class ModelTest(TestCase):
 
         self.assertEqual(client.name, "Test Client")
 
-def test_create_contact(self):
-    """Test Contact Creation"""
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=255)
-    role = models.CharField(max_length=255)
-    poc = models.BooleanField(default=False)
-    description = models.TextField()
+    def test_create_contact(self):
+        """Test Contact Creation"""
+        account = models.Account.objects.create(
+            name="Test Account",
+            type="Test Type",
+        )
+
+        client = models.Client.objects.create(
+            name="Test Client",
+            description="Test Description",
+            industry="Test Industry",
+            ein="Testing",
+            address_one="Test",
+            address_two="Test",
+            city="Test City",
+            state="Test State",
+            zip_code="12322",
+            account=account,
+        )
+
+        contact = models.Contact.objects.create(
+            client=client,
+            first_name="Test Name",
+            last_name="More Test",
+            phone_number="123456789",
+            role="Admin",
+            poc=False,
+            description="Test Description",
+        )
+
+        self.assertEqual(contact.first_name, "Test Name")
+
+
+
