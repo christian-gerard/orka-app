@@ -107,6 +107,7 @@ class Project(models.Model):
     description = models.TextField()
     deadline = models.DateField()
     project_type = models.CharField(max_length=255)
+    budget = models.DecimalField()
 
     users = models.ManyToManyField(User, related_name='projects')
     client = models.ForeignKey(

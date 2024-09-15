@@ -47,9 +47,12 @@ class ModelTest(TestCase):
         self.assertTrue(user.is_staff)
 
     def test_create_account(self):
+        """Testing Account Creation"""
+
         user = get_user_model().objects.create_superuser(
             'test@example.com', 'test123'
         )
+
         account = models.Account.objects.create(
             name="Test Account",
             type="Test Type",
@@ -61,6 +64,7 @@ class ModelTest(TestCase):
         self.assertTrue(account.users)
 
     def test_create_client(self):
+
         account = models.Account.objects.create(
             name="Test Account",
             type="Test Type",
@@ -81,6 +85,7 @@ class ModelTest(TestCase):
 
     def test_create_contact(self):
         """Test Contact Creation"""
+
         account = models.Account.objects.create(
             name="Test Account",
             type="Test Type",
