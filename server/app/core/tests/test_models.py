@@ -141,14 +141,21 @@ class ModelTest(TestCase):
             description="Test Description",
             deadline=date.today(),
             project_type="Test Type",
+            budget=1000.29,
             client=client
         )
 
         expense = models.Expense.objects.create(
-            description="Test Title"
+            description="Test Title",
+            project=project,
+            status="Test Status",
+            category="Advertising",
+            amount=2121.22,
+            date=date.today(),
+
         )
 
-        self.assertEqual(expense.title, "Test Title")
+        self.assertEqual(expense.description, "Test Title")
 
 
 
