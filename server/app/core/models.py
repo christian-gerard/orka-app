@@ -117,3 +117,16 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Contact(models.Model):
+    """Contact Model"""
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=255)
+    role = models.CharField(max_length=255)
+    poc = models.BooleanField(default=False)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.first_name

@@ -78,3 +78,12 @@ class ModelTest(TestCase):
         )
 
         self.assertEqual(client.name, "Test Client")
+
+def test_create_contact(self):
+    """Test Contact Creation"""
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=255)
+    role = models.CharField(max_length=255)
+    poc = models.BooleanField(default=False)
+    description = models.TextField()
