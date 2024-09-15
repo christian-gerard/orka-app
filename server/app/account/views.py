@@ -10,6 +10,8 @@ from core.models import Account, Client
 from account.serializers import AccountSerializer, AccountDetailSerializer
 from client.serializers import ClientSerializer, ClientDetailSerializer
 
+import pdb
+
 
 class AccountViewSet(viewsets.ModelViewSet):
     """View for Manage Account APIs"""
@@ -30,7 +32,7 @@ class AccountViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new recipe"""
-        serializer.save()
+        serializer.save(users=[self.request.user])
 
 
 class ClientViewSet(viewsets.ModelViewSet):

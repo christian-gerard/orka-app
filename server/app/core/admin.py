@@ -49,7 +49,7 @@ class AccountAdmin(admin.ModelAdmin):
     """Define the admin pages for Accounts"""
     ordering = ['id']
     list_display = ['name', 'type']
-    filter_horizontal = ('users')
+    filter_horizontal = ('users',)
     fieldsets = (
         (None, {'fields': ('name', 'type')}),
     )

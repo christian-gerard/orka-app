@@ -1,6 +1,7 @@
 """
 Tests Account API
 """
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -129,3 +130,4 @@ class PrivateAccountAPITests(TestCase):
         account = Account.objects.get(id=res.data['id'])
         for k, v in payload.items():
             self.assertEqual(getattr(account, k), v)
+        self.assertEqual(account.users.first(), self.user)
