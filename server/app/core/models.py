@@ -154,6 +154,11 @@ class Expense(models.Model):
     )
     category = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
+    project = models.ForeignKey(
+        Project,
+        related_name='expenses',
+        on_delete=models.CASCADE,
+    )
 
 
     def __str__(self):
