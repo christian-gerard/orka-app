@@ -9,6 +9,8 @@ from django.contrib.auth.models import (
     PermissionsMixin
 )
 
+from datetime import date
+
 
 class UserManager(BaseUserManager):
     """Manager for Users"""
@@ -107,7 +109,10 @@ class Project(models.Model):
     description = models.TextField()
     deadline = models.DateField()
     project_type = models.CharField(max_length=255)
-    budget = models.DecimalField()
+    budget = models.DecimalField(
+        decimal_places=2,
+        max_digits=200
+    )
 
     users = models.ManyToManyField(User, related_name='projects')
     client = models.ForeignKey(
@@ -137,3 +142,19 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.first_name
+
+
+class Expense(models.Model):
+    """Expense Model"""
+    date = models.DateField(default=date.today)
+    description = models.CharField(max_length=255)
+    amount = models.DecimalField(
+        decimal_places=2,
+        max_digits=200
+    )
+    category = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+
+
+    def __str__(self):
+        return self.description

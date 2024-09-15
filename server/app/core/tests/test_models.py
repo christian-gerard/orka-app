@@ -145,7 +145,7 @@ class ModelTest(TestCase):
         )
 
         expense = models.Expense.objects.create(
-            title="Test Title"
+            description="Test Title"
         )
 
         self.assertEqual(expense.title, "Test Title")
