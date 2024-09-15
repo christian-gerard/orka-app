@@ -16,6 +16,8 @@ from account.serializers import (
     AccountDetailSerializer,
 )
 
+import pdb
+
 ACCOUNT_URL = reverse("account:account-list")
 
 CLIENT_URL = reverse("account:account-list") + "clients/"
@@ -131,3 +133,17 @@ class PrivateAccountAPITests(TestCase):
         for k, v in payload.items():
             self.assertEqual(getattr(account, k), v)
         self.assertEqual(account.users.first(), self.user)
+
+    def test_patch_account(self):
+        """Testing Patch Method on Accounts"""
+        account = create_account(self.user)
+
+        payload = {
+            "name": "New Name"
+        }
+
+        res = self.client.patch(detail_url(account.id), payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data["name"], payload["name"])
+

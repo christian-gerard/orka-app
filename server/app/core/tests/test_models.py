@@ -141,14 +141,53 @@ class ModelTest(TestCase):
             description="Test Description",
             deadline=date.today(),
             project_type="Test Type",
+            budget=1000.29,
+            client=client
+        )
+
+
+        self.assertEqual(project.description, "Test Project")
+
+    def test_create_expense(self):
+        """Test Expense Creation"""
+        account = models.Account.objects.create(
+            name="Test Account",
+            type="Test Type",
+        )
+
+        client = models.Client.objects.create(
+            name="Test Client",
+            description="Test Description",
+            industry="Test Industry",
+            ein="Testing",
+            address_one="Test",
+            address_two="Test",
+            city="Test City",
+            state="Test State",
+            zip_code="12322",
+            account=account,
+        )
+
+        project = models.Project.objects.create(
+            name="Test Project",
+            description="Test Description",
+            deadline=date.today(),
+            project_type="Test Type",
+            budget=1000.29,
             client=client
         )
 
         expense = models.Expense.objects.create(
-            title="Test Title"
+            description="Test Title",
+            project=project,
+            status="Test Status",
+            category="Advertising",
+            amount=2121.22,
+            date=date.today(),
+
         )
 
-        self.assertEqual(expense.title, "Test Title")
+        self.assertEqual(expense.description, "Test Title")
 
 
 
