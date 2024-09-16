@@ -5,8 +5,7 @@ from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Account, Client
-from account.serializers import AccountSerializer, AccountDetailSerializer
+from core.models import Client
 from client.serializers import ClientSerializer, ClientDetailSerializer
 
 import pdb
@@ -20,7 +19,7 @@ class ClientViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
-        return self.queryset.filter(users=self.request.user).order_by('id')
+        return self.queryset.order_by('id')
 
     def get_serializer_class(self):
         """Return the serializer per request"""

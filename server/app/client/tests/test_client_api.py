@@ -15,6 +15,8 @@ from client.serializers import (
     ClientDetailSerializer,
 )
 
+import pdb
+
 CLIENT_URL = reverse('client:client-list')
 
 
@@ -26,6 +28,9 @@ class PublicClientAPITests(TestCase):
 
     def test_auth_required(self):
         """Test that auth is required for this API"""
+        res = self.client.get(CLIENT_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class PrivateClientAPITests(TestCase):
@@ -37,6 +42,7 @@ class PrivateClientAPITests(TestCase):
             "test@example.com",
             "testpass123"
         )
+        self.client.force_authenticate(self.user)
 
     def test_retrieve_client(self):
         """Testing Retrieving Clients"""
@@ -84,7 +90,7 @@ class PrivateClientAPITests(TestCase):
 
         res = self.client.get(CLIENT_URL)
 
-        queryset = models.Client.objects.filter(users=self.user)
+        queryset = models.Client.objects.all()
         serializer = ClientSerializer(queryset, many=True)
 
         # self.assertEqual(res.status_code, status.HTTP_200_OK)
