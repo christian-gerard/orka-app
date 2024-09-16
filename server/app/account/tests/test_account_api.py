@@ -147,3 +147,13 @@ class PrivateAccountAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data["name"], payload["name"])
 
+    def test_delete_account(self):
+        """Testing Delete Method on Account"""
+        account = create_account(self.user)
+
+        res = self.client.delete(detail_url(account.id))
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+
+
