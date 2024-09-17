@@ -45,7 +45,7 @@ class PrivateProjectAPITests(TestCase):
             name="Current User Account",
             type="-----"
         )
-        models.Client.objects.create(
+        c1 = models.Client.objects.create(
             name="Test Client",
             description="Describing the client",
             industry="test industry",
@@ -57,12 +57,14 @@ class PrivateProjectAPITests(TestCase):
             zip_code = "91919191",
             account=self.user.accounts.first()
         )
+
         self.project = models.Project.objects.create(
             name='Test Project',
             description="Test Description",
             deadline=date.today(),
             project_type="Test Type",
             budget=0.00,
+            client=c1,
         )
 
         self.client.force_authenticate(self.user)
@@ -80,9 +82,6 @@ class PrivateProjectAPITests(TestCase):
         """Test Retrieving Project Detail from API"""
         url = detail_url(self.project.id)
         res = self.client.get(url)
-
-        pdb.set_trace()
-
 
         self.assertEqual(res.status_code, status.HTTP_201_OK)
 
