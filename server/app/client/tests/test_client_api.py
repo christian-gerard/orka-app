@@ -19,6 +19,10 @@ import pdb
 
 CLIENT_URL = reverse('client:client-list')
 
+def detail_url(client_id):
+    """Return detail url for specific account"""
+    return reverse('client:client-detail', args=[client_id])
+
 
 class PublicClientAPITests(TestCase):
     """Test Unauthorized API Requests"""
@@ -137,3 +141,34 @@ class PrivateClientAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
+    def test_retrieving_client_detail(self):
+        """Testing Client Detail Request"""
+
+        self.user.accounts.create(
+            name="Current User Account",
+            type="-----"
+        )
+
+        c1 = models.Client.objects.create(
+            name="Test Client",
+            description="Describing the client",
+            industry="test industry",
+            ein = "9898989",
+            address_one = "TESTING St",
+            address_two = "Suite 100",
+            city = "Testing City",
+            state = "California",
+            zip_code = "91919191",
+            account=self.user.accounts.first()
+        )
+
+        url = detail_url(c1.id)
+        res = self.client.get(url)
+
+        serializer = ClientDetailSerializer(c1)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
+
