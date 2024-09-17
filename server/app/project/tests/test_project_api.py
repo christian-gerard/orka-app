@@ -58,7 +58,16 @@ class PrivateProjectAPITests(TestCase):
             account=self.user.accounts.first()
         )
 
-        self.project = models.Project.objects.create(
+        self.project1 = models.Project.objects.create(
+            name='Test Project',
+            description="Test Description",
+            deadline=date.today(),
+            project_type="Test Type",
+            budget=0.00,
+            client=c1,
+        )
+
+        self.project2 = models.Project.objects.create(
             name='Test Project',
             description="Test Description",
             deadline=date.today(),
@@ -72,18 +81,22 @@ class PrivateProjectAPITests(TestCase):
     def test_retrieve_projects(self):
         """Test Retrieving projects from API"""
         res = self.client.get(PROJECT_URL)
+        queryset = models.Project.objects.all()
 
-        serializer = ProjectSerializer(self.project)
+        serializer = ProjectSerializer(queryset, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
     def test_retrieve_project_detail(self):
         """Test Retrieving Project Detail from API"""
-        url = detail_url(self.project.id)
+        url = detail_url(self.project1.id)
         res = self.client.get(url)
 
-        self.assertEqual(res.status_code, status.HTTP_201_OK)
+        serializer = ProjectDetailSerializer(self.project1)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
 
 
 
