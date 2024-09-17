@@ -13,6 +13,10 @@ from core import models
 
 PROJECT_URL = reverse('project:project-list')
 
+def detail_url(project_id):
+    """Get Detail Url"""
+    return reverse('project:project-detail', args=[project_id])
+
 
 class PublicProjectAPITests(TestCase):
     """Test Unauthorized API Requests"""
@@ -69,5 +73,15 @@ class PrivateProjectAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
+    def test_retrieve_project_detail(self):
+        """Test Retrieving Project Detail from API"""
+        url = detail_url(self.project.id)
+        res = self.client.get(url)
+
+
+        self.assertEqual(res.status_code, status.HTTP_201_OK)
+
+
 
 

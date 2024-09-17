@@ -6,11 +6,11 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from core.models import Project
-from client.serializers import ProjectSerializer, ProjectDetailSerializer
+from project.serializers import ProjectSerializer, ProjectDetailSerializer
 
 import pdb
 
-class ClientViewSet(viewsets.ModelViewSet):
+class ProjectViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ProjectDetailSerializer
     queryset = Project.objects.all()
