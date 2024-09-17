@@ -8,8 +8,10 @@ from datetime import date
 
 from rest_framework import status
 from rest_framework.test import APIClient
-from serializers import ProjectSerializer, ProjectDetailSerializer
+from project.serializers import ProjectSerializer, ProjectDetailSerializer
 from core import models
+
+import pdb
 
 PROJECT_URL = reverse('project:project-list')
 
@@ -28,7 +30,7 @@ class PublicProjectAPITests(TestCase):
         """Test Auth is required to call API"""
         res = self.client.get(PROJECT_URL)
 
-        self.assertEqual(res.stats_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class PrivateProjectAPITests(TestCase):
@@ -43,7 +45,7 @@ class PrivateProjectAPITests(TestCase):
             name="Current User Account",
             type="-----"
         )
-        models.Client.objects.create(
+        c1 = models.Client.objects.create(
             name="Test Client",
             description="Describing the client",
             industry="test industry",
@@ -55,12 +57,23 @@ class PrivateProjectAPITests(TestCase):
             zip_code = "91919191",
             account=self.user.accounts.first()
         )
-        self.project = models.Project.objects.create(
+
+        self.project1 = models.Project.objects.create(
             name='Test Project',
             description="Test Description",
             deadline=date.today(),
             project_type="Test Type",
             budget=0.00,
+            client=c1,
+        )
+
+        self.project2 = models.Project.objects.create(
+            name='Test Project',
+            description="Test Description",
+            deadline=date.today(),
+            project_type="Test Type",
+            budget=0.00,
+            client=c1,
         )
 
         self.client.force_authenticate(self.user)
@@ -68,19 +81,22 @@ class PrivateProjectAPITests(TestCase):
     def test_retrieve_projects(self):
         """Test Retrieving projects from API"""
         res = self.client.get(PROJECT_URL)
+        queryset = models.Project.objects.all()
 
-        serializer = ProjectSerializer(self.project)
+        serializer = ProjectSerializer(queryset, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
     def test_retrieve_project_detail(self):
         """Test Retrieving Project Detail from API"""
-        url = detail_url(self.project.id)
+        url = detail_url(self.project1.id)
         res = self.client.get(url)
 
+        serializer = ProjectDetailSerializer(self.project1)
 
-        self.assertEqual(res.status_code, status.HTTP_201_OK)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
 
 
 
