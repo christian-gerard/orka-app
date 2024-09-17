@@ -51,7 +51,7 @@ class PrivateClientAPITests(TestCase):
             type="Test Type",
         )
 
-        client = models.Client.objects.create(
+        models.Client.objects.create(
             name="Test Client",
             description="Describing the client",
             industry="test industry",
@@ -64,9 +64,24 @@ class PrivateClientAPITests(TestCase):
             account=self.user.accounts.first()
         )
 
+        models.Client.objects.create(
+            name="Test Client",
+            description="Describing the client",
+            industry="test industry",
+            ein = "9898989",
+            address_one = "TESTING St",
+            address_two = "Suite 100",
+            city = "Testing City",
+            state = "California",
+            zip_code = "91919191",
+            account=self.user.accounts.first()
+        )
+
+        queryset = models.Client.objects.all()
+
         res = self.client.get(CLIENT_URL)
 
-        serializer = ClientSerializer(client, many=True)
+        serializer = ClientSerializer(queryset, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
@@ -88,10 +103,37 @@ class PrivateClientAPITests(TestCase):
             type="RESTRICTED",
         )
 
+        c1 = models.Client.objects.create(
+            name="Test Client",
+            description="Describing the client",
+            industry="test industry",
+            ein = "9898989",
+            address_one = "TESTING St",
+            address_two = "Suite 100",
+            city = "Testing City",
+            state = "California",
+            zip_code = "91919191",
+            account=self.user.accounts.first()
+        )
+
+        c2 = models.Client.objects.create(
+            name="Test Client",
+            description="Describing the client",
+            industry="test industry",
+            ein = "9898989",
+            address_one = "TESTING St",
+            address_two = "Suite 100",
+            city = "Testing City",
+            state = "California",
+            zip_code = "91919191",
+            account=other_user.accounts.first()
+        )
+
         res = self.client.get(CLIENT_URL)
 
-        queryset = models.Client.objects.all()
+        queryset = models.Client.objects.filter(account=self.user.accounts.first().id)
+
         serializer = ClientSerializer(queryset, many=True)
 
-        # self.assertEqual(res.status_code, status.HTTP_200_OK)
-        # self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)

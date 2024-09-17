@@ -19,7 +19,9 @@ class ClientViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
-        return self.queryset.order_by('id')
+        account_ids = [account.id for account in self.request.user.accounts.all()]
+
+        return self.queryset.all().filter(id__in=account_ids).order_by('id')
 
     def get_serializer_class(self):
         """Return the serializer per request"""
