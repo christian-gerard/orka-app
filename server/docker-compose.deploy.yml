@@ -1,6 +1,3 @@
-version: "3.9"
-
-
 
 services:
   app:
@@ -36,7 +33,7 @@ services:
     depends_on:
       - app
     ports:
-      - 80:8000
+      - 8000:8000
     volumes:
       - static-data:/vol/static
 
