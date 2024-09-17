@@ -34,20 +34,3 @@ class AccountViewSet(viewsets.ModelViewSet):
         """Create a new recipe"""
         serializer.save(users=[self.request.user])
 
-
-class ClientViewSet(viewsets.ModelViewSet):
-    """View for Manage Client APIs"""
-    serializer_class = ClientDetailSerializer
-    queryset = Client.objects.all()
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        """Retrieves Accounts for Authenticated User"""
-        return self.queryset.filter(users=self.request.user).order_by('id')
-
-    def get_serializer_class(self):
-        """Return the serializer per request"""
-        if self.action == 'list':
-            return ClientSerializer
-        return self.serializer_class
