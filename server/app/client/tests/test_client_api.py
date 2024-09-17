@@ -15,9 +15,8 @@ from client.serializers import (
     ClientDetailSerializer,
 )
 
-import pdb
-
 CLIENT_URL = reverse('client:client-list')
+
 
 def detail_url(client_id):
     """Return detail url for specific account"""
@@ -59,12 +58,12 @@ class PrivateClientAPITests(TestCase):
             name="Test Client",
             description="Describing the client",
             industry="test industry",
-            ein = "9898989",
-            address_one = "TESTING St",
-            address_two = "Suite 100",
-            city = "Testing City",
-            state = "California",
-            zip_code = "91919191",
+            ein="9898989",
+            address_one="TESTING St",
+            address_two="Suite 100",
+            city="Testing City",
+            state="California",
+            zip_code="91919191",
             account=self.user.accounts.first()
         )
 
@@ -72,12 +71,12 @@ class PrivateClientAPITests(TestCase):
             name="Test Client",
             description="Describing the client",
             industry="test industry",
-            ein = "9898989",
-            address_one = "TESTING St",
-            address_two = "Suite 100",
-            city = "Testing City",
-            state = "California",
-            zip_code = "91919191",
+            ein="9898989",
+            address_one="TESTING St",
+            address_two="Suite 100",
+            city="Testing City",
+            state="California",
+            zip_code="91919191",
             account=self.user.accounts.first()
         )
 
@@ -107,35 +106,37 @@ class PrivateClientAPITests(TestCase):
             type="RESTRICTED",
         )
 
-        c1 = models.Client.objects.create(
+        models.Client.objects.create(
             name="Test Client",
             description="Describing the client",
             industry="test industry",
-            ein = "9898989",
-            address_one = "TESTING St",
-            address_two = "Suite 100",
-            city = "Testing City",
-            state = "California",
-            zip_code = "91919191",
+            ein="9898989",
+            address_one="TESTING St",
+            address_two="Suite 100",
+            city="Testing City",
+            state="California",
+            zip_code="91919191",
             account=self.user.accounts.first()
         )
 
-        c2 = models.Client.objects.create(
+        models.Client.objects.create(
             name="Test Client",
             description="Describing the client",
             industry="test industry",
-            ein = "9898989",
-            address_one = "TESTING St",
-            address_two = "Suite 100",
-            city = "Testing City",
-            state = "California",
-            zip_code = "91919191",
+            ein="9898989",
+            address_one="TESTING St",
+            address_two="Suite 100",
+            city="Testing City",
+            state="California",
+            zip_code="91919191",
             account=other_user.accounts.first()
         )
 
         res = self.client.get(CLIENT_URL)
 
-        queryset = models.Client.objects.filter(account=self.user.accounts.first().id)
+        queryset = models.Client.objects.filter(
+            account=self.user.accounts.first().id
+        )
 
         serializer = ClientSerializer(queryset, many=True)
 
@@ -154,12 +155,12 @@ class PrivateClientAPITests(TestCase):
             name="Test Client",
             description="Describing the client",
             industry="test industry",
-            ein = "9898989",
-            address_one = "TESTING St",
-            address_two = "Suite 100",
-            city = "Testing City",
-            state = "California",
-            zip_code = "91919191",
+            ein="9898989",
+            address_one="TESTING St",
+            address_two="Suite 100",
+            city="Testing City",
+            state="California",
+            zip_code="91919191",
             account=self.user.accounts.first()
         )
 
@@ -170,5 +171,3 @@ class PrivateClientAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
-
-
