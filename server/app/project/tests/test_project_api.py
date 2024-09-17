@@ -11,6 +11,8 @@ from rest_framework.test import APIClient
 from serializers import ProjectSerializer, ProjectDetailSerializer
 from core import models
 
+import pdb
+
 PROJECT_URL = reverse('project:project-list')
 
 def detail_url(project_id):
@@ -78,6 +80,8 @@ class PrivateProjectAPITests(TestCase):
         """Test Retrieving Project Detail from API"""
         url = detail_url(self.project.id)
         res = self.client.get(url)
+
+        pdb.set_trace()
 
 
         self.assertEqual(res.status_code, status.HTTP_201_OK)
