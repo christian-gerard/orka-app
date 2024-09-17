@@ -8,7 +8,7 @@ from datetime import date
 
 from rest_framework import status
 from rest_framework.test import APIClient
-from serializers import ProjectSerializer, ProjectDetailSerializer
+from project.serializers import ProjectSerializer, ProjectDetailSerializer
 from core import models
 
 import pdb
@@ -30,7 +30,7 @@ class PublicProjectAPITests(TestCase):
         """Test Auth is required to call API"""
         res = self.client.get(PROJECT_URL)
 
-        self.assertEqual(res.stats_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class PrivateProjectAPITests(TestCase):
