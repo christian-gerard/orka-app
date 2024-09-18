@@ -21,4 +21,6 @@ VOLUME /vol/static
 
 USER nginx
 
-CMD ["/run.sh"]
+ENV PATH="/proxy:/py/bin/:$PATH"
+
+CMD ["./run.sh"]
