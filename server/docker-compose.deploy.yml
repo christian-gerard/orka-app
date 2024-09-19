@@ -27,7 +27,7 @@ services:
 
   proxy:
     build:
-      context: ./proxy
+      context: ./server/proxy
     restart: always
     depends_on:
       - app
