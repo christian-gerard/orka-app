@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: .
+      context: ./proxy
     restart: always
     volumes:
       - static-data:/vol/web
@@ -27,7 +27,7 @@ services:
 
   proxy:
     build:
-      context: ./server/proxy
+      context: ./proxy
     restart: always
     depends_on:
       - app
