@@ -1,5 +1,5 @@
 #!/bin/sh
-echo "run.sh script is running"
+
 set -e
 
 envsubst < /etc/nginx/default.conf.tpl > /etc/nginx/conf.d/default.conf

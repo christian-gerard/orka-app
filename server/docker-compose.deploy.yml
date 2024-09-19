@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: .
+      context: ./proxy
     restart: always
     volumes:
       - static-data:/vol/web
