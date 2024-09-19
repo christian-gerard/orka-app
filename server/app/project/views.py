@@ -8,8 +8,6 @@ from rest_framework.permissions import IsAuthenticated
 from core.models import Project
 from project.serializers import ProjectSerializer, ProjectDetailSerializer
 
-import pdb
-
 class ProjectViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ProjectDetailSerializer
