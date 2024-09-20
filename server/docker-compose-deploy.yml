@@ -22,9 +22,9 @@ services:
       - ./pg_hba.conf:/etc/postgresql/pg_hba.conf  # Mount custom pg_hba.conf
       - postgres-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=orka_db
-      - POSTGRES_USER=christiangerard
-      - POSTGRES_PASSWORD=Snakeboi9797!
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
 
   proxy:
     build:
