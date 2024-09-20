@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   app:
     build:
@@ -21,11 +19,12 @@ services:
     image: postgres:13-alpine
     restart: always
     volumes:
+      - ./pg_hba.conf:/etc/postgresql/pg_hba.conf  # Mount custom pg_hba.conf
       - postgres-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=orka_db
+      - POSTGRES_USER=christiangerard
+      - POSTGRES_PASSWORD=Snakeboi9797!
 
   proxy:
     build:
