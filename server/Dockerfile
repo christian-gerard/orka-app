@@ -1,7 +1,7 @@
 FROM python:3.9-alpine3.13
 LABEL maintainer="christiangerard"
 
-ENV PYTHONBUFFERED=1
+ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
@@ -32,7 +32,7 @@ RUN python -m venv /py && \
     chmod -R 755 /vol && \
     chmod -R +x /scripts
 
-ENV PATH="/scripts:/py/bin/:$PATH"
+ENV PATH="/scripts:/py/bin:$PATH"
 
 USER django-user
 

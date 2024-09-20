@@ -21,7 +21,7 @@ from drf_spectacular.views import (
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-from django.conf import setting
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,8 +37,8 @@ urlpatterns = [
     path('api/projects/', include('project.urls')),
 ]
 
-if setting.DEBUG:
+if settings.DEBUG:
     urlpatterns += static(
-        setting.MEDIA_URL,
-        document_root=setting.MEDIA_ROOT,
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT,
     )
