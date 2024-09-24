@@ -1,6 +1,6 @@
 server {
     listen 80;
-    root /server/
+    root /server;
 
     location /static {
         alias /vol/static;
