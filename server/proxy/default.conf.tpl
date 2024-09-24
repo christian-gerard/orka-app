@@ -7,7 +7,7 @@ server {
     }
 
     location / {
-        uwsgi_pass              ${APP_HOST}:${APP_PORT};
+        uwsgi_pass              80:8000;
         include                 /etc/nginx/uwsgi_params;
         client_max_body_size    10M;
     }
