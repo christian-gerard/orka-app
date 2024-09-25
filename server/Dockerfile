@@ -8,7 +8,6 @@ COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./scripts /scripts
 COPY ./app /app
 WORKDIR /app
-EXPOSE 8000
 
 ARG DEV=false
 RUN python -m venv /py && \
@@ -32,6 +31,7 @@ RUN python -m venv /py && \
     chmod -R 755 /vol && \
     chmod -R +x /scripts
 
+EXPOSE 8000
 ENV PATH="/scripts:/py/bin:$PATH"
 
 USER django-user
