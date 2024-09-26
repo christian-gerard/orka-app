@@ -1,6 +1,8 @@
 
 import { useState } from 'react'
 import { useFormik } from "formik";
+import * as Yup from 'yup'
+import { object, string} from 'yup'
 
 import toast from 'react-hot-toast'
 
@@ -10,6 +12,25 @@ function Auth() {
   const [token, setToken] = useState('')
 
   const handleNewUser = () => setNewUser(!newUser)
+
+  const signUpSchema = object({
+    firstName: string()
+    .required("First Name is Required"),
+    lastName: string()
+    .required("Last Name is Required"),
+    email: string()
+    .email("Must be a valid Email")
+    .required("Email is Required"),
+    password: string()
+    .required(),
+    passwordConf: string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+  })
+
+  const loginSchema = object({
+    email: string()
+    .required("Email is Required")
+  })
 
   const formik = useFormik({
       initialValues: newUser ?
@@ -21,38 +42,40 @@ function Auth() {
       }
       :
       {
-        username: '',
-        password: ''
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: ''
       },
+      validationSchema: newUser ? signUpSchema : loginSchema,
       onSubmit: newUser ?
 
       formData =>
 
       {
-        formData['username'] = formData['email']
+        console.log(formData)
 
-        fetch('user/token/',{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        })
-        .then(resp => {
-          if(resp.ok){
-            return resp.json().then(data => {
-              setToken(data)
-              console.log(token)
-              toast.success('Login Successful')
+        // fetch('user/token/',{
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(formData),
+        // })
+        // .then(resp => {
+        //   if(resp.ok){
+        //     return resp.json().then(data => {
+        //       console.log(data)
+        //       toast.success('Login Successful')
 
-            })}
-        })
-        .then(() => {
+        //     })}
+        // })
+        // .then(() => {
 
-        })
-        .catch(err => {
-          toast.error('Unable to Login')
-        })
+        // })
+        // .catch(err => {
+        //   toast.error('Unable to Login')
+        // })
 
 
       }
@@ -63,31 +86,33 @@ function Auth() {
 
       {
 
-        fetch('/auth/login/',{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        })
-        .then(resp => {
-          if(resp.ok){
-            return resp.json().then(data => {
-              login(data)
-              nav('/dashboard')
-              toast.success('Login Successful')
+        console.log(formData)
 
-            })}
-          else if(resp.status === 404) {
-            toast.error("Invalid Login")
-          }
-        })
-        .then(() => {
+        // fetch('/auth/login/',{
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(formData),
+        // })
+        // .then(resp => {
+        //   if(resp.ok){
+        //     return resp.json().then(data => {
+        //       login(data)
+        //       nav('/dashboard')
+        //       toast.success('Login Successful')
 
-        })
-        .catch(err => {
-          toast.error('Unable to Login')
-        })
+        //     })}
+        //   else if(resp.status === 404) {
+        //     toast.error("Invalid Login")
+        //   }
+        // })
+        // .then(() => {
+
+        // })
+        // .catch(err => {
+        //   toast.error('Unable to Login')
+        // })
       },
   });
 
@@ -96,30 +121,38 @@ function Auth() {
       {
         newUser ?
         // Account Creation
-        <div className='bg-black text-white py-12 px-8 flex flex-col items-center '>
+        <div className='bg-black text-white py-12 px-8 flex flex-col items-center'>
           <h1 className='text-5xl p-2 tracking-[0.8em] reddit-mono justify-center pl-[0.8em] '> ORKA </h1>
           <h2 className='text-2xl tracking-[0.2em]'>Sign Up</h2>
-          <form onSubmit={formik.handleSubmit} className='flex flex-col p-2'>
-            <div className='flex flex-row'>
+          <form onSubmit={formik.handleSubmit} className='flex flex-col p-2 w-full'>
               <div className='flex flex-col mr-2'>
-                <div className='flex flex-col'>
-                  <label htmlFor="first_name" className='text-lg'>First Name</label>
-                  <input id="first_name"
-                      name="first_name"
-                      type="first_name"
+                  <label htmlFor="firstName" className='text-lg'>First Name</label>
+                  <input id="firstName"
+                      name="firstName"
+                      type="firstName"
                       onChange={formik.handleChange}
                       value={formik.values.firstName}
                       className='text-black my-2 p-1 text-lg'
                       placeholder='First Name'/>
+                  {formik.errors.firstName && formik.touched.firstName && (
+                  <div className="error-message show text-red">
+                    {formik.errors.firstName}
+                  </div>
+                  )}
 
-                  <label htmlFor="first_name" className='text-lg'>Last Name</label>
-                  <input id="last_name"
-                      name="last_name"
-                      type="last_name"
+                  <label htmlFor="lastName" className='text-lg'>Last Name</label>
+                  <input id="lastName"
+                      name="lastName"
+                      type="lastName"
                       onChange={formik.handleChange}
                       value={formik.values.lastName}
                       className='text-black my-2 p-1 text-lg'
                       placeholder='Last Name'/>
+                  {formik.errors.lastName && formik.touched.lastName && (
+                  <div className="error-message show text-red">
+                    {formik.errors.lastName}
+                  </div>
+                  )}
                   <label htmlFor="username" className='text-lg'>Email</label>
                   <input id="email"
                     name="email"
@@ -128,29 +161,37 @@ function Auth() {
                     value={formik.values.email}
                     className='text-black my-2 p-1 text-lg'
                     placeholder='Email'/>
-                </div>
-                <label htmlFor="password" className='text-lg'>Password</label>
-                <input id="password"
-                  name="password"
-                  type="password"
-                  onChange={formik.handleChange}
-                  value={formik.values.password}
-                  className='text-black my-2 p-1 text-lg'
-                  placeholder='password'/>
-                <input id="password"
-                  name="passwordConfirmation"
-                  type="Password"
-                  onChange={formik.handleChange}
-                  value={formik.values.passwordConfirmation}
-                  className='text-black my-2 p-1 text-lg'
-                  placeholder='Confirm Password'/>
+                  {formik.errors.email && formik.touched.email && (
+                  <div className="error-message show text-red">
+                    {formik.errors.email}
+                  </div>
+                  )}
+                  <label htmlFor="password" className='text-lg'>Password</label>
+                  <input id="password"
+                    name="password"
+                    type="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    className='text-black my-2 p-1 text-lg'
+                    placeholder='Password'/>
+                  <input id="passwordConf"
+                    name="passwordConf"
+                    type="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.passwordConf}
+                    className='text-black my-2 p-1 text-lg'
+                    placeholder='Confirm Password'/>
+                  {formik.errors.passwordConf && formik.touched.passwordConf && (
+                  <div className="error-message show text-red">
+                    {formik.errors.passwordConf}
+                  </div>
+                  )}
+
               </div>
 
-
-            </div>
-            <button type="submit" className='mt-4 bg-white text-black'>Create Account</button>
+            <button type="submit" className='mt-6 bg-white text-xl w-full text-black'>Create Account</button>
           </form>
-          <button type='button' className='mt-2 border border-white p-1 text-md w-full underline' onClick={handleNewUser}>Log In</button>
+          <button type='button' className='mt-2 border border-white p-1 text-sm w-full underline' onClick={handleNewUser}>Log In</button>
         </div>
         :
         // Login

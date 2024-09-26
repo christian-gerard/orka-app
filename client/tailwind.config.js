@@ -27,12 +27,13 @@ export default {
           '0%': { letterSpacing: '1.5em' },
           '100%': { letterSpacing: '0.8em' },
         },
-        
+
       },
     },
     colors: {
       'black': '#000000',
       'white': '#ffffff',
+      'red': '#ff2b1c',
       'ocean': '#6D99B5',
       'notStarted':'#c5d8fc',
       'doing': '#95FF7D',
