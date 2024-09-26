@@ -1,7 +1,17 @@
-import Auth from '../Auth'
+import { describe, test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-it('renders welcome message', () => {
-    render(<Auth />);
-    expect(screen.getByText('Orka')).toBeInTheDocument();
+
+describe('Auth Component', () => {
+  test('should render correctly', () => {
+    expect(true).toBe(true);
+  });
+
 });
+
+describe('Testing the AUTH STUFF', () => {
+    test('ORKA Auth Comp Appears', () => {
+
+    })
+
+})

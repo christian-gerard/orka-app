@@ -16,7 +16,8 @@ function Auth() {
       {
         email: '',
         password: '',
-        account_name: ''
+        firstName: '',
+        lastName: ''
       }
       :
       {
@@ -119,16 +120,33 @@ function Auth() {
                   value={formik.values.password}
                   className='text-black my-2 p-1 text-lg'
                   placeholder='password'/>
+                <label htmlFor="password" className='text-xl'>Confirm Password</label>
+                <input id="password"
+                  name="passwordConfirmation"
+                  type="password"
+                  onChange={formik.handleChange}
+                  value={formik.values.passwordConfirmation}
+                  className='text-black my-2 p-1 text-lg'
+                  placeholder='Rewrite Password'/>
               </div>
               <div className='flex flex-col ml-2'>
-                <label htmlFor="account_name" className='text-xl'>Account Name</label>
-                <input id="account_name"
-                    name="account_name"
-                    type="account_name"
+                <label htmlFor="first_name" className='text-xl'>First Name **</label>
+                <input id="first_name"
+                    name="first_name"
+                    type="first_name"
                     onChange={formik.handleChange}
-                    value={formik.values.account_name}
+                    value={formik.values.first_name}
                     className='text-black my-2 p-1 text-lg'
-                    placeholder='account name'/>
+                    placeholder='First Name'/>
+
+                <label htmlFor="first_name" className='text-xl'>Last Name **</label>
+                <input id="last_name"
+                    name="last_name"
+                    type="last_name"
+                    onChange={formik.handleChange}
+                    value={formik.values.lastName}
+                    className='text-black my-2 p-1 text-lg'
+                    placeholder='Last Name'/>
               </div>
             </div>
             <button type="submit" className='mt-4 bg-white text-black'>Create Account</button>
