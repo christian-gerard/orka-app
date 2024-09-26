@@ -5,34 +5,32 @@ import { useFormik } from "formik";
 import toast from 'react-hot-toast'
 
 function Auth() {
-  // const { login } = useContext(UserContext)
+
   const [newUser, setNewUser] = useState(false)
-  // const nav = useNavigate()
-
-
+  const [token, setToken] = useState('')
 
   const handleNewUser = () => setNewUser(!newUser)
 
   const formik = useFormik({
-      initialValues: newUser ? 
+      initialValues: newUser ?
       {
         email: '',
         password: '',
         account_name: ''
-      } 
-      : 
+      }
+      :
       {
         username: '',
         password: ''
       },
-      onSubmit: newUser ? 
-      
-      formData => 
-      
+      onSubmit: newUser ?
+
+      formData =>
+
       {
         formData['username'] = formData['email']
 
-        fetch('my-django-rds.c7ueowuue8ud.us-east-1.rds.amazonaws.com/auth/login/',{
+        fetch('user/token/',{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -42,8 +40,8 @@ function Auth() {
         .then(resp => {
           if(resp.ok){
             return resp.json().then(data => {
-              login(data)
-              nav('/dashboard')
+              setToken(data)
+              console.log(token)
               toast.success('Login Successful')
 
             })}
@@ -56,12 +54,12 @@ function Auth() {
         })
 
 
-      } 
-      
-      : 
-      
-      formData => 
-      
+      }
+
+      :
+
+      formData =>
+
       {
 
         fetch('/auth/login/',{

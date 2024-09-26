@@ -1,6 +1,7 @@
 {
   "name": "client",
   "private": true,
+  "proxy": "ec2-184-72-8-99.us-west-1.compute.amazonaws.com/api/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
