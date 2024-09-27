@@ -10,9 +10,8 @@ import toast from 'react-hot-toast'
 
 function Auth() {
 
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser, token, setToken } = useContext(UserContext)
   const [newUser, setNewUser] = useState(false)
-  const [token, setToken] = useState('')
 
   const handleNewUser = () => setNewUser(!newUser)
 
@@ -115,8 +114,7 @@ function Auth() {
         .then(resp => {
           if(resp.ok){
             return resp.json().then(data => {
-              setUser({...user, token: data["token"]})
-              console.log(user)
+              setUser(setToken(data))
               toast.success('Login Successful')
             })}
           else if(resp.status === 404) {
