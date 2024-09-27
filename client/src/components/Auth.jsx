@@ -19,12 +19,13 @@ function Auth() {
     lastName: string()
     .required("Last Name is Required"),
     email: string()
-    .email("Must be a valid Email")
+    .email("Must provide a valid Email with '@'")
     .required("Email is Required"),
     password: string()
-    .required(),
+    .required("Please provide a password"),
     passwordConf: string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required("Please confirm your passsword")
   })
 
   const loginSchema = object({
@@ -174,6 +175,11 @@ function Auth() {
                     value={formik.values.password}
                     className='text-black my-2 p-1 text-lg'
                     placeholder='Password'/>
+                  {formik.errors.password && formik.touched.password && (
+                  <div className="error-message show text-red">
+                    {formik.errors.password}
+                  </div>
+                  )}
                   <input id="passwordConf"
                     name="passwordConf"
                     type="password"
