@@ -11,7 +11,23 @@ const UserProvider = ({children}) => {
     const [account, setAccount] =  useState(null)
 
     useEffect(() => {
-      console.log('Page Refreshed')
+
+      fetch('/api/user/me',{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json' ,
+        },
+        credentials: 'include',
+      })
+      .then(resp => {
+        if(resp.ok){
+          return resp.json().then(data => {
+            console.log(data)
+            setUser(data)
+            toast.success(`YE IT WORKED`)
+
+          })}
+      })
 
     }, [])
 

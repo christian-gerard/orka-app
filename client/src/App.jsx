@@ -9,14 +9,14 @@ import Nav from './components/Nav'
 
 function App() {
 
-const { token } = useContext(UserContext)
+const { user } = useContext(UserContext)
 
   return (
     <div className='h-screen w-screen select-none'>
 
       <Toaster />
 
-      { token ?
+      { user ?
 
         <div className='h-full w-full flex flex-col sm:flex-row'>
             <Nav />

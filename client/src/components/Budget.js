@@ -15,7 +15,6 @@ function Budget() {
     const { user, updateExpenses, expenses } = useContext(UserContext)
     const initialValue = 0
 
-
     const expenseSchema = object({
         name: string(),
         amount: number(),
@@ -38,7 +37,7 @@ function Budget() {
     const formik = useFormik({
         initialValues,
         validationSchema: expenseSchema,
-        onSubmit: (formData) => { 
+        onSubmit: (formData) => {
 
             // Add Project to Form Data
 
@@ -66,7 +65,7 @@ function Budget() {
 
                         toast.success("Expense Added")
 
-                        
+
 
                     })
 
@@ -87,8 +86,8 @@ function Budget() {
 
         <>
         {
-            route.id ?            
-            
+            route.id ?
+
             <div className='border border-black rounded-xl p-4 h-full '>
                 <div className='flex flex-row justify-between h-[5%]'>
                     <h1 className=''>Expenses</h1>
@@ -102,14 +101,14 @@ function Budget() {
                                 onSubmit={formik.handleSubmit}
                                 initialValues={initialValues}
                             >
-                                <Field 
+                                <Field
                                     name='description'
                                     value={formik.values.description}
                                     onChange={formik.handleChange}
                                     type='text'
                                     className='text-sm border-[0.2px] w-[25%] h-[25px]'
                                     placeholder='description'
-                                    
+
                                 >
                                 </Field>
 
@@ -117,7 +116,7 @@ function Budget() {
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.description.toUpperCase()}</div>
                                 )}
 
-                                <Field 
+                                <Field
                                     name='amount'
                                     value={formik.values.amount}
                                     onChange={formik.handleChange}
@@ -130,8 +129,8 @@ function Budget() {
                                 {formik.errors.type && formik.touched.type && (
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.type.toUpperCase()}</div>
                                 )}
-                                
-                                <Field 
+
+                                <Field
                                     name='note'
                                     value={formik.values.note}
                                     onChange={formik.handleChange}
@@ -139,14 +138,14 @@ function Budget() {
                                     className='text-sm border-[0.2px] w-[20%] h-[25px]'
                                     placeholder='note'
                                 >
-                                    
+
                                 </Field>
 
                                 {formik.errors.note && formik.touched.note && (
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.note.toUpperCase()}</div>
                                 )}
 
-                                <Field 
+                                <Field
                                     name='type'
                                     value={formik.values.type}
                                     onChange={formik.handleChange}
@@ -157,14 +156,14 @@ function Budget() {
                                 >
                                     <option>Payroll</option>
                                     <option>Ad Spend</option>
-                                    
+
                                 </Field>
 
                                 {formik.errors.type && formik.touched.type && (
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.type.toUpperCase()}</div>
                                 )}
 
-                                <Field 
+                                <Field
                                     name='status'
                                     value={formik.values.status}
                                     onChange={formik.handleChange}
@@ -176,7 +175,7 @@ function Budget() {
                                     <option>Planned</option>
                                     <option>Pending</option>
                                     <option>Paid</option>
-                                    
+
                                 </Field>
 
                                 {formik.errors.status && formik.touched.status && (
@@ -206,7 +205,7 @@ function Budget() {
                             <div className='text-black text-5xl w-full flex justify-center h-full items-center'>
                                 <p>No Project Expenses</p>
                             </div>
-                        
+
                         }
 
                         <div className='w-[80%] border-r-[0.2px]'>
@@ -218,7 +217,7 @@ function Budget() {
                     <div className='flex flex-row h-[3%] w-full'>
 
                         <div className='border-r-[0.2px] w-[80%] h-full'>
-                            
+
                         </div>
 
                         <div className='w-[20%] h-full text-sm flex flex-row text-2xl'>
@@ -234,7 +233,7 @@ function Budget() {
                                     <></>
                                 }
                             </p>
-                            
+
                         </div>
 
                     </div>
@@ -253,7 +252,7 @@ function Budget() {
             </div>
 
         }
-        
+
         </>
     )
 }
