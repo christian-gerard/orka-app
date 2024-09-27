@@ -4,6 +4,7 @@ Serializes all the user api
 from django.contrib.auth import (
     get_user_model,
     authenticate,
+    login,
 )
 
 from rest_framework import serializers
@@ -56,5 +57,9 @@ class AuthTokenSerializer(serializers.Serializer):
             msg = _('Unable to Authenticate with provided credentials')
             raise serializers.ValidationError(msg, code='authorization')
 
+        request = self.context.get('request')
+        login(request, user)
+
         attrs['user'] = user
         return attrs
+
