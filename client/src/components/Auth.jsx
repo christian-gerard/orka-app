@@ -19,9 +19,13 @@ function Auth() {
     lastName: string()
     .required("Last Name is Required"),
     email: string()
-    .email("Must provide a valid Email with '@'")
+    .email("Must provide a valid address")
+    .matches("\.(com|edu)$", 'Please include a valid domain')
     .required("Email is Required"),
     password: string()
+    .min(8,"Password must be at least 8 characters")
+    .matches('[0-9]', "Must include a number")
+    .matches('[!@#$%^&*(),.?":{}|<>]', 'must include special character')
     .required("Please provide a password"),
     passwordConf: string()
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -44,9 +48,7 @@ function Auth() {
       :
       {
         email: '',
-        password: '',
-        firstName: '',
-        lastName: ''
+        password: ''
       },
       validationSchema: newUser ? signUpSchema : loginSchema,
       onSubmit: newUser ?
