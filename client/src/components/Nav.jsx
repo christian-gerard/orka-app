@@ -75,6 +75,29 @@ function Nav() {
                 </>
 
             }
+
+
+
+            {/* Desktop Menu */}
+            <div className='hidden sm:block w-[100px] flex justify-between h-full bg-ocean'>
+                <div>
+
+                    <div>
+                        LOGO
+
+                    </div>
+
+                    <div>
+                        MENU BUTTONS
+                    </div>
+
+                </div>
+
+                <div>
+                    BOTTOM BUTTONS
+                </div>
+
+            </div>
         </div>
     )
 }
