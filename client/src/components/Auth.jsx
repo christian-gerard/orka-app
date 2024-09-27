@@ -56,29 +56,34 @@ function Auth() {
       formData =>
 
       {
-        console.log(formData)
+        const userData = {
+          email:formData.email,
+          password:formData.password,
+          first_name:formData.firstName,
+          last_name:formData.lastName
+        }
 
-        // fetch('user/token/',{
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify(formData),
-        // })
-        // .then(resp => {
-        //   if(resp.ok){
-        //     return resp.json().then(data => {
-        //       console.log(data)
-        //       toast.success('Login Successful')
+        fetch('/user/create',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        })
+        .then(resp => {
+          if(resp.ok){
+            return resp.json().then(data => {
+              console.log(data)
+              toast.success('Login Successful')
 
-        //     })}
-        // })
-        // .then(() => {
+            })}
+        })
+        .then(() => {
 
-        // })
-        // .catch(err => {
-        //   toast.error('Unable to Login')
-        // })
+        })
+        .catch(err => {
+          toast.error('Unable to Login')
+        })
 
 
       }
