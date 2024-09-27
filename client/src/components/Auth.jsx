@@ -63,7 +63,7 @@ function Auth() {
           last_name:formData.lastName
         }
 
-        fetch('/user/create',{
+        fetch('/api/user/create/',{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
