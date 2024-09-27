@@ -79,22 +79,15 @@ function Nav() {
 
 
             {/* Desktop Menu */}
-            <div className='hidden sm:block w-[100px] flex justify-between h-full bg-ocean'>
-                <div>
+            <div className='hidden sm:block w-[100px] h-full flex flex-col justify-between text-[1em] text-center'>
 
-                    <div>
-                        LOGO
-
-                    </div>
-
-                    <div>
-                        MENU BUTTONS
-                    </div>
-
+                <div className='pt-10'>
+                    <NavLink to='/'>ORKA</NavLink>
                 </div>
 
-                <div>
-                    BOTTOM BUTTONS
+                <div className='flex flex-col'>
+                    <NavLink to='/settings'>Settings</NavLink>
+                    <NavLink to='/' onClick={logout}>Logout</NavLink>
                 </div>
 
             </div>
