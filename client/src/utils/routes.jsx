@@ -7,7 +7,6 @@ import Projects from '../pages/Projects'
 import Settings from '../pages/Settings'
 
 
-
 const router = createBrowserRouter([
 	{
 		path: '/',

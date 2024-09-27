@@ -1,13 +1,16 @@
 
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { UserContext } from '../context/UserContext';
 import { useFormik } from "formik";
 import * as Yup from 'yup'
 import { object, string} from 'yup'
+
 
 import toast from 'react-hot-toast'
 
 function Auth() {
 
+  const { user, setUser } = useContext(UserContext)
   const [newUser, setNewUser] = useState(false)
   const [token, setToken] = useState('')
 
@@ -63,7 +66,7 @@ function Auth() {
           last_name:formData.lastName
         }
 
-        fetch('/user/create',{
+        fetch('/api/user/create/',{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -73,8 +76,8 @@ function Auth() {
         .then(resp => {
           if(resp.ok){
             return resp.json().then(data => {
-              console.log(data)
-              toast.success('Login Successful')
+              setNewUser(false)
+              toast.success(`Account created for ${data.firstName} using email <${data.email}>. Please Login using your credentials...`)
 
             })}
         })
@@ -94,33 +97,29 @@ function Auth() {
 
       {
 
-        console.log(formData)
+        fetch('/api/user/token',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+        .then(resp => {
+          if(resp.ok){
+            return resp.json().then(data => {
+              nav('/dashboard')
+              toast.success('Login Successful')
+            })}
+          else if(resp.status === 404) {
+            toast.error("Invalid Login")
+          }
+        })
+        .then(() => {
 
-        // fetch('/auth/login/',{
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify(formData),
-        // })
-        // .then(resp => {
-        //   if(resp.ok){
-        //     return resp.json().then(data => {
-        //       login(data)
-        //       nav('/dashboard')
-        //       toast.success('Login Successful')
-
-        //     })}
-        //   else if(resp.status === 404) {
-        //     toast.error("Invalid Login")
-        //   }
-        // })
-        // .then(() => {
-
-        // })
-        // .catch(err => {
-        //   toast.error('Unable to Login')
-        // })
+        })
+        .catch(err => {
+          toast.error('Unable to Login')
+        })
       },
   });
 
