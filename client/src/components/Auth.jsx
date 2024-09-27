@@ -37,7 +37,9 @@ function Auth() {
 
   const loginSchema = object({
     email: string()
-    .required("Email is Required")
+    .required("Email is Required"),
+    password: string()
+    .required("Required")
   })
 
   const formik = useFormik({
@@ -50,7 +52,7 @@ function Auth() {
       }
       :
       {
-        email: '',
+        loginEmail: '',
         password: ''
       },
       validationSchema: newUser ? signUpSchema : loginSchema,
@@ -96,18 +98,25 @@ function Auth() {
       formData =>
 
       {
+        console.log(formData)
 
-        fetch('/api/user/token',{
+        const loginData = {
+          email: formData.loginEmail,
+          password: formData.password
+        }
+
+        fetch('/api/user/token/',{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(loginData),
         })
         .then(resp => {
           if(resp.ok){
             return resp.json().then(data => {
-              nav('/dashboard')
+              setUser({...user, token: data["token"]})
+              console.log(user)
               toast.success('Login Successful')
             })}
           else if(resp.status === 404) {
@@ -210,16 +219,21 @@ function Auth() {
         <div className='bg-black text-white py-12 px-8 flex flex-col'>
             <h1 className='text-5xl p-2 tracking-[0.8em] reddit-mono  w-full flex justify-center pl-[0.8em]'> ORKA </h1>
             <form onSubmit={formik.handleSubmit} className='flex flex-col p-2'>
-                <label htmlFor="username" className='text-xl'>Email</label>
+                <label htmlFor="loginEmail" className='text-xl'>Email</label>
                 <input
-                    id="username"
-                    name="username"
+                    id="loginEmail"
+                    name="loginEmail"
                     type="email"
                     onChange={formik.handleChange}
-                    value={formik.values.username}
+                    value={formik.values.loginEmail}
                     className='text-black my-2 p-1 text-lg'
                     placeholder='email'
                 />
+                {formik.errors.loginEmail && formik.touched.loginEmail && (
+                  <div className="error-message show text-red">
+                    {formik.errors.loginEmail}
+                  </div>
+                  )}
                 <label htmlFor="password" className='text-xl'>Password</label>
                 <input
                     id="password"
@@ -230,9 +244,14 @@ function Auth() {
                     className='text-black my-2 p-1 text-lg'
                     placeholder='password'
                 />
+                {formik.errors.password && formik.touched.password&& (
+                  <div className="error-message show text-red">
+                    {formik.errors.password}
+                  </div>
+                  )}
                 <button type="submit" className='mt-4 bg-white text-black'>Log In</button>
-                <button type='button' className='mt-2 border border-white p-1 text-md w-full underline' onClick={handleNewUser}>Create New User</button>
             </form>
+            <button type='button' className='mt-2 border border-white p-1 text-md w-full underline' onClick={handleNewUser}>Create New User</button>
         </div>
       }
       </>
