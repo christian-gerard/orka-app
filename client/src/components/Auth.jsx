@@ -73,8 +73,8 @@ function Auth() {
         .then(resp => {
           if(resp.ok){
             return resp.json().then(data => {
-              console.log(data)
-              toast.success('Login Successful')
+              setNewUser(false)
+              toast.success(`Account created for ${data.firstName} using email <${data.email}>. Please Login using your credentials...`)
 
             })}
         })
@@ -94,33 +94,29 @@ function Auth() {
 
       {
 
-        console.log(formData)
+        fetch('/api/user/token',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        })
+        .then(resp => {
+          if(resp.ok){
+            return resp.json().then(data => {
+              nav('/dashboard')
+              toast.success('Login Successful')
+            })}
+          else if(resp.status === 404) {
+            toast.error("Invalid Login")
+          }
+        })
+        .then(() => {
 
-        // fetch('/auth/login/',{
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify(formData),
-        // })
-        // .then(resp => {
-        //   if(resp.ok){
-        //     return resp.json().then(data => {
-        //       login(data)
-        //       nav('/dashboard')
-        //       toast.success('Login Successful')
-
-        //     })}
-        //   else if(resp.status === 404) {
-        //     toast.error("Invalid Login")
-        //   }
-        // })
-        // .then(() => {
-
-        // })
-        // .catch(err => {
-        //   toast.error('Unable to Login')
-        // })
+        })
+        .catch(err => {
+          toast.error('Unable to Login')
+        })
       },
   });
 
