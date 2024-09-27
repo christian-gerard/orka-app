@@ -10,9 +10,8 @@ import toast from 'react-hot-toast'
 
 function Auth() {
 
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser, token, setToken } = useContext(UserContext)
   const [newUser, setNewUser] = useState(false)
-  const [token, setToken] = useState('')
 
   const handleNewUser = () => setNewUser(!newUser)
 
@@ -36,9 +35,9 @@ function Auth() {
   })
 
   const loginSchema = object({
-    email: string()
+    loginEmail: string()
     .required("Email is Required"),
-    password: string()
+    loginPassword: string()
     .required("Required")
   })
 
@@ -53,7 +52,7 @@ function Auth() {
       :
       {
         loginEmail: '',
-        password: ''
+        loginPassword: ''
       },
       validationSchema: newUser ? signUpSchema : loginSchema,
       onSubmit: newUser ?
@@ -79,7 +78,7 @@ function Auth() {
           if(resp.ok){
             return resp.json().then(data => {
               setNewUser(false)
-              toast.success(`Account created for ${data.firstName} using email <${data.email}>. Please Login using your credentials...`)
+              toast.success(`Account created for ${data.firstName}`)
 
             })}
         })
@@ -102,7 +101,7 @@ function Auth() {
 
         const loginData = {
           email: formData.loginEmail,
-          password: formData.password
+          password: formData.loginPassword
         }
 
         fetch('/api/user/token/',{
@@ -115,8 +114,7 @@ function Auth() {
         .then(resp => {
           if(resp.ok){
             return resp.json().then(data => {
-              setUser({...user, token: data["token"]})
-              console.log(user)
+              setUser(setToken(data))
               toast.success('Login Successful')
             })}
           else if(resp.status === 404) {
@@ -210,9 +208,9 @@ function Auth() {
 
               </div>
 
-            <button type="submit" className='mt-6 bg-white text-xl w-full text-black'>Create Account</button>
+            <button type="submit" className='mt-6 bg-white text-xl w-full text-black'>Create New Account</button>
           </form>
-          <button type='button' className='mt-2 border border-white p-1 text-sm w-full underline' onClick={handleNewUser}>Log In</button>
+          <button type='button' className='mt-2 border border-white p-1 text-sm w-full underline' onClick={handleNewUser}>Switch to Log In</button>
         </div>
         :
         // Login
@@ -234,19 +232,19 @@ function Auth() {
                     {formik.errors.loginEmail}
                   </div>
                   )}
-                <label htmlFor="password" className='text-xl'>Password</label>
+                <label htmlFor="loginPassword" className='text-xl'>Password</label>
                 <input
-                    id="password"
-                    name="password"
+                    id="loginPassword"
+                    name="loginPassword"
                     type="password"
                     onChange={formik.handleChange}
-                    value={formik.values.password}
+                    value={formik.values.loginPassword}
                     className='text-black my-2 p-1 text-lg'
                     placeholder='password'
                 />
-                {formik.errors.password && formik.touched.password&& (
+                {formik.errors.loginPassword && formik.touched.loginPassword&& (
                   <div className="error-message show text-red">
-                    {formik.errors.password}
+                    {formik.errors.loginPassword}
                   </div>
                   )}
                 <button type="submit" className='mt-4 bg-white text-black'>Log In</button>
