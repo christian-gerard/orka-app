@@ -1,13 +1,16 @@
 
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { UserContext } from '../context/UserContext';
 import { useFormik } from "formik";
 import * as Yup from 'yup'
 import { object, string} from 'yup'
+
 
 import toast from 'react-hot-toast'
 
 function Auth() {
 
+  const { user, setUser } = useContext(UserContext)
   const [newUser, setNewUser] = useState(false)
   const [token, setToken] = useState('')
 
