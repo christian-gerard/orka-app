@@ -17,6 +17,7 @@ const { token } = useContext(UserContext)
       <Toaster />
 
       { token ?
+
         <div className='h-full w-full flex flex-col sm:flex-row'>
             <Nav />
             <div className='p-4 w-full h-full'>

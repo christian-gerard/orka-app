@@ -78,7 +78,7 @@ function Auth() {
           if(resp.ok){
             return resp.json().then(data => {
               setNewUser(false)
-              toast.success(`Account created for ${data.firstName} using email <${data.email}>. Please Login using your credentials...`)
+              toast.success(`Account created for ${data.firstName}`)
 
             })}
         })
