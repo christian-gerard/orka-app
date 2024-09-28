@@ -109,6 +109,13 @@ class PublicUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    def test_token_gets_added_to_session(self):
+        """Testing that Tokens are added to the session"""
+        payload = {'email': 'test@example.com', 'password': 'test-user-password123'}
+        res = self.client.post(TOKEN_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
 
 class PrivateUserAPITests(TestCase):
     """Test API requests that require auth"""
