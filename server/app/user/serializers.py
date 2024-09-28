@@ -9,6 +9,7 @@ from django.contrib.auth import (
 
 import pdb
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 from django.utils.translation import gettext as _
 
 
@@ -60,6 +61,10 @@ class AuthTokenSerializer(serializers.Serializer):
 
         request = self.context.get('request')
         login(request, user)
+
+        token, created = Token.objects.get_or_create(user=user)
+
+        request.session['token'] = token
 
 
         attrs['user'] = user
