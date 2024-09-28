@@ -26,7 +26,6 @@ function Clients() {
         }
       });
 
-    
 
     const clientSchema = object({
         name: string()
@@ -37,7 +36,7 @@ function Clients() {
       });
 
     const initialValues = {
-        name: '', 
+        name: '',
         type: '',
         isActive: null,
         account: user.user.account_details.id
@@ -59,7 +58,7 @@ function Clients() {
             })
             .then(resp => {
                 if(resp.ok){
-        
+
                     return resp.json().then(data => {
                         const updatedUser = {
                             ...user,
@@ -68,20 +67,20 @@ function Clients() {
                                 account_details: {
                                     ...user.user.account_details,
                                     clients: [...user.user.account_details.clients,data]
-                                
+
                                 }
                             }
                         };
-        
+
                         updateUser(updatedUser)
-        
+
                         handleNewClient()
                         toast.success("Project Added")
-        
+
                     })
-        
-        
-        
+
+
+
                 }
             })
 
@@ -145,11 +144,11 @@ function Clients() {
             <div className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur'>
                 <div className='bg-white border'>
                     <CloseIcon onClick={handleNewClient} />
-                    <Formik 
+                    <Formik
                         onSubmit={formik.handleSubmit}
                         initialValues={initialValues}
                     >
-                        <Form 
+                        <Form
                         className=' flex flex-col'
                         onSubmit={formik.handleSubmit}
                         initialValues={initialValues}
@@ -198,22 +197,22 @@ function Clients() {
                     <p className='bg-ocean border text-black m-2 p-2rounded-lg'>
 
                         <UploadFileIcon />
-                        Drag or Click Here 
-                        
+                        Drag or Click Here
+
                         </p>
                     </div> */}
 
-                    {/* {files[0] ? 
-                    <div className='flex flex-row justify-between bg-champagne p-2 m-2 rounded-lg '> 
+                    {/* {files[0] ?
+                    <div className='flex flex-row justify-between bg-champagne p-2 m-2 rounded-lg '>
 
                         <div clasName='flex flex-row'>
                         <img alt='img_preview' src={files[0].preview} className='h-[50px] w-[50px]' />
 
-                        <div className='flex flex-col'> 
+                        <div className='flex flex-col'>
 
                             <p>{files[0].name}</p>
                             <p>{files[0].size}</p>
-                            
+
                         </div>
 
                         </div>
@@ -221,7 +220,7 @@ function Clients() {
 
                         <div className='flex flex-col'>
 
-                        <button 
+                        <button
                             className='bg-shittake text-black rounded-lg p-1'
                             onClick={() => removeFile(files[0].name)}
                         >
@@ -231,7 +230,7 @@ function Clients() {
                         </div>
 
                     </div>
-                    : 
+                    :
                     <h1>No file Uploaded</h1>} */}
 
 
@@ -252,7 +251,7 @@ function Clients() {
 
         }
 
-        
+
         </>
     )
 }

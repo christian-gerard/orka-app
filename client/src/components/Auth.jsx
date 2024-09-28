@@ -4,8 +4,6 @@ import { UserContext } from '../context/UserContext';
 import { useFormik } from "formik";
 import * as Yup from 'yup'
 import { object, string} from 'yup'
-
-
 import toast from 'react-hot-toast'
 
 function Auth() {
@@ -246,7 +244,7 @@ function Auth() {
                   <div className="error-message show text-red">
                     {formik.errors.loginPassword}
                   </div>
-                  )}
+                )}
                 <button type="submit" className='mt-4 bg-white text-black'>Log In</button>
             </form>
             <button type='button' className='mt-2 border border-white p-1 text-md w-full underline' onClick={handleNewUser}>Create New User</button>
