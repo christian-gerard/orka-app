@@ -63,9 +63,9 @@ class AuthTokenSerializer(serializers.Serializer):
         login(request, user)
 
 
-        token, created = Token.objects.get_or_create(user=user)
+        # token, created = Token.objects.get_or_create(user=user)
 
-        request.session['token'] = token
+        # request.session['token'] = token
 
 
         attrs['user'] = user
