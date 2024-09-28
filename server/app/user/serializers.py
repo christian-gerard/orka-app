@@ -7,7 +7,6 @@ from django.contrib.auth import (
     login,
 )
 
-import pdb
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from django.utils.translation import gettext as _
