@@ -9,7 +9,7 @@ import Nav from './components/Nav'
 
 function App() {
 
-const { user } = useContext(UserContext)
+const { user, isLoaded } = useContext(UserContext)
 
   return (
     <div className='h-screen w-screen select-none'>

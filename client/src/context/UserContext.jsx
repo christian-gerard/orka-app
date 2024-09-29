@@ -7,27 +7,32 @@ export const UserContext = createContext()
 const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
-    const [token, setToken] = useState(null)
+    const [isLoaded, setIsLoaded] = useState(false)
     const [account, setAccount] =  useState(null)
 
     useEffect(() => {
+
 
       fetch('/api/user/me',{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json' ,
         },
-        credentials: 'same-origin',
+        credentials: 'include',
       })
       .then(resp => {
         if(resp.ok){
           return resp.json().then(data => {
             console.log(data)
             setUser(data)
-            toast.success(`YE IT WORKED`)
 
-          })}
+          })
+          .then(
+            setIsLoaded(true)
+          )
+        }
       })
+
 
     }, [])
 
@@ -35,7 +40,7 @@ const UserProvider = ({children}) => {
 
   return (
 
-    <UserContext.Provider value={{ user, setUser, token, setToken, account, setAccount }} >
+    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoaded }} >
         {children}
     </UserContext.Provider>
 
