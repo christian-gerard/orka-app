@@ -17,7 +17,7 @@ const UserProvider = ({children}) => {
         headers: {
           'Content-Type': 'application/json' ,
         },
-        credentials: 'include',
+        credentials: 'same-origin',
       })
       .then(resp => {
         if(resp.ok){
