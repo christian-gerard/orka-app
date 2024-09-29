@@ -2,6 +2,9 @@ import { useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import { toast } from 'react-hot-toast'
+import TsunamiIcon from '@mui/icons-material/Tsunami';
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 
@@ -82,12 +85,19 @@ function Nav() {
             <div className='hidden sm:block w-[100px] h-full flex flex-col justify-between text-[1em] text-center'>
 
                 <div className='pt-10'>
-                    <NavLink to='/'>ORKA</NavLink>
+                    <NavLink to='/'>
+                        <TsunamiIcon style={{ width: '45px', height: '45px' }}/>
+                    </NavLink>
                 </div>
 
                 <div className='flex flex-col'>
-                    <NavLink to='/settings'>Settings</NavLink>
-                    <NavLink to='/' onClick={logout}>Logout</NavLink>
+
+                    <NavLink to='/settings'>
+                        <SettingsIcon style={{width: '45px', height: '45px'}} />
+                    </NavLink>
+                    <NavLink to='/' onClick={logout}>
+                        <LogoutIcon style={{width: '45px', height: '45px'}} />
+                    </NavLink>
                 </div>
 
             </div>

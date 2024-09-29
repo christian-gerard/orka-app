@@ -12,8 +12,10 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@mui/icons-material": "^6.0.2",
-    "@mui/material": "^6.0.2",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.1.1",
+    "@mui/material": "^6.1.1",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "formik": "^2.4.6",

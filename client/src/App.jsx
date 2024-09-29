@@ -12,7 +12,7 @@ function App() {
 const { user, isLoaded } = useContext(UserContext)
 
   return (
-    <div className='h-screen w-screen select-none'>
+    <div className='h-screen w-screen select-none font-montserrat'>
 
       <Toaster />
 

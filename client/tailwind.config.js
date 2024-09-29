@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily:{
+        "montserrat" : ["Montserrat", 'san-serif']
+      },
       animation: {
         'spacing-forward': 'spacing 1s ease-in-out forwards',
         'spacing-reverse': 'spacing-reverse 0.5s ease-in-out forwards',

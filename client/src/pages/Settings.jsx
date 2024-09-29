@@ -4,8 +4,11 @@ function Settings() {
 
     return (
         <div>
-            <h1>Settings</h1>
-           
+            {/* Page Header */}
+            <div>
+                <p className='text-3xl tracking-[0.2em]'>Settings</p>
+            </div>
+
         </div>
     )
 }
