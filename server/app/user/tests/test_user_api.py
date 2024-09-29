@@ -7,6 +7,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
+import pdb
 
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
@@ -111,7 +112,20 @@ class PublicUserApiTests(TestCase):
 
     def test_token_gets_added_to_session(self):
         """Testing that Tokens are added to the session"""
-        payload = {'email': 'test@example.com', 'password': 'test-user-password123'}
+
+        user_details = {
+            'first_name': 'Test Name',
+            'email': 'test@example.com',
+            'password': 'test-user-password123',
+        }
+
+        create_user(**user_details)
+
+        payload = {
+            'email': user_details['email'],
+            'password': user_details['password'],
+        }
+
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -143,7 +157,6 @@ class PrivateUserAPITests(TestCase):
     def test_post_me_not_allowed(self):
         """Test that POST method is not allowed on ME endpoint"""
         res = self.client.post(ME_URL, {})
-
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_update_user_profile(self):
