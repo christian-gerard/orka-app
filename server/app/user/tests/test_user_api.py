@@ -108,7 +108,7 @@ class PublicUserApiTests(TestCase):
         """Test Auth is required for users"""
         res = self.client.get(ME_URL)
 
-        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_token_gets_added_to_session(self):
         """Testing that Tokens are added to the session"""

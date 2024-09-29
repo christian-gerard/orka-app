@@ -38,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class AuthTokenSerializer(serializers.Serializer):
+class AuthSerializer(serializers.Serializer):
     """Serializer for the user auth token"""
     email = serializers.EmailField()
     password = serializers.CharField(
@@ -61,10 +61,6 @@ class AuthTokenSerializer(serializers.Serializer):
 
         request = self.context.get('request')
         login(request, user)
-
-        token, created = Token.objects.get_or_create(user=user)
-
-        request.session['token'] = token.key
 
 
         attrs['user'] = user
