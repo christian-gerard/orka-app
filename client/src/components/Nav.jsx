@@ -47,11 +47,6 @@ function Nav() {
                             ORKA
                         </div>
 
-
-                        {/* <div className='bg-white text-black flex justify-center'>
-                            <p className='text-2xl p-1'>{user.user.account_details.name ? user.user.account_details.name : 'None'}</p>
-                        </div> */}
-
                         {/* Page Navigation */}
                         <div className='py-4'>
                             <NavLink to='/projects'>
@@ -82,25 +77,34 @@ function Nav() {
 
 
             {/* Desktop Menu */}
-            <div className='hidden sm:block w-[100px] h-full flex flex-col justify-between text-[1em] text-center'>
+            <div className='hidden sm:block w-[100px] h-full '>
+                <div className='flex flex-col w-full h-full justify-between text-[1em] text-center'>
 
-                <div className='pt-10'>
-                    <NavLink to='/'>
-                        <TsunamiIcon style={{ width: '45px', height: '45px' }}/>
-                    </NavLink>
+                    <div className='flex flex-col pt-10 bg-black'>
+
+                        <NavLink to='/'>
+                            <TsunamiIcon style={{ width: '45px', height: '45px' }}/>
+                        </NavLink>
+
+                    </div>
+
+                    <div className='flex flex-col gap-4 bg-black pb-8'>
+
+                        <NavLink to='/settings'>
+                            <SettingsIcon style={{width: '45px', height: '45px'}} />
+                        </NavLink>
+
+                        <NavLink to='/' onClick={logout}>
+                            <LogoutIcon style={{width: '45px', height: '45px'}} />
+                        </NavLink>
+
+                    </div>
+
                 </div>
-
-                <div className='flex flex-col'>
-
-                    <NavLink to='/settings'>
-                        <SettingsIcon style={{width: '45px', height: '45px'}} />
-                    </NavLink>
-                    <NavLink to='/' onClick={logout}>
-                        <LogoutIcon style={{width: '45px', height: '45px'}} />
-                    </NavLink>
-                </div>
-
             </div>
+
+
+
         </div>
     )
 }
