@@ -1,3 +1,5 @@
+import Task from '../components/Task'
+
 
 function Dashboard() {
     return (
@@ -8,12 +10,29 @@ function Dashboard() {
             </div>
 
             {/* Top Half :: 45%*/}
-            <div className='h-[45%] w-full bg-white border'>
-                {/* Outstanding Tasks */}
-                <div>
-                    <p>Outstanding Tasks</p>
+            <div className='h-[45%] w-full border'>
 
+
+                <p>Outstanding Tasks</p>
+                <div className=''>
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
+                    <Task />
                 </div>
+
+
 
             </div>
 

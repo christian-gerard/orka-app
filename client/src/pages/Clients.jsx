@@ -17,8 +17,6 @@ function Clients() {
         note: string(),
         type: string(),
         project: string()
-
-
       });
 
     const initialValues = {
@@ -60,10 +58,6 @@ function Clients() {
 
         }
     })
-
-
-
-
 
     return (
         <div className='h-full w-full'>
