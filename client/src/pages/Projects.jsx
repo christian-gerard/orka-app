@@ -21,12 +21,12 @@ function Projects() {
       });
 
     const initialValues = {
+        name: '',
         description: '',
         deadline: '',
-        status: '',
-        note: '',
-        type: '',
-        project: null
+        project_type: '',
+        budget: '',
+        client: ''
     }
 
     const formik = useFormik({
@@ -98,29 +98,41 @@ function Projects() {
                             initialValues={initialValues}
                         >
                             <Form
-                            className=' flex flex-col'
+                            className=' flex flex-col gap-2'
                             onSubmit={formik.handleSubmit}
                             initialValues={initialValues}
                             >
-                                <label> New Project </label>
+                                <label className='ml-2 mt-1 text-2xl'> New Project </label>
 
-                                <label> Description </label>
+                                <label className='ml-2'> Name </label>
+                                <Field
+                                    name='name'
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange}
+                                    type='text'
+                                    placeholder='Name'
+                                    className='border m-2 p-2'
+                                />
+
+                                {formik.errors.name && formik.touched.name && (
+                                    <div className="text-sm text-ocean ml-2"> **{formik.errors.name.toUpperCase()}</div>
+                                )}
+
+                                <label className='ml-2'> Description </label>
                                 <Field
                                     name='description'
                                     value={formik.values.description}
                                     onChange={formik.handleChange}
-                                    type='text'
+                                    as='textarea'
                                     placeholder='Description'
-                                    className='border m-2 p-2'
+                                    className='border m-2 p-2 h-[200px]'
                                 />
 
                                 {formik.errors.description && formik.touched.description && (
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.description.toUpperCase()}</div>
                                 )}
 
-
-
-                                <label> Deadline </label>
+                                <label className='ml-2'> Deadline </label>
                                 <Field
                                     name='deadline'
                                     type='date'
@@ -135,7 +147,7 @@ function Projects() {
                                 {formik.errors.deadline && formik.touched.deadline && (
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.deadline.toUpperCase()}</div>
                                 )}
-                                <label> status </label>
+                                <label className='ml-2'> Type </label>
                                 <Field
                                     name='status'
                                     as='select'
@@ -156,20 +168,8 @@ function Projects() {
                                 {formik.errors.status && formik.touched.status && (
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.status.toUpperCase()}</div>
                                 )}
-                                <label> note </label>
-                                <Field
-                                    name='note'
-                                    value={formik.values.note}
-                                    onChange={formik.handleChange}
-                                    type='text'
-                                    placeholder='Note'
-                                    className='border m-2 p-2 h-[250px] flex justify-start'
-                                />
 
-                                {formik.errors.note && formik.touched.note && (
-                                    <div className="text-sm text-ocean ml-2"> **{formik.errors.note.toUpperCase()}</div>
-                                )}
-                                <label> type </label>
+                                <label className='ml-2'> Budget </label>
                                 <Field
                                     name='type'
                                     as='select'
@@ -190,7 +190,7 @@ function Projects() {
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.type.toUpperCase()}</div>
                                 )}
 
-                                <label> Project </label>
+                                <label className='ml-2'> Client </label>
                                 <Field
                                     name='project'
                                     as='select'
@@ -199,7 +199,7 @@ function Projects() {
                                     type='text'
                                     className='border m-2 p-2'
                                 >
-                                    <option value=''>Select Project</option>
+                                    <option value=''>Select Client</option>
                                     {/* {
                                         projects ?
 
@@ -217,7 +217,7 @@ function Projects() {
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.type.toUpperCase()}</div>
                                 )}
 
-                                <button type='submit'> + Add Task </button>
+                                <button type='submit' className='border bg-black text-white h-[50px]'> Create Project </button>
 
 
                             </Form>
