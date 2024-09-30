@@ -3,33 +3,23 @@
 function Settings() {
 
     return (
-        <div className='h-full w-full'>
-            {/* Page Header 10%*/}
-            <div className='h-[5%] w-full text-3xl flex items-center bg-ocean'>
-                <p className=''>Settings</p>
-            </div>
+        <div className='h-full w-full overflow-scroll scrollbar scrollbar-thumb-ocean overflow-scroll'>
+            <p className='text-4xl'>Settings</p>
+            <div className='my-4 w-full'>
+                <p className='text-2xl'>General</p>
 
-            {/* Top Half :: 45%*/}
-            <div className='h-[45%] w-full bg-white border'>
-                {/* Outstanding Tasks */}
-                <div>
+                <div className='flex flex-row justify-between my-2'>
+                    <div className='text-xl flex flex-col'>
+                        <p>Setting</p>
+                        <p className='text-sm italic'>Description of what the setting is </p>
+                    </div>
 
-                </div>
-
-            </div>
-
-            {/* Bottom Half 50% */}
-            <div className='h-[50%] w-full bg-black'>
-                {/* Clients */}
-                <div>
-
-                </div>
-                {/* Projects */}
-                <div>
+                    <div>
+                        <button className='border bg-black text-white h-full items-center p-1 rounded-lg'>Setting</button>
+                    </div>
 
                 </div>
             </div>
-
 
 
         </div>
