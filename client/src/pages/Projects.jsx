@@ -26,14 +26,20 @@ function Projects() {
                 <Project />
                 <Project />
                 <Project />
+                <Project />
+                <Project />
+                <Project />
+                <Project />
+                <Project />
+                <Project />
             </div>
 
             {
                 newProject ?
 
                 <div className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur'>
-                    <div className='bg-white border'>
-                        <CloseIcon onClick={handleNewProject} />
+                    <div className='bg-white border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%]'>
+                        <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleNewProject} />
                     </div>
                 </div>
 
