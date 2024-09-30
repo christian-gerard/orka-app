@@ -4,6 +4,8 @@ import { UserContext } from '../context/UserContext'
 import { toast } from 'react-hot-toast'
 import TsunamiIcon from '@mui/icons-material/Tsunami';
 import SettingsIcon from '@mui/icons-material/Settings';
+import GroupIcon from '@mui/icons-material/Group';
+import DetailsIcon from '@mui/icons-material/Details';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 
@@ -25,10 +27,12 @@ function Nav() {
             <div className='sm:hidden'>
 
                 {/* Menu Bar + App Title */}
-                <div className='text-4xl tracking-[0.6em] p-4 flex flex-row reddit-mono italic'>
+                <div className='text-4xl tracking-[0.6em] p-4 flex flex-row '>
+
                     <span className='mr-6 hover:text-ocean flex items-center' onClick={handleNav}>
                         ORKA
                     </span>
+
                 </div>
 
             </div>
@@ -82,19 +86,31 @@ function Nav() {
 
                     <div className='flex flex-col pt-10 bg-black'>
 
-                        <NavLink to='/'>
+                        <NavLink to='/' className='hover:text-ocean'>
                             <TsunamiIcon style={{ width: '45px', height: '45px' }}/>
+                        </NavLink>
+
+                    </div>
+
+                    <div className='flex flex-col pt-10 bg-black gap-6'>
+
+                        <NavLink to='/projects' className='hover:text-ocean'>
+                            <DetailsIcon style={{ width: '45px', height: '45px' }}/>
+                        </NavLink>
+
+                        <NavLink to='/clients' className='hover:text-ocean'>
+                            <GroupIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
                     </div>
 
                     <div className='flex flex-col gap-4 bg-black pb-8'>
 
-                        <NavLink to='/settings'>
+                        <NavLink to='/settings' className='hover:text-ocean'>
                             <SettingsIcon style={{width: '45px', height: '45px'}} />
                         </NavLink>
 
-                        <NavLink to='/' onClick={logout}>
+                        <NavLink to='/' className='hover:text-ocean' onClick={logout}>
                             <LogoutIcon style={{width: '45px', height: '45px'}} />
                         </NavLink>
 

@@ -1,10 +1,10 @@
 
 function Dashboard() {
     return (
-        <div className='bg-ocean h-full w-full'>
+        <div className='h-full w-full'>
             {/* Page Header 10%*/}
-            <div className='h-[5%] w-full bg-white text-3xl'>
-                <p className='4xl'>Dashboard</p>
+            <div className='h-[5%] w-full text-3xl flex items-center bg-ocean'>
+                <p className=''>Dashboard</p>
             </div>
 
             {/* Top Half :: 45%*/}
@@ -17,13 +17,13 @@ function Dashboard() {
             </div>
 
             {/* Bottom Half 50% */}
-            <div className='h-[50%] w-full bg-black'>
+            <div className='h-[50%] w-full flex flex-row'>
                 {/* Clients */}
-                <div>
+                <div className='w-[50%] h-full border'>
 
                 </div>
                 {/* Projects */}
-                <div>
+                <div className='w-[50%] h-full border'>
 
                 </div>
             </div>
