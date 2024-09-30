@@ -76,9 +76,9 @@ function Clients() {
             </div>
 
             {/* Clients */}
-            <div className='h-[95%] w-full bg-white border '>
+            <div className='h-[95%] w-full bg-white border w-full flex justify-center'>
                 {/* Outstanding Tasks */}
-                <div className='flex flex-row flex-wrap'>
+                <div className='flex flex-row flex-wrap w-full h-full'>
                     <Client />
                     <Client />
                     <Client />
