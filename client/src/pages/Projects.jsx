@@ -14,7 +14,12 @@ function Projects() {
 
 
             {/* Projects */}
-            <div className='h-[95%] w-full border overflow-scroll-y'>
+            <div className='h-[95%] w-full border overflow-scroll'>
+                <Project />
+                <Project />
+                <Project />
+                <Project />
+                <Project />
             </div>
 
 

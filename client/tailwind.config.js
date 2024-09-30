@@ -45,6 +45,8 @@ export default {
       'gray': '#c9c9c9'
     }
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+  ],
 }
 

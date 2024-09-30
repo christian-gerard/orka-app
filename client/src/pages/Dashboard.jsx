@@ -3,7 +3,7 @@ function Dashboard() {
     return (
         <div className='h-full w-full'>
             {/* Page Header 10%*/}
-            <div className='h-[5%] w-full text-3xl flex items-center bg-ocean'>
+            <div className='h-[5%] w-full text-3xl flex items-center'>
                 <p className=''>Dashboard</p>
             </div>
 
