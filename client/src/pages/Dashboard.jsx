@@ -11,6 +11,7 @@ function Dashboard() {
             <div className='h-[45%] w-full bg-white border'>
                 {/* Outstanding Tasks */}
                 <div>
+                    <p>Outstanding Tasks</p>
 
                 </div>
 
@@ -20,10 +21,12 @@ function Dashboard() {
             <div className='h-[50%] w-full flex flex-row'>
                 {/* Clients */}
                 <div className='w-[50%] h-full border'>
+                    <p>Clients</p>
 
                 </div>
                 {/* Projects */}
                 <div className='w-[50%] h-full border'>
+                    <p>Projects</p>
 
                 </div>
             </div>

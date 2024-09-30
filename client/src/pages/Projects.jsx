@@ -98,7 +98,7 @@ function Projects() {
                             initialValues={initialValues}
                         >
                             <Form
-                            className=' flex flex-col gap-2'
+                            className=' flex flex-col lg:gap-2'
                             onSubmit={formik.handleSubmit}
                             initialValues={initialValues}
                             >
@@ -125,7 +125,7 @@ function Projects() {
                                     onChange={formik.handleChange}
                                     as='textarea'
                                     placeholder='Description'
-                                    className='border m-2 p-2 h-[200px]'
+                                    className='border m-2 p-2 lg:h-[200px]'
                                 />
 
                                 {formik.errors.description && formik.touched.description && (
