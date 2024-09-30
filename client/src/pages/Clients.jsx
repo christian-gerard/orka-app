@@ -1,23 +1,22 @@
-import { useState, useContext } from 'react'
-import Project from '../components/Project'
-import CloseIcon from '@mui/icons-material/Close';
+import { useState } from 'react'
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
+import CloseIcon from '@mui/icons-material/Close';
+import Client from '../components/Client'
 
-function Projects() {
-    const [newProject, setNewProject] = useState(false)
 
-    const handleNewProject = () => setNewProject(!newProject)
+function Clients() {
+    const [newClient, setNewClient] = useState(false)
 
-    const projectSchema = object({
+    const handleNewClient = () => setNewClient(!newClient)
+
+    const clientSchema = object({
         description: string(),
         deadline: string(),
         status: string(),
         note: string(),
         type: string(),
         project: string()
-
-
       });
 
     const initialValues = {
@@ -31,11 +30,11 @@ function Projects() {
 
     const formik = useFormik({
         initialValues,
-        validationSchema: projectSchema,
+        validationSchema: clientSchema,
         onSubmit: (formData) => {
 
 
-            fetch('/api/project/', {
+            fetch('/api/client/', {
                 method: "POST",
                 body: JSON.stringify(formData),
                 headers: {
@@ -64,35 +63,42 @@ function Projects() {
         <div className='h-full w-full'>
             {/* Page Header 10%*/}
             <div className='h-[5%] w-full text-3xl flex justify-between items-center'>
-                <p className=''>Projects</p>
-                <div className='border bg-black' onClick={handleNewProject}>
-                    <p className='text-lg text-white p-1'>+ New Project</p>
+                <p className=''>Clients</p>
+                <div className='border bg-black'>
+                    <p className='text-lg text-white p-1' onClick={handleNewClient}>+ New Client</p>
                 </div>
             </div>
 
+            {/* Clients */}
+            <div className='h-[95%] w-full bg-white border w-full bg-black overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll '>
+                {/* Outstanding Tasks */}
+                <div className='flex flex-row flex-wrap w-full h-full gap-10 m-4'>
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
+                    <Client />
 
+                </div>
 
-            {/* Projects */}
-            <div className='h-[95%] w-full border scrollbar scrollbar-thumb-ocean overflow-scroll'>
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
             </div>
 
+
             {
-                newProject ?
+                newClient ?
 
                 <div className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur'>
                     <div className='bg-white border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%]'>
-                        <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleNewProject} />
+                        <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleNewClient} />
                         <Formik
                             onSubmit={formik.handleSubmit}
                             initialValues={initialValues}
@@ -102,7 +108,7 @@ function Projects() {
                             onSubmit={formik.handleSubmit}
                             initialValues={initialValues}
                             >
-                                <label className='ml-2 mt-1 text-2xl'> New Project </label>
+                                <label className='ml-2 mt-1 text-2xl'> New Client </label>
 
                                 <label className='ml-2'> Name </label>
                                 <Field
@@ -217,7 +223,7 @@ function Projects() {
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.type.toUpperCase()}</div>
                                 )}
 
-                                <button type='submit' className='border bg-black text-white h-[50px]'> Create Project </button>
+                                <button type='submit' className='border bg-black text-white h-[50px]'> Create Client </button>
 
 
                             </Form>
@@ -233,7 +239,10 @@ function Projects() {
             }
 
 
+
+
+
         </div>
     )
 }
-export default Projects
+export default Clients

@@ -7,11 +7,11 @@ export const UserContext = createContext()
 const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
-    const [isLoaded, setIsLoaded] = useState(false)
     const [account, setAccount] =  useState(null)
 
-    useEffect(() => {
+    const [isLoading, setIsLoading] = useState(false)
 
+    useEffect(() => {
 
       fetch('/api/user/me',{
         method: 'GET',
@@ -23,16 +23,14 @@ const UserProvider = ({children}) => {
       .then(resp => {
         if(resp.ok){
           return resp.json().then(data => {
-            console.log(data)
+
             setUser(data)
 
           })
-          .then(
-            setIsLoaded(true)
-          )
         }
       })
 
+      setIsLoading()
 
     }, [])
 
@@ -40,7 +38,7 @@ const UserProvider = ({children}) => {
 
   return (
 
-    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoaded }} >
+    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoading }} >
         {children}
     </UserContext.Provider>
 

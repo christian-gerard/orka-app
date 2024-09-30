@@ -3,8 +3,9 @@ import { createBrowserRouter } from 'react-router-dom'
 import App from '../App'
 import Error from './Error'
 import Auth from '../components/Auth'
-import Accounts from '../pages/Accounts'
+import Dashboard from '../pages/Dashboard'
 import Projects from '../pages/Projects'
+import Clients from '../pages/Clients'
 import Settings from '../pages/Settings'
 
 
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
 		children: [
             {
                 path: '/',
-                element: <Accounts/>,
+                element: <Dashboard />,
             },
             {
                 path: '/login',
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
 			{
                 path: '/projects',
                 element: <Projects />,
+            },
+            {
+                path: '/clients',
+                element: <Clients />,
             },
 			{
                 path: '/settings',
