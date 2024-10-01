@@ -5,9 +5,28 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
 function Projects() {
     const { projects, setProjects } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
+
+    const csrftoken = getCookie('csrftoken')
 
     const handleNewProject = () => {
         setNewProject(!newProject)
@@ -31,7 +50,7 @@ function Projects() {
         description: '',
         deadline: '',
         projectType: '',
-        budget: 1000,
+        // budget: 1000,
     }
 
     const formik = useFormik({
@@ -39,36 +58,35 @@ function Projects() {
         validationSchema: projectSchema,
         onSubmit: (formData) => {
 
-            const requestData = {
-                name: formData.name,
-                description: formData.description,
-                deadline: formData.deadline,
-                budget:formData.budget,
-                project_type: formData.projectType,
+        const requestData = {
+            name: formData.name,
+            description: formData.description,
+            deadline: formData.deadline,
+            // budget:formData.budget,
+            project_type: formData.projectType,
+        }
+
+        fetch('/api/projects/', {
+            method: "POST",
+            body: JSON.stringify(requestData),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            credentials: 'include',
+        })
+        .then(resp => {
+            if(resp.ok){
+
+                return resp.json().then(data => {
+                    setProjects(data)
+
+                })
+
+
+
             }
-
-            console.log(requestData)
-
-            fetch('/api/project/', {
-                method: "POST",
-                body: JSON.stringify(requestData),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-            })
-            // .then(resp => {
-            //     if(resp.ok){
-
-            //         return resp.json().then(data => {
-            //             setProjects(data)
-
-            //         })
-
-
-
-            //     }
-            // })
+        })
 
 
 
@@ -206,7 +224,7 @@ function Projects() {
                                             <div className="text-sm text-red ml-2"> **{formik.errors.projectType}</div>
                                         )}
 
-                                        <label className='ml-2'> Budget </label>
+                                        {/* <label className='ml-2'> Budget </label>
                                         <Field
                                             name='budget'
                                             type='number'
@@ -223,7 +241,7 @@ function Projects() {
 
                                         {formik.errors.budget && formik.touched.budget && (
                                             <div className="text-sm text-red ml-2"> **{formik.errors.budget.toUpperCase()}</div>
-                                        )}
+                                        )} */}
                                     </div>
 
 
