@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
 import Project from '../components/Project'
 import CloseIcon from '@mui/icons-material/Close';
@@ -61,6 +61,25 @@ function Projects() {
 
         }
     })
+
+    useEffect(() => {
+        fetch('/api/projects', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json' ,
+            },
+            credentials: 'include',
+          })
+        .then( resp => {
+            if(resp.ok){
+                return resp.json().then(data => {
+                    setProjects(data)
+                })
+            }
+        }
+
+        )
+    }, [])
 
     return (
         <div className='h-full w-full'>
