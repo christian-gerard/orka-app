@@ -2,7 +2,7 @@
 Views for Client API
 """
 from rest_framework import viewsets
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from core.models import Client
@@ -14,7 +14,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ClientDetailSerializer
     queryset = Client.objects.all()
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

@@ -2,7 +2,7 @@
 View for Projects
 """
 from rest_framework import viewsets
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from core.models import Project
@@ -12,7 +12,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ProjectDetailSerializer
     queryset = Project.objects.all()
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
