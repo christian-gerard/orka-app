@@ -15,11 +15,10 @@ from account.serializers import AccountSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializes User Data"""
-    accounts = AccountSerializer(many=True, read_only=True)
 
     class Meta:
         model = get_user_model()
-        fields = ['email', 'password', 'first_name', 'last_name', 'accounts']
+        fields = ['email', 'password', 'first_name', 'last_name']
         extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
 
     def create(self, validated_data):
