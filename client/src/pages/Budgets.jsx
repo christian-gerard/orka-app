@@ -1,3 +1,9 @@
+import { useState, useContext, useEffect } from 'react'
+import { UserContext } from '../context/UserContext'
+import Project from '../components/Project'
+import CloseIcon from '@mui/icons-material/Close';
+import { useFormik, Formik, Form, Field } from 'formik'
+import { object, string, array, number, bool } from "yup";
 
 function Budgets(){
     return(
@@ -10,10 +16,30 @@ function Budgets(){
 
 
             {/* main body */}
-            <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar-thin scrollbar-thumb-ocean overflow-scroll'>
+            <div className='h-[95%] w-full flex flex-row border'>
+
+                <div className='h-full w-[70%]'>
+
+                    <div className='border h-[50%] w-full'>
+
+                    </div>
+
+                    <div className='border h-[50%] w-full'>
+                        <p>Top Level Stats</p>
+
+                    </div>
+
+                </div>
+
+                <div className='h-full w-[30%]'>
+                    <p>List of Budgets to View</p>
+
+                </div>
 
 
             </div>
+
+
 
         </div>
     )
