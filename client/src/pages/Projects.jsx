@@ -83,8 +83,8 @@ function Projects() {
 
                     :
 
-                    <div className='w-full h-full'>
-                        <h1>No Available Projects...</h1>
+                    <div className='w-full h-full text-4xl flex justify-center items-center'>
+                        <h1>No Projects Available...</h1>
                     </div>
                 }
             </div>
