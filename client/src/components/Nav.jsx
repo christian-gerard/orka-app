@@ -9,6 +9,7 @@ import DetailsIcon from '@mui/icons-material/Details';
 import LogoutIcon from '@mui/icons-material/Logout';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CloseIcon from '@mui/icons-material/Close';
 import Task from './Task';
 
 
@@ -17,6 +18,7 @@ function Nav() {
 
     const { setToken } = useContext(UserContext)
     const [navOpen, setNavOpen] = useState(false)
+    const [acctMenuOpen, setAcctMenuOpen] = useState(false)
     const handleNav = () => setNavOpen(!navOpen)
 
     const logout = () => {
@@ -133,6 +135,27 @@ function Nav() {
 
                 </div>
             </div>
+
+            {
+                acctMenuOpen ?
+
+                <div className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur '>
+
+                    <div className='bg-white  border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%] '>
+                        <div className='h-[5%] w-full flex items-center mb-2'>
+                            <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleNewProject} />
+                            <label className='ml-2 mt-1 text-2xl'> New Project </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                :
+
+                <></>
+            }
 
 
 
