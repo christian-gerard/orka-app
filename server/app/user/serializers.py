@@ -10,15 +10,16 @@ from django.contrib.auth import (
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from django.utils.translation import gettext as _
-import pdb
+from account.serializers import AccountSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializes User Data"""
+    accounts = AccountSerializer(many=True, read_only=True)
 
     class Meta:
         model = get_user_model()
-        fields = ['email', 'password', 'first_name', 'last_name']
+        fields = ['email', 'password', 'first_name', 'last_name', 'accounts']
         extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
 
     def create(self, validated_data):

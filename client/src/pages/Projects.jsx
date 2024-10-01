@@ -1,10 +1,12 @@
 import { useState, useContext } from 'react'
+import { UserContext } from '../context/UserContext'
 import Project from '../components/Project'
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
 
 function Projects() {
+    const { projects, setProjects } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
 
     const handleNewProject = () => setNewProject(!newProject)
@@ -46,7 +48,7 @@ function Projects() {
                 if(resp.ok){
 
                     return resp.json().then(data => {
-
+                        setProjects(data)
 
                     })
 
@@ -73,18 +75,18 @@ function Projects() {
 
 
             {/* Projects */}
-            <div className='h-[95%] w-full border scrollbar scrollbar-thumb-ocean overflow-scroll'>
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
-                <Project />
+            <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar scrollbar-thumb-ocean overflow-scroll'>
+                {
+                    projects ?
+
+                    <Project />
+
+                    :
+
+                    <div className='w-full h-full text-4xl flex justify-center items-center'>
+                        <h1>No Projects Available...</h1>
+                    </div>
+                }
             </div>
 
             {
