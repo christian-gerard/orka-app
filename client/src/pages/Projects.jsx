@@ -12,14 +12,11 @@ function Projects() {
     const handleNewProject = () => setNewProject(!newProject)
 
     const projectSchema = object({
+        name: string(),
         description: string(),
         deadline: string(),
-        status: string(),
-        note: string(),
-        type: string(),
-        project: string()
-
-
+        project_type: string(),
+        budget: number()
       });
 
     const initialValues = {
@@ -28,34 +25,35 @@ function Projects() {
         deadline: '',
         project_type: '',
         budget: '',
-        client: ''
+        client: '',
     }
 
     const formik = useFormik({
         initialValues,
         validationSchema: projectSchema,
         onSubmit: (formData) => {
+            console.log(formData)
 
 
-            fetch('/api/project/', {
-                method: "POST",
-                body: JSON.stringify(formData),
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(resp => {
-                if(resp.ok){
+            // fetch('/api/project/', {
+            //     method: "POST",
+            //     body: JSON.stringify(formData),
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     }
+            // })
+            // .then(resp => {
+            //     if(resp.ok){
 
-                    return resp.json().then(data => {
-                        setProjects(data)
+            //         return resp.json().then(data => {
+            //             setProjects(data)
 
-                    })
+            //         })
 
 
 
-                }
-            })
+            //     }
+            // })
 
 
 
@@ -66,10 +64,10 @@ function Projects() {
         fetch('/api/projects', {
             method: 'GET',
             headers: {
-              'Content-Type': 'application/json' ,
+                'Content-Type': 'application/json' ,
             },
             credentials: 'include',
-          })
+        })
         .then( resp => {
             if(resp.ok){
                 return resp.json().then(data => {
@@ -96,9 +94,9 @@ function Projects() {
             {/* Projects */}
             <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar scrollbar-thumb-ocean overflow-scroll'>
                 {
-                    projects ?
+                    projects !== null ?
 
-                    <Project />
+                    projects.map(proj => <Project key={proj.id} {...proj} />)
 
                     :
 
