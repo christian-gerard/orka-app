@@ -11,6 +11,7 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CloseIcon from '@mui/icons-material/Close';
 import Task from './Task';
+import Account from '../components/Account'
 
 
 
@@ -20,6 +21,9 @@ function Nav() {
     const [navOpen, setNavOpen] = useState(false)
     const [acctMenuOpen, setAcctMenuOpen] = useState(false)
     const handleNav = () => setNavOpen(!navOpen)
+    const handleAcctMenu = () => {
+        setAcctMenuOpen(!acctMenuOpen)
+    }
 
     const logout = () => {
         setToken(null)
@@ -119,9 +123,9 @@ function Nav() {
 
                     <div className='flex flex-col gap-4 bg-black pb-8 border-t border-white'>
 
-                        <NavLink to='/settings' className='hover:text-ocean flex justify-center mt-4'>
+                        <div className='hover:text-ocean flex justify-center mt-4' onClick={handleAcctMenu}>
                             <div className='h-[45px] w-[45px] rounded-[100%] border flex items-center justify-center text-[1em]'> J&M </div>
-                        </NavLink>
+                        </div>
 
                         <NavLink to='/settings' className='hover:text-ocean'>
                             <SettingsIcon style={{width: '45px', height: '45px'}} />
@@ -139,12 +143,12 @@ function Nav() {
             {
                 acctMenuOpen ?
 
-                <div className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur '>
+                <div className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur text-black'>
 
                     <div className='bg-white  border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%] '>
                         <div className='h-[5%] w-full flex items-center mb-2'>
-                            <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleNewProject} />
-                            <label className='ml-2 mt-1 text-2xl'> New Project </label>
+                            <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleAcctMenu} />
+                            <label className='ml-2 mt-1 text-2xl'> Choose Account </label>
 
                         </div>
 
