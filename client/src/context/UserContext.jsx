@@ -7,6 +7,8 @@ export const UserContext = createContext()
 const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
+    const [projects, setProjects] = useState(null)
+    const [clients, setClients] = useState(null)
     const [account, setAccount] =  useState(null)
 
     const [isLoading, setIsLoading] = useState(false)
@@ -38,7 +40,7 @@ const UserProvider = ({children}) => {
 
   return (
 
-    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoading }} >
+    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoading, projects, setProjects, clients, setClients}} >
         {children}
     </UserContext.Provider>
 

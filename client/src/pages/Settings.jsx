@@ -5,7 +5,7 @@ function Settings() {
     return (
         <div className='h-full w-full overflow-scroll scrollbar scrollbar-thumb-ocean overflow-scroll'>
             <p className='text-4xl'>Settings</p>
-            <div className='my-4 w-full'>
+            <div className='my-8 w-full'>
                 <p className='text-2xl'>General</p>
 
                 <div className='flex flex-row justify-between my-2'>
@@ -48,7 +48,7 @@ function Settings() {
                 </div>
             </div>
 
-            <div className='my-4 w-full'>
+            <div className='my-8 w-full'>
                 <p className='text-2xl'>Account</p>
 
                 <div className='flex flex-row justify-between my-2'>

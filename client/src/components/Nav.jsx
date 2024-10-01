@@ -47,7 +47,7 @@ function Nav() {
                     <div className='bg-black p-4'>
 
                         {/* Menu Bar + App Title */}
-                        <div className='text-4xl tracking-[0.6em] flex flex-row reddit-mono italic' onClick={handleNav}>
+                        <div className='text-4xl tracking-[0.6em] flex flex-row reddit-mono text-ocean' onClick={handleNav}>
                             ORKA
                         </div>
 
