@@ -2,9 +2,9 @@
 
 function Account(){
     return(
-        <div>
-            <div className='rounded-[100%] border bg-ocean'></div>
-            <p>Account</p>
+        <div className='flex flex-col justify-center'>
+            <div className='rounded-[100%] h-[100px] w-[100px] border bg-ocean'></div>
+            <p className='w-full text-center text-xl'>Account</p>
         </div>
     )
 }

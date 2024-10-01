@@ -145,12 +145,27 @@ function Nav() {
 
                 <div className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur text-black'>
 
-                    <div className='bg-white  border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%] '>
-                        <div className='h-[5%] w-full flex items-center mb-2'>
-                            <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleAcctMenu} />
-                            <label className='ml-2 mt-1 text-2xl'> Choose Account </label>
+                    <div className='bg-white  border h-[500px] w-[350px] lg:h-[50%] lg:w-[40%] '>
+                            <div className='h-[5%] w-full'>
 
-                        </div>
+                                <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleAcctMenu} />
+                                <label className='text-2xl'> Choose Account </label>
+
+                            </div>
+
+                            <div className='h-[95%] w-full flex items-center'>
+                                <div className='flex flex-row flex-wrap gap-4 mx-4'>
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                </div>
+                            </div>
+
+
 
                     </div>
 
