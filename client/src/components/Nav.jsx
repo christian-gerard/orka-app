@@ -115,7 +115,11 @@ function Nav() {
 
                     </div>
 
-                    <div className='flex flex-col gap-4 bg-black pb-8'>
+                    <div className='flex flex-col gap-4 bg-black pb-8 border-t border-white'>
+
+                        <NavLink to='/settings' className='hover:text-ocean flex justify-center mt-4'>
+                            <div className='h-[45px] w-[45px] rounded-[100%] border flex items-center justify-center text-[1em]'> J&M </div>
+                        </NavLink>
 
                         <NavLink to='/settings' className='hover:text-ocean'>
                             <SettingsIcon style={{width: '45px', height: '45px'}} />

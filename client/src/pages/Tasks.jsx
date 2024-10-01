@@ -5,6 +5,9 @@ function Tasks(){
             {/* Page Header 10%*/}
             <div className='h-[5%] w-full text-3xl flex justify-between items-bottom'>
                 <p className=''>Tasks</p>
+                <div>
+                    <p>Add Task</p>
+                </div>
             </div>
 
 
