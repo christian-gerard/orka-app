@@ -10,7 +10,6 @@ from django.contrib.auth import (
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from django.utils.translation import gettext as _
-from account.serializers import AccountSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
