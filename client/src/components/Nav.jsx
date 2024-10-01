@@ -7,6 +7,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import GroupIcon from '@mui/icons-material/Group';
 import DetailsIcon from '@mui/icons-material/Details';
 import LogoutIcon from '@mui/icons-material/Logout';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import Task from './Task';
 
 
 
@@ -100,6 +103,14 @@ function Nav() {
 
                         <NavLink to='/clients' className='hover:text-ocean'>
                             <GroupIcon style={{ width: '45px', height: '45px' }}/>
+                        </NavLink>
+
+                        <NavLink to='/tasks' className='hover:text-ocean'>
+                            <TaskAltIcon style={{ width: '45px', height: '45px' }}/>
+                        </NavLink>
+
+                        <NavLink to='/budgets' className='hover:text-ocean'>
+                            <AttachMoneyIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
                     </div>
