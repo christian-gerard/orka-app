@@ -16,8 +16,6 @@ from account.serializers import (
     AccountDetailSerializer,
 )
 
-import pdb
-
 ACCOUNT_URL = reverse("account:account-list")
 
 CLIENT_URL = reverse("account:account-list") + "clients/"
