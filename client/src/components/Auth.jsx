@@ -102,7 +102,7 @@ function Auth() {
           password: formData.loginPassword
         }
 
-        fetch('/api/user/token/',{
+        fetch('/api/user/session/',{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

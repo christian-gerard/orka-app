@@ -62,8 +62,20 @@ function Nav() {
 
                         {/* Page Navigation */}
                         <div className='py-4'>
-                            <NavLink to='/projects'>
+                            <NavLink to='/projects' onClick={handleNav}>
                                 <span className='mx-2 italic text-lg hover:text-ocean' >Projects</span>
+                            </NavLink>
+
+                            <NavLink to='/clients' onClick={handleNav}>
+                                <span className='mx-2 italic text-lg hover:text-ocean' >Clients</span>
+                            </NavLink>
+
+                            <NavLink to='/tasks' onClick={handleNav}>
+                                <span className='mx-2 italic text-lg hover:text-ocean' >Tasks</span>
+                            </NavLink>
+
+                            <NavLink to='/budgets' onClick={handleNav}>
+                                <span className='mx-2 italic text-lg hover:text-ocean' >Budgets</span>
                             </NavLink>
 
                         </div>

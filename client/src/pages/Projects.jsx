@@ -95,7 +95,7 @@ function Projects() {
 
     useEffect(() => {
 
-        fetch('/api/projects', {
+        fetch('/api/account/projects', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json' ,
