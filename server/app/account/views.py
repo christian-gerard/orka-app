@@ -34,6 +34,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             return ProjectSerializer
         return self.serializer_class
 
+
 class ClientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """View for Manage Client APIs"""
     serializer_class = ClientDetailSerializer
@@ -73,7 +74,3 @@ class AccountViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create a new recipe"""
         serializer.save(users=[self.request.user])
-
-
-
-
