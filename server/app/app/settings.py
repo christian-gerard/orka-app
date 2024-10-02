@@ -48,8 +48,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'core',
     'user',
-    'project',
-    'client',
+    'account',
 ]
 
 MIDDLEWARE = [
