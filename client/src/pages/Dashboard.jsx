@@ -85,7 +85,7 @@ function Dashboard() {
                             <Task />
                             <Task />
                         </div>
-                </div>
+                    </div>
 
                 </div>
             </div>

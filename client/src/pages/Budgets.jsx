@@ -112,9 +112,9 @@ function Budgets(){
 
 
             {/* main body */}
-            <div className='h-[95%] w-full flex flex-row border'>
+            <div className='h-[95%] w-full flex flex-col lg:flex-row border'>
 
-                <div className='h-full w-[70%]'>
+                <div className='h-full w-[70%] lg:w-full'>
 
                     <div className='border h-[50%] w-full flex items-center'>
                         <canvas ref={chartRef} />
@@ -130,12 +130,11 @@ function Budgets(){
                             <p className='text-2xl'>Total Budget</p>
                             <p className='text-3xl bold bg-ocean rounded-lg flex justify-center text-white p-2'>$900,456.00</p>
                         </div>
-
                     </div>
 
                 </div>
 
-                <div className='h-full w-[30%]'>
+                <div className='h-full w-[30%] lg:w-full'>
                     <div className='h-full overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll'>
                         <div>
                             <Project />
