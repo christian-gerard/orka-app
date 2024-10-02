@@ -22,7 +22,6 @@ ACCOUNT_URL = reverse("account:account-list")
 
 CLIENT_URL = reverse("account:account-list") + "clients/"
 
-
 def detail_url(account_id):
     """Return detail url for specific account"""
     return reverse('account:account-detail', args=[account_id])
@@ -80,5 +79,3 @@ class PrivateClientAPITests(TestCase):
         serializer = AccountSerializer(self.user.accounts, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
-
-
