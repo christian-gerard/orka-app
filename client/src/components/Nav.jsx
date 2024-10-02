@@ -7,6 +7,11 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import GroupIcon from '@mui/icons-material/Group';
 import DetailsIcon from '@mui/icons-material/Details';
 import LogoutIcon from '@mui/icons-material/Logout';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import CloseIcon from '@mui/icons-material/Close';
+import Task from './Task';
+import Account from '../components/Account'
 
 
 
@@ -14,7 +19,11 @@ function Nav() {
 
     const { setToken } = useContext(UserContext)
     const [navOpen, setNavOpen] = useState(false)
+    const [acctMenuOpen, setAcctMenuOpen] = useState(false)
     const handleNav = () => setNavOpen(!navOpen)
+    const handleAcctMenu = () => {
+        setAcctMenuOpen(!acctMenuOpen)
+    }
 
     const logout = () => {
         setToken(null)
@@ -102,9 +111,21 @@ function Nav() {
                             <GroupIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
+                        <NavLink to='/tasks' className='hover:text-ocean'>
+                            <TaskAltIcon style={{ width: '45px', height: '45px' }}/>
+                        </NavLink>
+
+                        <NavLink to='/budgets' className='hover:text-ocean'>
+                            <AttachMoneyIcon style={{ width: '45px', height: '45px' }}/>
+                        </NavLink>
+
                     </div>
 
-                    <div className='flex flex-col gap-4 bg-black pb-8'>
+                    <div className='flex flex-col gap-4 bg-black pb-8 border-t border-white'>
+
+                        <div className='hover:text-ocean flex justify-center mt-4' onClick={handleAcctMenu}>
+                            <div className='h-[45px] w-[45px] rounded-[100%] border flex items-center justify-center text-[1em]'> J&M </div>
+                        </div>
 
                         <NavLink to='/settings' className='hover:text-ocean'>
                             <SettingsIcon style={{width: '45px', height: '45px'}} />
@@ -118,6 +139,42 @@ function Nav() {
 
                 </div>
             </div>
+
+            {
+                acctMenuOpen ?
+
+                <div className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur text-black'>
+
+                    <div className='bg-white  border h-[500px] w-[350px] lg:h-[50%] lg:w-[40%] '>
+                            <div className='h-[5%] w-full'>
+
+                                <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleAcctMenu} />
+                                <label className='text-2xl'> Choose Account </label>
+
+                            </div>
+
+                            <div className='h-[95%] w-full flex items-center'>
+                                <div className='flex flex-row flex-wrap gap-4 mx-4'>
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                    <Account />
+                                </div>
+                            </div>
+
+
+
+                    </div>
+
+                </div>
+
+                :
+
+                <></>
+            }
 
 
 
