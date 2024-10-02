@@ -114,7 +114,7 @@ function Budgets(){
 
                 <div className='h-[50%] lg:h-full w-full'>
 
-                    <div className='border h-[50%] w-full flex items-center'>
+                    <div className='border h-[50%] w-full flex items-center justify-center'>
                         <canvas ref={chartRef} />
                     </div>
 

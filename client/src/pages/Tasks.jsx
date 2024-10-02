@@ -1,3 +1,4 @@
+import Task from '../components/Task'
 
 function Tasks(){
     return(
@@ -10,11 +11,47 @@ function Tasks(){
                 </div>
             </div>
 
-
-
             {/* main body */}
             <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar-thin scrollbar-thumb-ocean overflow-scroll'>
 
+                <div>
+                    <div>
+                        Not Started
+                    </div>
+
+                    <div>
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        Doing
+                    </div>
+
+                    <div>
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        Blocked
+                    </div>
+
+                    <div>
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                    </div>
+                </div>
 
             </div>
 
