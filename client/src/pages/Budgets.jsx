@@ -109,12 +109,10 @@ function Budgets(){
                 <p className=''>Budgets</p>
             </div>
 
-
-
             {/* main body */}
             <div className='h-[95%] w-full flex flex-col lg:flex-row border'>
 
-                <div className='h-full w-[70%] lg:w-full'>
+                <div className='h-[50%] lg:h-full w-full'>
 
                     <div className='border h-[50%] w-full flex items-center'>
                         <canvas ref={chartRef} />
@@ -134,7 +132,7 @@ function Budgets(){
 
                 </div>
 
-                <div className='h-full w-[30%] lg:w-full'>
+                <div className='h-[50%] lg:h-full w-full'>
                     <div className='h-full overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll'>
                         <div>
                             <Project />
