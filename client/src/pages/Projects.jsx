@@ -50,7 +50,7 @@ function Projects() {
         description: '',
         deadline: '',
         projectType: '',
-        // budget: 1000,
+        budget: 1000,
     }
 
     const formik = useFormik({
@@ -66,6 +66,8 @@ function Projects() {
             project_type: formData.projectType,
         }
 
+        console.log("FORMIK FIRED")
+
         fetch('/api/account/projects', {
             method: "POST",
             body: JSON.stringify(requestData),
@@ -78,7 +80,6 @@ function Projects() {
             if(resp.ok){
 
                 return resp.json().then(data => {
-                    console.log(data)
                     setProjects(data)
 
                 })
