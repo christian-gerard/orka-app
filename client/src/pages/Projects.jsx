@@ -62,16 +62,15 @@ function Projects() {
             name: formData.name,
             description: formData.description,
             deadline: formData.deadline,
-            // budget:formData.budget,
+            budget:formData.budget,
             project_type: formData.projectType,
         }
 
-        fetch('/api/projects/', {
+        fetch('/api/account/projects', {
             method: "POST",
             body: JSON.stringify(requestData),
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken
             },
             credentials: 'include',
         })
@@ -79,6 +78,7 @@ function Projects() {
             if(resp.ok){
 
                 return resp.json().then(data => {
+                    console.log(data)
                     setProjects(data)
 
                 })
@@ -95,7 +95,7 @@ function Projects() {
 
     useEffect(() => {
 
-        fetch('/api/projects', {
+        fetch('/api/account/projects', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json' ,
@@ -105,6 +105,7 @@ function Projects() {
         .then( resp => {
             if(resp.ok){
                 return resp.json().then(data => {
+                    console.log(data)
                     setProjects(data)
                 })
             }
@@ -224,7 +225,7 @@ function Projects() {
                                         <div className="text-sm text-red ml-2"> **{formik.errors.projectType}</div>
                                     )}
 
-                                    {/* <label className='ml-2'> Budget </label>
+                                    <label className='ml-2'> Budget </label>
                                     <Field
                                         name='budget'
                                         type='number'
@@ -241,7 +242,7 @@ function Projects() {
 
                                     {formik.errors.budget && formik.touched.budget && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.budget.toUpperCase()}</div>
-                                    )} */}
+                                    )}
                                 </div>
 
 

@@ -34,6 +34,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
             return ProjectSerializer
         return self.serializer_class
 
+    def perform_create(self, serializer):
+        """Override the create method to add the authenticated user"""
+        serializer.save(users=[self.request.user])
+
 
 class ClientViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
