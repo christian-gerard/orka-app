@@ -53,7 +53,7 @@ class PublicAccountAPITests(TestCase):
 
         res = self.client.get(ACCOUNT_URL)
 
-        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
 
 class PrivateAccountAPITests(TestCase):

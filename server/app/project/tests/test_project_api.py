@@ -30,7 +30,7 @@ class PublicProjectAPITests(TestCase):
         """Test Auth is required to call API"""
         res = self.client.get(PROJECT_URL)
 
-        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
 
 class PrivateProjectAPITests(TestCase):
