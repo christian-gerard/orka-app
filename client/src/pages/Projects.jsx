@@ -34,15 +34,15 @@ function Projects() {
     }
 
     const projectSchema = object({
-        name: string()
-        .required('Please provide a project name'),
+        name: string(),
+        // .required('Please provide a project name'),
         description: string(),
-        deadline: string()
-        .required(),
-        projectType: string()
-        .required('Please provide the project type'),
-        budget: number()
-        .required('Please provide a project budget')
+        deadline: string(),
+        // .required(),
+        projectType: string(),
+        // .required('Please provide the project type'),
+        budget: number(),
+        // .required('Please provide a project budget')
       });
 
     const initialValues = {
@@ -66,15 +66,15 @@ function Projects() {
             project_type: formData.projectType,
         }
 
-        console.log("FORMIK FIRED")
+        console.log(csrftoken)
 
-        fetch('/api/account/projects', {
+        fetch('/api/account/projects/', {
             method: "POST",
             body: JSON.stringify(requestData),
             headers: {
                 'Content-Type': 'application/json',
-            },
-            credentials: 'include',
+                'X-CSRF-Token': csrftoken
+            }
         })
         .then(resp => {
             if(resp.ok){
@@ -96,7 +96,7 @@ function Projects() {
 
     useEffect(() => {
 
-        fetch('/api/account/projects', {
+        fetch('/api/account/projects/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json' ,
