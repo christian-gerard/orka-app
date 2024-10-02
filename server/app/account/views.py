@@ -26,7 +26,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
-        return self.queryset.all().order_by('id')
+        return self.queryset.all().filter(users=self.request.user).order_by('id')
 
     def get_serializer_class(self):
         """Return the serializer per request"""
@@ -35,7 +35,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         return self.serializer_class
 
 
-class ClientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class ClientViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ClientDetailSerializer
     queryset = Client.objects.all()
