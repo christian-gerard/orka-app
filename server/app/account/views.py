@@ -2,7 +2,7 @@
 Views for Account API
 """
 
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 
@@ -15,7 +15,6 @@ from account.serializers import (
     ProjectSerializer,
     ProjectDetailSerializer
 )
-
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -35,7 +34,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
             return ProjectSerializer
         return self.serializer_class
 
-class ClientViewSet(viewsets.ModelViewSet):
+class ClientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """View for Manage Client APIs"""
     serializer_class = ClientDetailSerializer
     queryset = Client.objects.all()

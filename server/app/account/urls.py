@@ -13,7 +13,6 @@ from account import views
 
 router = DefaultRouter()
 router.register('', views.AccountViewSet)
-router.register('projects', views.ProjectViewSet)
 router.register('clients', views.ClientViewSet)
 
 

@@ -7,7 +7,6 @@ from core.models import Account, Project, Client
 from user.serializers import UserSerializer
 
 
-
 class ProjectSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
 
@@ -19,9 +18,11 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class ProjectDetailSerializer(ProjectSerializer):
     """Serializes Account Detail Data"""
+    users = UserSerializer(many=True, read_only=True)
 
     class Meta(ProjectSerializer.Meta):
-        fields = ProjectSerializer.Meta.fields
+        fields = ProjectSerializer.Meta.fields + ['users']
+
 
 class ClientSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
@@ -35,16 +36,19 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ClientDetailSerializer(ClientSerializer):
     """Serializes Account Detail Data"""
+    projects = ProjectSerializer(many=True, read_only=True)
 
     class Meta(ClientSerializer.Meta):
         fields = ClientSerializer.Meta.fields + ['projects']
 
+
 class AccountSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
+    users = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Account
-        fields = ['id', 'name', 'type']
+        fields = ['id', 'name', 'type', 'users']
         read_only_fields = ["id"]
 
 
