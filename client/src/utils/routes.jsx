@@ -7,6 +7,7 @@ import Dashboard from '../pages/Dashboard'
 import Projects from '../pages/Projects'
 import Project from '../components/Project'
 import Clients from '../pages/Clients'
+import Client from '../components/Client'
 import Tasks from '../pages/Tasks'
 import Budgets from '../pages/Budgets'
 import Settings from '../pages/Settings'
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
             {
                 path: '/clients',
                 element: <Clients />,
+            },
+            {
+                path: '/clients/:id',
+                element: <Client />,
             },
 			{
                 path: '/tasks',
