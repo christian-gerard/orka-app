@@ -23,7 +23,7 @@ from account.serializers import (
 
 ACCOUNT_URL = reverse("account:account-list")
 
-PROJECT_URL = reverse("account:account-list") + "projects/"
+PROJECT_URL = "/api/account/projects/"
 
 def detail_url(account_id):
     """Return detail url for specific account"""
@@ -112,12 +112,31 @@ class PrivateProjectAPITests(TestCase):
     def test_retrieve_project_list(self):
         """Test Retrieving a list of accounts"""
 
-        project = create_project(self.user)
+        create_project(self.user)
+        create_project(self.user)
 
-        pdb.set_trace()
+        res = self.client.get(PROJECT_URL)
+        serializer = ProjectSerializer(self.user.projects.all(), many=True)
 
-        # res = self.client.get(ACCOUNT_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
 
-        # serializer = AccountSerializer(self.user.accounts, many=True)
-        # self.assertEqual(res.status_code, status.HTTP_200_OK)
-        # self.assertEqual(res.data, serializer.data)
+    def test_create_project(self):
+        """Test Adding a project """
+
+        create_project(self.user)
+
+        client = create_client(self.user)
+
+        payload = {
+            "name": "Example Project",
+            "deadline": "2024-10-02",
+            "description": "Example description of project",
+            "project_type": "exampleType",
+            "budget": 1000.00,
+            "client": client.id
+        }
+
+        res = self.client.post(PROJECT_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
