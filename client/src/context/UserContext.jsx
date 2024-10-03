@@ -15,7 +15,7 @@ const UserProvider = ({children}) => {
 
     useEffect(() => {
 
-      fetch('/api/user/me',{
+      fetch('/api/account/accounts',{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json' ,
@@ -25,14 +25,15 @@ const UserProvider = ({children}) => {
       .then(resp => {
         if(resp.ok){
           return resp.json().then(data => {
-
             setUser(data)
+            console.log(data[0])
+            setAccount(data[0])
 
           })
         }
       })
 
-      setIsLoading()
+
 
     }, [])
 

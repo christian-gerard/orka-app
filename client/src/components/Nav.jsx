@@ -17,7 +17,7 @@ import Account from '../components/Account'
 
 function Nav() {
 
-    const { setToken } = useContext(UserContext)
+    const { setToken, user } = useContext(UserContext)
     const [navOpen, setNavOpen] = useState(false)
     const [acctMenuOpen, setAcctMenuOpen] = useState(false)
     const handleNav = () => setNavOpen(!navOpen)
@@ -167,13 +167,17 @@ function Nav() {
 
                             <div className='h-[95%] w-full flex items-center'>
                                 <div className='flex flex-row flex-wrap gap-4 mx-4'>
-                                    <Account />
-                                    <Account />
-                                    <Account />
-                                    <Account />
-                                    <Account />
-                                    <Account />
-                                    <Account />
+                                    {
+                                        user ?
+
+                                        user.map(acct => <Account key={acct.id} {...acct}/>)
+
+                                        :
+
+                                        <>
+                                        </>
+
+                                    }
                                 </div>
                             </div>
 
