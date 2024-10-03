@@ -12,7 +12,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'deadline', 'description']
+        fields = ['id', 'deadline', 'description', 'category', 'status', 'project']
         read_only_fields = ["id"]
 
 
@@ -29,7 +29,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Expense
-        fields = ['id', 'date', 'description']
+        fields = ['id', 'date', 'description', 'amount', 'category', 'status', 'project']
         read_only_fields = ["id"]
 
 
