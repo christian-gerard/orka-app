@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
+import { UserContext } from '../context/UserContext'
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
 import CloseIcon from '@mui/icons-material/Close';
@@ -6,6 +7,8 @@ import Client from '../components/Client'
 
 
 function Clients() {
+
+    const { clients, setClients } = useContext(UserContext)
     const [newClient, setNewClient] = useState(false)
 
     const handleNewClient = () => setNewClient(!newClient)
@@ -59,6 +62,24 @@ function Clients() {
         }
     })
 
+    useEffect(() => {
+
+        fetch('/api/account/clients', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(resp => {
+            if(resp.ok){
+                return resp.json().then(data => {
+                    setClients(data)
+                })
+            }
+        })
+
+    },[])
+
     return (
         <div className='h-full w-full'>
             {/* Page Header 10%*/}
@@ -73,21 +94,16 @@ function Clients() {
             <div className='h-[95%] w-full bg-white border w-full bg-black overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll '>
                 {/* Outstanding Tasks */}
                 <div className='flex flex-row flex-wrap w-full h-full gap-10 m-4'>
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
-                    <Client />
+                    {
+                        clients ?
 
+                        clients.map(client => <Client key={client.key} {...client} />)
+
+                        :
+
+                        <>
+                        </>
+                    }
                 </div>
 
             </div>
