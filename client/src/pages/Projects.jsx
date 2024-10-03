@@ -22,7 +22,7 @@ function getCookie(name) {
 }
 
 function Projects() {
-    const { projects, setProjects } = useContext(UserContext)
+    const { projects, setProjects, clients } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
 
     const csrftoken = getCookie('csrftoken')
@@ -238,6 +238,23 @@ function Projects() {
                                         min="100"
                                         max="100000000"
                                     >
+
+                                    </Field>
+
+                                    {formik.errors.budget && formik.touched.budget && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.budget.toUpperCase()}</div>
+                                    )}
+
+                                    <label className='ml-2'> Client </label>
+                                    <Field
+                                        name='client'
+                                        as='select'
+                                        value={formik.values.client}
+                                        onChange={formik.handleChange}
+                                        className='border m-2 p-2'
+                                    >
+                                        <option>SELECT</option>
+                                        <option>SELECT THIS ONE</option>
 
                                     </Field>
 
