@@ -5,6 +5,8 @@ from rest_framework import serializers
 
 from core.models import Account, Project, Client
 from user.serializers import UserSerializer
+from client.serializers import ContactSerializer
+from project.serializers import TaskSerializer, ExpenseSerializer
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -19,9 +21,11 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectDetailSerializer(ProjectSerializer):
     """Serializes Account Detail Data"""
     users = UserSerializer(many=True, read_only=True)
+    tasks = TaskSerializer(many=True, read_only=True)
+    expenses = ExpenseSerializer(many=True, read_only=True)
 
     class Meta(ProjectSerializer.Meta):
-        fields = ProjectSerializer.Meta.fields + ['users']
+        fields = ProjectSerializer.Meta.fields + ['users', 'tasks', 'expenses']
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -37,9 +41,10 @@ class ClientSerializer(serializers.ModelSerializer):
 class ClientDetailSerializer(ClientSerializer):
     """Serializes Account Detail Data"""
     projects = ProjectSerializer(many=True, read_only=True)
+    contacts = ContactSerializer(many=True, read_only=True)
 
     class Meta(ClientSerializer.Meta):
-        fields = ClientSerializer.Meta.fields + ['projects']
+        fields = ClientSerializer.Meta.fields + ['projects', 'contacts']
 
 
 class AccountSerializer(serializers.ModelSerializer):
