@@ -70,8 +70,41 @@ function Client({ id, name, projects }) {
                 {
                     currentClient ?
 
-                        <div className='h-[95%] px-6'>
-                            {currentClient.name ? currentClient.name : 'No Name'}
+                        <div className='w-full h-[95%] px-6 flex flex-col'>
+
+                            <div className='flex flex-row justify-between'>
+
+                                <p className='text-4xl'>{currentClient.name ? currentClient.name : 'No Name'}</p>
+
+                                <p className='text-2xl'>{currentClient.type ? currentClient.type : 'No Type'}</p>
+
+                            </div>
+
+
+                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[15%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                                <p>Assigned Users</p>
+                                {currentClient.users ?
+
+                                    currentClient.users.map(user =>
+                                        <div className='flex flex-row border'>
+                                            <div className='px-2'>
+                                                <p>{user.first_name} {user.last_name}</p>
+                                            </div>
+
+                                            <div className='px-2'>
+                                                <p>{user.email}</p>
+                                            </div>
+
+                                        </div>
+                                    )
+
+                                    :
+
+                                    "no current users"
+
+                                }
+                            </div>
+
                         </div>
 
                     :

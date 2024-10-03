@@ -119,6 +119,7 @@ function Projects() {
     return (
 
         <div className='h-full w-full'>
+
             {/* Page Header 10%*/}
             <div className='h-[5%] w-full text-3xl flex justify-between items-bottom'>
                 <p className=''>Projects</p>
