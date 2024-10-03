@@ -21,7 +21,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-
 function Projects() {
     const { projects, setProjects } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
@@ -34,15 +33,15 @@ function Projects() {
     }
 
     const projectSchema = object({
-        name: string()
-        .required('Please provide a project name'),
+        name: string(),
+        // .required('Please provide a project name'),
         description: string(),
-        deadline: string()
-        .required(),
-        projectType: string()
-        .required('Please provide the project type'),
-        budget: number()
-        .required('Please provide a project budget')
+        deadline: string(),
+        // .required(),
+        projectType: string(),
+        // .required('Please provide the project type'),
+        budget: number(),
+        // .required('Please provide a project budget')
       });
 
     const initialValues = {
@@ -50,7 +49,7 @@ function Projects() {
         description: '',
         deadline: '',
         projectType: '',
-        // budget: 1000,
+        budget: 1000,
     }
 
     const formik = useFormik({
@@ -66,11 +65,14 @@ function Projects() {
             project_type: formData.projectType,
         }
 
-        fetch('/api/account/projects', {
+        console.log(csrftoken)
+
+        fetch('/api/account/projects/', {
             method: "POST",
             body: JSON.stringify(requestData),
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
             },
             credentials: 'include',
         })
@@ -78,7 +80,6 @@ function Projects() {
             if(resp.ok){
 
                 return resp.json().then(data => {
-                    console.log(data)
                     setProjects(data)
 
                 })
@@ -95,7 +96,7 @@ function Projects() {
 
     useEffect(() => {
 
-        fetch('/api/account/projects', {
+        fetch('/api/account/projects/', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json' ,
