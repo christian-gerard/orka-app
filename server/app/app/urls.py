@@ -33,6 +33,8 @@ urlpatterns = [
     ),
     path('api/user/', include('user.urls')),
     path('api/account/', include('account.urls')),
+    path('api/project/', include('project.urls')),
+    path('api/client/', include('client.urls'))
 ]
 
 if settings.DEBUG:
