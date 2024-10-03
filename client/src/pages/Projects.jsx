@@ -129,7 +129,7 @@ function Projects() {
 
 
             {/* Projects */}
-            <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar-thin scrollbar-thumb-ocean overflow-scroll'>
+            <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar scrollbar-thumb-ocean overflow-scroll'>
                 {
                     projects !== null ?
 
