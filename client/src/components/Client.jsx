@@ -72,13 +72,18 @@ function Client({ id, name, projects }) {
 
                         <div className='w-full h-[95%] px-6 flex flex-col'>
 
-                            <div className='flex flex-row justify-between'>
+                            <div className='flex flex-row justify-between h-[10%]'>
 
                                 <p className='text-4xl'>{currentClient.name ? currentClient.name : 'No Name'}</p>
 
                                 <p className='text-2xl'>{currentClient.type ? currentClient.type : 'No Type'}</p>
 
                             </div>
+
+                            <div className='w-full h-[15%] border'>
+                                <h1>Current Projects</h1>
+                            </div>
+
 
 
                             <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[15%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
@@ -101,6 +106,30 @@ function Client({ id, name, projects }) {
                                     :
 
                                     "no current users"
+
+                                }
+                            </div>
+
+                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[60%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                                <p>Contacts</p>
+                                {currentClient.contacts ?
+
+                                    currentClient.contacts.map(contact =>
+                                        <div className='flex flex-row border'>
+                                            <div className='px-2'>
+                                                <p>{contact ? contact.first_name: "NONE"}</p>
+                                            </div>
+
+                                            <div className='px-2'>
+
+                                            </div>
+
+                                        </div>
+                                    )
+
+                                    :
+
+                                    "no current contacts"
 
                                 }
                             </div>
