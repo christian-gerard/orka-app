@@ -1,7 +1,6 @@
 
 import { createContext, useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
-import Client from '../components/Client'
 
 export const UserContext = createContext()
 

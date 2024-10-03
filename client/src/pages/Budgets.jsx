@@ -52,6 +52,7 @@ const dummyData = [
 
 
 function Budgets(){
+    const { projects } = useContext(UserContext)
     const chartRef = useRef(null)
     const chartInstanceRef = useRef(null);
     const [budgetChartData, setBudgetChartData] = useState({
@@ -135,19 +136,18 @@ function Budgets(){
                 <div className='h-[50%] lg:h-full w-full'>
                     <div className='h-full overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll'>
                         <div>
-                            <Project />
-                            <Project />
-                            <Project />
-                            <Project />
-                            <Project />
-                            <Project />
-                            <Project />
-                            <Project />
-                            <Project />
-                            <Project />
-                            <Project />
-                            <Project />
+                            {
 
+                                projects ?
+
+                                projects.map(project => <Project key={project.id} {...project} />)
+
+                                :
+
+                                <>
+                                </>
+
+                            }
                         </div>
                     </div>
 

@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
 import Project from '../components/Project'
 import CloseIcon from '@mui/icons-material/Close';
+
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
 
@@ -22,6 +23,7 @@ function getCookie(name) {
 }
 
 function Projects() {
+
     const { projects, setProjects, clients } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
 
@@ -106,7 +108,6 @@ function Projects() {
         .then( resp => {
             if(resp.ok){
                 return resp.json().then(data => {
-                    console.log(data)
                     setProjects(data)
                 })
             }
@@ -118,6 +119,7 @@ function Projects() {
     return (
 
         <div className='h-full w-full'>
+
             {/* Page Header 10%*/}
             <div className='h-[5%] w-full text-3xl flex justify-between items-bottom'>
                 <p className=''>Projects</p>
@@ -129,7 +131,7 @@ function Projects() {
 
 
             {/* Projects */}
-            <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar-thin scrollbar-thumb-ocean overflow-scroll'>
+            <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar scrollbar-thumb-ocean overflow-scroll'>
                 {
                     projects !== null ?
 
