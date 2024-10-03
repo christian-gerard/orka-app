@@ -162,3 +162,24 @@ class Expense(models.Model):
 
     def __str__(self):
         return self.description
+
+
+class Task(models.Model):
+    """Task Model"""
+    deadline = models.DateField(default=date.today)
+    description = models.CharField(max_length=255)
+    category = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    project = models.ForeignKey(
+        Project,
+        related_name='tasks',
+        on_delete=models.CASCADE,
+    )
+    users = models.ForeignKey(
+        User,
+        related_name='tasks',
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.description
