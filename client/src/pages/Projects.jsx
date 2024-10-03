@@ -21,7 +21,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-
 function Projects() {
     const { projects, setProjects } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
@@ -73,8 +72,9 @@ function Projects() {
             body: JSON.stringify(requestData),
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': csrftoken
-            }
+                'X-CSRFToken': csrftoken
+            },
+            credentials: 'include',
         })
         .then(resp => {
             if(resp.ok){
