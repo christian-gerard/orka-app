@@ -1,13 +1,16 @@
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../context/UserContext'
 import { NavLink, useParams } from 'react-router-dom'
+import Task from '../components/Task'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function Project({id, name, deadline, description, project_type}) {
 
-    const { token } = useContext(UserContext)
+    const { token, tasks } = useContext(UserContext)
+
+    console.log(tasks)
 
     const route = useParams()
     const [currentProject, setCurrentProject] = useState(null)
@@ -124,10 +127,23 @@ function Project({id, name, deadline, description, project_type}) {
 
                                 <div className='border h-full w-[60%]'>
                                     <h1>TASKS</h1>
+                                    {
+                                        tasks ?
+
+                                        <></>
+
+                                        :
+
+                                        <p>No Project Tasks</p>
+
+                                    }
                                 </div>
 
                                 <div className='border h-full w-[40%]'>
-                                    <h1>Budget</h1>
+                                    <h1 className='w-full h-[10%]'>Budget</h1>
+                                    <div className='w-full h-[90%] flex flex-col justify-center bg-ocean items-center'>
+                                        <p className='text-4xl w-full'>{currentProject.budget ? `$${currentProject.budget}` : NONE}</p>
+                                    </div>
                                 </div>
 
                             </div>

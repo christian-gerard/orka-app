@@ -4,10 +4,11 @@ import { NavLink, useParams } from 'react-router-dom'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Project from '../components/Project'
 
-function Client({ id, name, projects }) {
+function Client({ id, name}) {
     const route = useParams()
-    const { clients, setClients, token } = useContext(UserContext)
+    const { clients, setClients, token, projects } = useContext(UserContext)
     const [currentClient, setCurrentClient] = useState(null)
 
 
@@ -49,10 +50,9 @@ function Client({ id, name, projects }) {
 
                 <div>
 
-                <NavLink to='/clients'>
-                    <ArrowBackIcon style={{ width: '45px', height: '45px' }}/>
-                </NavLink>
-
+                    <NavLink to='/clients'>
+                        <ArrowBackIcon style={{ width: '45px', height: '45px' }}/>
+                    </NavLink>
 
                 </div>
 
@@ -88,6 +88,18 @@ function Client({ id, name, projects }) {
 
                             <div className='w-full h-[15%] border'>
                                 <h1>Current Projects</h1>
+                                {
+                                    projects ?
+
+                                    // projects.map(project => <Project key={project.id} {...project} />)
+                                    <></>
+
+                                    :
+
+                                    <p>No Projects</p>
+
+
+                                }
                             </div>
 
 
