@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
+import Expense from '../components/Expense'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -46,23 +47,33 @@ function Budget({id, name, deadline, description, project_type, budget}){
 
                 </div>
 
+                <div className='h-[95%] w-full border flex flex-col'>
 
-
-                    {
-                        currentBudget ?
-
-                        <div className='h-[95%] w-full'>
-
-                            <p>{currentBudget.name ? currentBudget.name : "UnNamed"}</p>
-
-                            <p>{currentBudget.budget ? currentBudget.budget : "budget"}</p>
+                    <div className='h-[95%] w-full flex flex-row'>
+                        <div className='h-full w-[80%] border'>
 
                         </div>
 
-                        :
+                        <div className='h-full w-[20%] border'>
 
-                        <h1>LOADING LOADING LOADING</h1>
-                    }
+                        </div>
+
+                    </div>
+
+                    <div className=' h-[5%] w-full flex flex-row'>
+                        <div className='h-full w-[80%] border flex justify-end text-2xl px-2 items-center'>
+                            <p>TOTAL</p>
+
+                        </div>
+
+                        <div className='h-full w-[20%] border text-xl flex items-center justify-center'>
+                            <p>$32,000.0</p>
+
+                        </div>
+                    </div>
+
+                </div>
+
 
 
 
