@@ -2,6 +2,22 @@
 import { createContext, useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
 export const UserContext = createContext()
 
 const UserProvider = ({children}) => {
@@ -12,16 +28,16 @@ const UserProvider = ({children}) => {
     const [clients, setClients] = useState(null)
     const [account, setAccount] =  useState(null)
     const [tasks, setTasks] =  useState(null)
+    const [authenticated, setAuthenticated] = useState(null)
 
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
 
-      fetch('/api/account/accounts',{
+      fetch('/api/user/me/',{
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${token}`
+          'Content-Type': 'application/json'
         },
         credentials: 'include',
       })
@@ -37,7 +53,7 @@ const UserProvider = ({children}) => {
         }
       })
 
-
+      console.log('USER' + user)
 
     }, [])
 
