@@ -20,7 +20,7 @@ function CircularSize() {
 
 function App() {
 
-const { user, isLoading } = useContext(UserContext)
+const { user, token, isLoading } = useContext(UserContext)
 
   return (
     <div className='h-screen w-screen select-none font-montserrat'>
@@ -41,7 +41,7 @@ const { user, isLoading } = useContext(UserContext)
 
       }
 
-      { user ?
+      { token ?
 
         <div className='h-full w-full flex flex-col sm:flex-row'>
             <Nav />

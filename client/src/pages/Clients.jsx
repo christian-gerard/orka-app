@@ -35,7 +35,7 @@ function Clients() {
         city: '',
         state: '',
         zip_code: '',
-        account: account.id
+        account: 1
     }
 
     const formik = useFormik({
@@ -50,7 +50,8 @@ function Clients() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${token}`
-                }
+                },
+                credentials: 'include',
             })
             .then(resp => {
                 if(resp.ok){
