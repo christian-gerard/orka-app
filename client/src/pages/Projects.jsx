@@ -52,7 +52,7 @@ function Projects() {
         deadline: '',
         projectType: '',
         budget: 1000,
-        client: 1
+        client: null
     }
 
     const formik = useFormik({
@@ -259,8 +259,15 @@ function Projects() {
                                         onChange={formik.handleChange}
                                         className='border m-2 p-2'
                                     >
-                                        <option value='1'>Select Client</option>
-                                        <option value='1'>1</option>
+                                        <option value=''>Select Client</option>
+                                        {
+                                            clients ?
+
+                                            clients.map(client => <option value={client.id}>{client.name}</option>)
+                                            :
+                                            <></>
+
+                                        }
 
                                     </Field>
 

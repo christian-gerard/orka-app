@@ -1,10 +1,13 @@
 import { useEffect, useState, useContext } from 'react'
+import { UserContext } from '../context/UserContext'
 import { NavLink, useParams } from 'react-router-dom'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function Project({id, name, deadline, description, project_type}) {
+
+    const { token } = useContext(UserContext)
 
     const route = useParams()
     const [currentProject, setCurrentProject] = useState(null)
@@ -13,7 +16,14 @@ function Project({id, name, deadline, description, project_type}) {
 
         if(route.id !== undefined){
 
-            fetch(`/api/account/projects/${route.id}`)
+            fetch(`/api/account/projects/${route.id}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`
+                },
+                credentials: 'include',
+            })
             .then(resp => {
                 if(resp.ok){
                     return resp.json().then( data => {

@@ -1,14 +1,20 @@
 import { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../context/UserContext'
 import Task from '../components/Task'
 
 function Tasks({id, name, deadline, description, project_type, budget}){
 
+    const { token } = useContext(UserContext)
     const [currentTasks, setCurrentTasks] = useState(null)
 
     useEffect(() => {
         fetch('/api/project/tasks', {
-            'method': 'GET',
-            'Authorization': `Token ${token}`
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            credentials: 'include',
         })
         .then(resp => {
             if(resp.ok){

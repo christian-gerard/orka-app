@@ -8,27 +8,34 @@ import Client from '../components/Client'
 
 function Clients() {
 
-    const { clients, setClients, token } = useContext(UserContext)
+    const { clients, setClients, projects, token, account } = useContext(UserContext)
     const [newClient, setNewClient] = useState(false)
 
     const handleNewClient = () => setNewClient(!newClient)
 
     const clientSchema = object({
+        name: string(),
         description: string(),
-        deadline: string(),
-        status: string(),
-        note: string(),
-        type: string(),
-        project: string()
+        industry: string(),
+        ein: string(),
+        address_one: string(),
+        address_two: string(),
+        city: string(),
+        state: string(),
+        zip_code: string()
       });
 
     const initialValues = {
         name: '',
         description: '',
-        deadline: '',
-        project_type: '',
-        budget: '',
-        client: ''
+        industry: '',
+        ein: '',
+        address_one: '',
+        address_two: '',
+        city: '',
+        state: '',
+        zip_code: '',
+        account: account.id
     }
 
     const formik = useFormik({
@@ -37,7 +44,7 @@ function Clients() {
         onSubmit: (formData) => {
 
 
-            fetch('/api/client/', {
+            fetch('/api/account/clients', {
                 method: "POST",
                 body: JSON.stringify(formData),
                 headers: {
@@ -49,7 +56,8 @@ function Clients() {
                 if(resp.ok){
 
                     return resp.json().then(data => {
-
+                        setClients([...clients, data])
+                        handleNewClient()
 
                     })
 
@@ -214,7 +222,7 @@ function Clients() {
                                     <div className="text-sm text-ocean ml-2"> **{formik.errors.type.toUpperCase()}</div>
                                 )}
 
-                                <label className='ml-2'> Client </label>
+                                <label className='ml-2'> Project </label>
                                 <Field
                                     name='project'
                                     as='select'
@@ -223,8 +231,8 @@ function Clients() {
                                     type='text'
                                     className='border m-2 p-2'
                                 >
-                                    <option value=''>Select Client</option>
-                                    {/* {
+                                    <option value=''>Select Project</option>
+                                    {
                                         projects ?
 
                                         projects.map(project => { return <option value={project.id}>{project.name}</option>})
@@ -232,7 +240,7 @@ function Clients() {
                                         :
 
                                         <></>
-                                    } */}
+                                    }
 
 
                                 </Field>
