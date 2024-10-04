@@ -3,7 +3,7 @@ Views for Account API
 """
 
 from rest_framework import viewsets, mixins
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from core.models import Contact
@@ -17,7 +17,7 @@ class ContactViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ContactDetailSerializer
     queryset = Contact.objects.all()
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
