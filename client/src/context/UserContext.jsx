@@ -7,6 +7,7 @@ export const UserContext = createContext()
 const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
+    const [token, setToken] = useState(null)
     const [projects, setProjects] = useState(null)
     const [clients, setClients] = useState(null)
     const [account, setAccount] =  useState(null)
@@ -19,7 +20,8 @@ const UserProvider = ({children}) => {
       fetch('/api/account/accounts',{
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json' ,
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`
         },
         credentials: 'include',
       })
@@ -43,7 +45,7 @@ const UserProvider = ({children}) => {
 
   return (
 
-    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoading, projects, setProjects, clients, setClients}} >
+    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoading, projects, setProjects, clients, setClients, token, setToken}} >
         {children}
     </UserContext.Provider>
 

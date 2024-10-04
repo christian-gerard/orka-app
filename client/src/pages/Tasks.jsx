@@ -6,7 +6,10 @@ function Tasks({id, name, deadline, description, project_type, budget}){
     const [currentTasks, setCurrentTasks] = useState(null)
 
     useEffect(() => {
-        fetch('/api/project/tasks')
+        fetch('/api/project/tasks', {
+            'method': 'GET',
+            'Authorization': `Token ${token}`
+        })
         .then(resp => {
             if(resp.ok){
                 return resp.json().then(data => {

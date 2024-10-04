@@ -113,6 +113,8 @@ function Auth() {
           if(resp.ok){
             return resp.json().then(data => {
               setUser(data)
+              setToken(data['token'])
+              console.log(data)
               toast.success('Login Successful')
             })}
           else if(resp.status === 404) {

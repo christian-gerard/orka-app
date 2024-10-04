@@ -8,7 +8,7 @@ import Client from '../components/Client'
 
 function Clients() {
 
-    const { clients, setClients } = useContext(UserContext)
+    const { clients, setClients, token } = useContext(UserContext)
     const [newClient, setNewClient] = useState(false)
 
     const handleNewClient = () => setNewClient(!newClient)
@@ -42,6 +42,7 @@ function Clients() {
                 body: JSON.stringify(formData),
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`
                 }
             })
             .then(resp => {
@@ -67,7 +68,8 @@ function Clients() {
         fetch('/api/account/clients', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
             }
         })
         .then(resp => {
