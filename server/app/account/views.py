@@ -64,7 +64,7 @@ class AccountViewSet(viewsets.ModelViewSet):
     """View for Manage Account APIs"""
     serializer_class = AccountDetailSerializer
     queryset = Account.objects.all()
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
