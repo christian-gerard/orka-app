@@ -18,6 +18,15 @@ function getCookie(name) {
   return cookieValue;
 }
 
+function setCookie(name, value, days = 7) {
+  const date = new Date();
+  // Set the expiration date, default is 7 days
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = `expires=${date.toUTCString()}`;
+  // Set the cookie with the name, value, expiration date, and path
+  document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/`;
+}
+
 export const UserContext = createContext()
 
 const UserProvider = ({children}) => {
@@ -45,7 +54,6 @@ const UserProvider = ({children}) => {
         if(resp.ok){
           return resp.json().then(data => {
             setUser(data)
-            console.log(data[0])
             setAccount(data[0])
             setClients(data[0].clients)
 
@@ -53,7 +61,7 @@ const UserProvider = ({children}) => {
         }
       })
 
-      console.log('USER' + user)
+      setToken(getCookie('token'))
 
     }, [])
 
@@ -61,7 +69,7 @@ const UserProvider = ({children}) => {
 
   return (
 
-    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoading, projects, setProjects, clients, setClients, token, setToken}} >
+    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoading, projects, setProjects, clients, setClients, token, setToken, setCookie, getCookie}} >
         {children}
     </UserContext.Provider>
 

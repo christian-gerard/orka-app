@@ -84,7 +84,7 @@ function Projects() {
             if(resp.ok){
 
                 return resp.json().then(data => {
-                    setProjects([...projects, data])
+                    setProjects([data, ...projects])
                     handleNewProject()
 
                 })

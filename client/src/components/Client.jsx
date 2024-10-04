@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function Client({ id, name, projects }) {
     const route = useParams()
-    const { clients, setClients } = useContext(UserContext)
+    const { clients, setClients, token } = useContext(UserContext)
     const [currentClient, setCurrentClient] = useState(null)
 
 
@@ -15,7 +15,14 @@ function Client({ id, name, projects }) {
 
         if(route.id !== undefined){
 
-            fetch(`/api/account/clients/${route.id}`)
+            fetch(`/api/account/clients/${route.id}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`
+                },
+                credentials: 'include',
+            })
             .then(resp => {
                 if(resp.ok){
                     return resp.json().then( data => {
