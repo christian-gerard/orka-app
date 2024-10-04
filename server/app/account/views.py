@@ -3,7 +3,7 @@ Views for Account API
 """
 
 from rest_framework import viewsets, mixins
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -18,12 +18,12 @@ from account.serializers import (
     ProjectDetailSerializer
 )
 
-@method_decorator(csrf_exempt, name='dispatch')
+
 class ProjectViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ProjectDetailSerializer
     queryset = Project.objects.all()
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
