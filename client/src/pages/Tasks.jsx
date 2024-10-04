@@ -1,6 +1,23 @@
+import { useState, useEffect, useContext } from 'react'
 import Task from '../components/Task'
 
 function Tasks(){
+
+    const [currentTasks, setCurrentTasks] = useState(null)
+
+    useEffect(() => {
+        fetch('/api/project/tasks')
+        .then(resp => {
+            if(resp.ok){
+                return resp.json().then(data => {
+                    setCurrentTasks(data)
+                })
+            }
+        })
+
+    },[])
+
+    console.log(currentTasks)
     return(
         <div className='h-full w-full'>
             {/* Page Header 10%*/}
@@ -20,10 +37,22 @@ function Tasks(){
                     </div>
 
                     <div>
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
+                        {
+                            currentTasks ?
+
+                            <div>
+
+                                <h1>DATA LOADED</h1>
+
+                            </div>
+
+                            :
+
+                            <div>
+                                <h1>Tasks</h1>
+                            </div>
+
+                        }
                     </div>
                 </div>
 
