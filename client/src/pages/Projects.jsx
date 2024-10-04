@@ -24,7 +24,7 @@ function getCookie(name) {
 
 function Projects() {
 
-    const { projects, setProjects, clients } = useContext(UserContext)
+    const { projects, setProjects, clients, token } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
 
     const csrftoken = getCookie('csrftoken')
@@ -52,6 +52,7 @@ function Projects() {
         deadline: '',
         projectType: '',
         budget: 1000,
+        client: null
     }
 
     const formik = useFormik({
@@ -65,6 +66,7 @@ function Projects() {
             deadline: formData.deadline,
             budget:formData.budget,
             project_type: formData.projectType,
+            client: formData.client
         }
 
         console.log(csrftoken)
@@ -74,7 +76,7 @@ function Projects() {
             body: JSON.stringify(requestData),
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrftoken
+                'Authorization': `Token ${token}`
             },
             credentials: 'include',
         })
@@ -82,7 +84,8 @@ function Projects() {
             if(resp.ok){
 
                 return resp.json().then(data => {
-                    setProjects(data)
+                    setProjects([data, ...projects])
+                    handleNewProject()
 
                 })
 
@@ -102,6 +105,7 @@ function Projects() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json' ,
+                'Authorization': `Token ${token}`
             },
             credentials: 'include',
         })
@@ -255,8 +259,15 @@ function Projects() {
                                         onChange={formik.handleChange}
                                         className='border m-2 p-2'
                                     >
-                                        <option>SELECT</option>
-                                        <option>SELECT THIS ONE</option>
+                                        <option value=''>Select Client</option>
+                                        {
+                                            clients ?
+
+                                            clients.map(client => <option value={client.id}>{client.name}</option>)
+                                            :
+                                            <></>
+
+                                        }
 
                                     </Field>
 

@@ -18,48 +18,51 @@ function CircularSize() {
 
 
 
+
+
 function App() {
+  const { user, token, isLoading } = useContext(UserContext)
 
-const { user, isLoading } = useContext(UserContext)
 
-  return (
-    <div className='h-screen w-screen select-none font-montserrat'>
 
-      <Toaster />
+    return (
+      <div className='h-screen w-screen select-none font-montserrat'>
 
-      {
-        isLoading ?
+        <Toaster />
 
-          <div className='fixed inset-0 bg-white backdrop-blur-sm bg-opacity-30 z-50 flex items-center justify-center'>
-            <CircularSize />
+        {
+          isLoading ?
+
+            <div className='fixed inset-0 bg-white backdrop-blur-sm bg-opacity-30 z-50 flex items-center justify-center'>
+              <CircularSize />
+            </div>
+
+            :
+
+            <>
+            </>
+
+        }
+
+        { user ?
+
+          <div className='h-full w-full flex flex-col sm:flex-row'>
+              <Nav />
+
+              <div className='p-4 w-full h-full'>
+                <Outlet />
+              </div>
           </div>
 
           :
 
-          <>
-          </>
+          <div className='h-full flex items-center justify-center'>
+            <Auth />
+          </div>
+        }
 
-      }
-
-      { user ?
-
-        <div className='h-full w-full flex flex-col sm:flex-row'>
-            <Nav />
-
-            <div className='p-4 w-full h-full'>
-              <Outlet />
-            </div>
-        </div>
-
-        :
-
-        <div className='h-full flex items-center justify-center'>
-          <Auth />
-        </div>
-      }
-
-    </div>
-  )
+      </div>
+    )
 }
 
 export default App

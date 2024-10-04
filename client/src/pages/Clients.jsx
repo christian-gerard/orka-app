@@ -8,27 +8,34 @@ import Client from '../components/Client'
 
 function Clients() {
 
-    const { clients, setClients } = useContext(UserContext)
+    const { clients, setClients, projects, token, account } = useContext(UserContext)
     const [newClient, setNewClient] = useState(false)
 
     const handleNewClient = () => setNewClient(!newClient)
 
     const clientSchema = object({
+        name: string(),
         description: string(),
-        deadline: string(),
-        status: string(),
-        note: string(),
-        type: string(),
-        project: string()
+        industry: string(),
+        ein: string(),
+        address_one: string(),
+        address_two: string(),
+        city: string(),
+        state: string(),
+        zip_code: string()
       });
 
     const initialValues = {
         name: '',
         description: '',
-        deadline: '',
-        project_type: '',
-        budget: '',
-        client: ''
+        industry: '',
+        ein: '',
+        address_one: '',
+        address_two: '',
+        city: '',
+        state: '',
+        zip_code: '',
+        account: 1
     }
 
     const formik = useFormik({
@@ -37,18 +44,21 @@ function Clients() {
         onSubmit: (formData) => {
 
 
-            fetch('/api/client/', {
+            fetch('/api/account/clients', {
                 method: "POST",
                 body: JSON.stringify(formData),
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                    'Authorization': `Token ${token}`
+                },
+                credentials: 'include',
             })
             .then(resp => {
                 if(resp.ok){
 
                     return resp.json().then(data => {
-
+                        setClients([...clients, data])
+                        handleNewClient()
 
                     })
 
@@ -67,8 +77,10 @@ function Clients() {
         fetch('/api/account/clients', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            credentials:'include'
         })
         .then(resp => {
             if(resp.ok){
@@ -112,141 +124,154 @@ function Clients() {
             {
                 newClient ?
 
-                <div className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur'>
-                    <div className='bg-white border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%]'>
-                        <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleNewClient} />
-                        <Formik
-                            onSubmit={formik.handleSubmit}
-                            initialValues={initialValues}
+                <Formik
+                        onSubmit={formik.handleSubmit}
+                        initialValues={initialValues}
+                    >
+                        <Form
+                        className=' fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur '
+                        onSubmit={formik.handleSubmit}
+                        initialValues={initialValues}
                         >
-                            <Form
-                            className=' flex flex-col lg:gap-2'
-                            onSubmit={formik.handleSubmit}
-                            initialValues={initialValues}
-                            >
-                                <label className='ml-2 mt-1 text-2xl'> New Client </label>
+                            <div className='bg-white  border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%] '>
+                                <div className='h-[5%] w-full flex items-center mb-2'>
+                                    <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleNewClient} />
+                                    <label className='ml-2 mt-1 text-2xl'> New Client </label>
 
-                                <label className='ml-2'> Name </label>
-                                <Field
-                                    name='name'
-                                    value={formik.values.name}
-                                    onChange={formik.handleChange}
-                                    type='text'
-                                    placeholder='Name'
-                                    className='border m-2 p-2'
-                                />
+                                </div>
 
-                                {formik.errors.name && formik.touched.name && (
-                                    <div className="text-sm text-ocean ml-2"> **{formik.errors.name.toUpperCase()}</div>
-                                )}
+                                <div className='h-[95%] w-full flex flex-col lg:gap-2 overflow-scroll scrollbar scrollbar-thumb-ocean'>
+                                    <label className='ml-2'> Name </label>
+                                    <Field
+                                        name='name'
+                                        value={formik.values.name}
+                                        onChange={formik.handleChange}
+                                        type='text'
+                                        placeholder='Name'
+                                        className='border m-2 p-2'
+                                    />
 
-                                <label className='ml-2'> Description </label>
-                                <Field
-                                    name='description'
-                                    value={formik.values.description}
-                                    onChange={formik.handleChange}
-                                    as='textarea'
-                                    placeholder='Description'
-                                    className='border m-2 p-2 lg:h-[200px]'
-                                />
+                                    {formik.errors.name && formik.touched.name && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.name}</div>
+                                    )}
 
-                                {formik.errors.description && formik.touched.description && (
-                                    <div className="text-sm text-ocean ml-2"> **{formik.errors.description.toUpperCase()}</div>
-                                )}
+                                    <label className='ml-2'> Description </label>
+                                    <Field
+                                        name='description'
+                                        value={formik.values.description}
+                                        onChange={formik.handleChange}
+                                        as='textarea'
+                                        placeholder='Description'
+                                        className='border m-2 p-2 min-h-[100px] lg:h-[200px]'
+                                    />
 
-                                <label className='ml-2'> Deadline </label>
-                                <Field
-                                    name='deadline'
-                                    type='date'
-                                    min="2024-01-01"
-                                    max="2025-12-31"
-                                    value={formik.values.deadline}
-                                    onChange={formik.handleChange}
-                                    placeholder='Deadline'
-                                    className='border m-2 p-2'
-                                />
+                                    {formik.errors.description && formik.touched.description && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
+                                    )}
 
-                                {formik.errors.deadline && formik.touched.deadline && (
-                                    <div className="text-sm text-ocean ml-2"> **{formik.errors.deadline.toUpperCase()}</div>
-                                )}
-                                <label className='ml-2'> Type </label>
-                                <Field
-                                    name='status'
-                                    as='select'
-                                    value={formik.values.status}
-                                    onChange={formik.handleChange}
-                                    type='text'
-                                    placeholder='Status'
-                                    className='border m-2 p-2'
-                                >
-                                    <option value=''>Select Status</option>
-                                    <option value='Not Started'>Not Started</option>
-                                    <option value='Doing'>Doing</option>
-                                    <option value='Blocked'>Blocked</option>
-                                    <option value='Done'>Done</option>
+                                    <label className='ml-2'> Industry </label>
+                                    <Field
+                                        name='industry'
+                                        type='text'
+                                        value={formik.values.industry}
+                                        onChange={formik.handleChange}
+                                        placeholder='industry'
+                                        className='border m-2 p-2'
+                                    />
 
-                                </Field>
+                                    {formik.errors.industry && formik.touched.industry && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.industry.toUpperCase()}</div>
+                                    )}
+                                    <label className='ml-2'> EIN </label>
+                                    <Field
+                                        name='ein'
+                                        type='text'
+                                        value={formik.values.ein}
+                                        onChange={formik.handleChange}
+                                        placeholder='ein'
+                                        className='border m-2 p-2'
+                                    />
 
-                                {formik.errors.status && formik.touched.status && (
-                                    <div className="text-sm text-ocean ml-2"> **{formik.errors.status.toUpperCase()}</div>
-                                )}
+                                    {formik.errors.ein && formik.touched.ein && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.ein.toUpperCase()}</div>
+                                    )}
+                                    <label className='ml-2'> Address </label>
+                                    <Field
+                                        name='address_one'
+                                        type='text'
+                                        value={formik.values.address_one}
+                                        onChange={formik.handleChange}
+                                        placeholder='address'
+                                        className='border m-2 p-2'
+                                    />
 
-                                <label className='ml-2'> Budget </label>
-                                <Field
-                                    name='type'
-                                    as='select'
-                                    value={formik.values.type}
-                                    onChange={formik.handleChange}
-                                    type='text'
-                                    placeholder='Type'
-                                    className='border m-2 p-2'
-                                >
-                                    <option value=''>Select Type</option>
-                                    <option value='Prep'>Prep</option>
-                                    <option value='Shooting'>Shooting</option>
-                                    <option value='Edit'>Edit</option>
+                                    {formik.errors.address_one && formik.touched.address_one && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.address_one.toUpperCase()}</div>
+                                    )}
+                                    <label className='ml-2'> Address (line 2) </label>
+                                    <Field
+                                        name='address_two'
+                                        type='text'
+                                        value={formik.values.address_two}
+                                        onChange={formik.handleChange}
+                                        placeholder='Secondary Address Line'
+                                        className='border m-2 p-2'
+                                    />
 
-                                </Field>
+                                    {formik.errors.address_two && formik.touched.address_two && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.address_two.toUpperCase()}</div>
+                                    )}
+                                    <label className='ml-2'> City </label>
+                                    <Field
+                                        name='city'
+                                        type='text'
+                                        value={formik.values.city}
+                                        onChange={formik.handleChange}
+                                        placeholder='city'
+                                        className='border m-2 p-2'
+                                    />
 
-                                {formik.errors.type && formik.touched.type && (
-                                    <div className="text-sm text-ocean ml-2"> **{formik.errors.type.toUpperCase()}</div>
-                                )}
+                                    {formik.errors.city && formik.touched.city && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.city.toUpperCase()}</div>
+                                    )}
+                                    <label className='ml-2'> Zip Code </label>
+                                    <Field
+                                        name='zip_code'
+                                        type='text'
+                                        value={formik.values.zip_code}
+                                        onChange={formik.handleChange}
+                                        placeholder='zip_code'
+                                        className='border m-2 p-2'
+                                    />
 
-                                <label className='ml-2'> Client </label>
-                                <Field
-                                    name='project'
-                                    as='select'
-                                    value={formik.values.project}
-                                    onChange={formik.handleChange}
-                                    type='text'
-                                    className='border m-2 p-2'
-                                >
-                                    <option value=''>Select Client</option>
-                                    {/* {
-                                        projects ?
+                                    {formik.errors.zip_code && formik.touched.zip_code && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.zip_code.toUpperCase()}</div>
+                                    )}
+                                    <label className='ml-2'> State </label>
+                                    <Field
+                                        name='state'
+                                        type='text'
+                                        value={formik.values.state}
+                                        onChange={formik.handleChange}
+                                        placeholder='State'
+                                        className='border m-2 p-2'
+                                    />
 
-                                        projects.map(project => { return <option value={project.id}>{project.name}</option>})
+                                    {formik.errors.state && formik.touched.state && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.zip_code.toUpperCase()}</div>
+                                    )}
 
-                                        :
-
-                                        <></>
-                                    } */}
-
-
-                                </Field>
-
-                                {formik.errors.type && formik.touched.type && (
-                                    <div className="text-sm text-ocean ml-2"> **{formik.errors.type.toUpperCase()}</div>
-                                )}
-
-                                <button type='submit' className='border bg-black text-white h-[50px]'> Create Client </button>
+                                </div>
 
 
-                            </Form>
+                            </div>
 
-                        </Formik>
-                    </div>
-                </div>
+                            <button type='submit' className='bg-black w-[350px] lg:w-[40%] mt-3 text-white h-[50px] hover:text-ocean'> Create Client </button>
+
+
+                        </Form>
+
+                    </Formik>
 
                 :
 
