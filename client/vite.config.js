@@ -8,10 +8,11 @@ export default defineConfig({
     proxy: {
       '/api': 'http://ec2-184-72-8-99.us-west-1.compute.amazonaws.com',
     },
-    build: {
-      outDir: 'dist',  // This should be the same as the directory in your YAML file
-    },
 
+
+  },
+  build: {
+    outDir: 'dist',  // This should be the same as the directory in your YAML file
   },
   plugins: [react()],
 })
