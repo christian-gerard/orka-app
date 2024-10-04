@@ -45,7 +45,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ClientDetailSerializer
     queryset = Client.objects.all()
-    authentication_classes = [SessionAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
