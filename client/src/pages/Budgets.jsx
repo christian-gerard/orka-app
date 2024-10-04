@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect, useRef } from 'react'
 import { UserContext } from '../context/UserContext'
 import Project from '../components/Project'
+import Budget from '../components/Budget'
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
@@ -103,6 +104,8 @@ function Budgets(){
 
     }, [budgetChartData]);
 
+    console.log(projects)
+
     return(
         <div className='h-full w-full'>
             {/* Page Header 10%*/}
@@ -140,7 +143,7 @@ function Budgets(){
 
                                 projects ?
 
-                                projects.map(project => <Project key={project.id} {...project} />)
+                                projects.map(project => <Budget key={project.id} {...project} />)
 
                                 :
 

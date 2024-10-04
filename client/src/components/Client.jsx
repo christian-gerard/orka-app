@@ -30,7 +30,6 @@ function Client({ id, name, projects }) {
 
     },[route.id])
 
-
     return(
         <>
 
