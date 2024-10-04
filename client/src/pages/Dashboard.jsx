@@ -7,7 +7,7 @@ import Project from '../components/Project'
 
 
 function Dashboard() {
-    const { clients, projects } = useContext(UserContext)
+    const { clients, projects, tasks } = useContext(UserContext)
 
     return (
         <div className='h-full w-full'>
@@ -23,21 +23,9 @@ function Dashboard() {
                 <p className='h-[5%]'>Outstanding Tasks</p>
                 <div className='h-[95%] overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll'>
                     <div>
+
                         <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
+
                     </div>
                 </div>
 

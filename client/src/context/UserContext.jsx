@@ -10,6 +10,7 @@ const UserProvider = ({children}) => {
     const [projects, setProjects] = useState(null)
     const [clients, setClients] = useState(null)
     const [account, setAccount] =  useState(null)
+    const [tasks, setTasks] =  useState(null)
 
     const [isLoading, setIsLoading] = useState(false)
 

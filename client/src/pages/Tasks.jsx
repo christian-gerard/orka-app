@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import Task from '../components/Task'
 
-function Tasks(){
+function Tasks({id, name, deadline, description, project_type, budget}){
 
     const [currentTasks, setCurrentTasks] = useState(null)
 
@@ -17,7 +17,6 @@ function Tasks(){
 
     },[])
 
-    console.log(currentTasks)
     return(
         <div className='h-full w-full'>
             {/* Page Header 10%*/}
@@ -33,7 +32,7 @@ function Tasks(){
 
                 <div>
                     <div>
-                        Not Started
+                        My Tasks
                     </div>
 
                     <div>
@@ -42,7 +41,7 @@ function Tasks(){
 
                             <div>
 
-                                <h1>DATA LOADED</h1>
+                                {currentTasks.map(task => <Task key={task.id} {...task} />)}
 
                             </div>
 
@@ -56,31 +55,7 @@ function Tasks(){
                     </div>
                 </div>
 
-                <div>
-                    <div>
-                        Doing
-                    </div>
 
-                    <div>
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                    </div>
-                </div>
-
-                <div>
-                    <div>
-                        Blocked
-                    </div>
-
-                    <div>
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                    </div>
-                </div>
 
             </div>
 
