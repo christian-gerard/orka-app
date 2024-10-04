@@ -91,7 +91,7 @@ function Clients() {
             </div>
 
             {/* Clients */}
-            <div className='h-[95%] w-full bg-white border w-full bg-black overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll '>
+            <div className='h-[95%] w-full bg-white border w-full bg-black overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                 {/* Outstanding Tasks */}
                 <div className='flex flex-row flex-wrap w-full h-full gap-10 m-4'>
                     {
