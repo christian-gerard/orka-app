@@ -11,7 +11,6 @@ function Client({ id, name}) {
     const { clients, setClients, token, projects } = useContext(UserContext)
     const [currentClient, setCurrentClient] = useState(null)
 
-
     useEffect(() => {
 
         if(route.id !== undefined){
@@ -168,11 +167,11 @@ function Client({ id, name}) {
 
             :
 
-            <NavLink to={`/clients/${id}`} className='m-2 rounded-[100%] flex flex-col items-center'>
-                <div className='rounded-[100%] border w-[200px] h-[200px] bg-ocean'>
+            <NavLink to={`/clients/${id}`} className='flex flex-col items-center w-[175px] h-[225px]'>
+                <div className='rounded-[100%] border w-[150px] h-[150px] bg-ocean'>
                 </div>
-                <p className='text-2xl'>{name ? name : 'Unnamed'}</p>
-                <p className='text-2xl'>{projects ? projects.length : '0'} Active Projects</p>
+                <p className='text-2xl'>{name ? name : 'UNNAMED'}</p>
+                <p className='text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p>
             </NavLink>
 
         }
