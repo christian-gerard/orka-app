@@ -167,7 +167,7 @@ function Client({ id, name}) {
 
             :
 
-            <NavLink to={`/clients/${id}`} className='flex flex-col items-center w-[175px] h-[225px]'>
+            <NavLink to={`/clients/${id}`} className='flex flex-col items-center w-[175px] h-[225px] lg:w-[25%] lg:h-auto'>
                 <div className='rounded-[100%] border w-[150px] h-[150px] bg-ocean'>
                 </div>
                 <p className='text-2xl'>{name ? name : 'UNNAMED'}</p>
