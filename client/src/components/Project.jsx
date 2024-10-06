@@ -10,8 +10,6 @@ function Project({id, name, deadline, description, project_type}) {
 
     const { token, tasks } = useContext(UserContext)
 
-    console.log(tasks)
-
     const route = useParams()
     const [currentProject, setCurrentProject] = useState(null)
 
@@ -171,6 +169,7 @@ function Project({id, name, deadline, description, project_type}) {
 
             <NavLink to={`/projects/${id}`}>
                 <div className='w-full h-[150px] p-2 border'>
+
                     {/* Project Box Header */}
                     <div className='flex flex-row justify-between h-[20%] border-b'>
                         <p className='text-2xl'>{name ? name : 'Untitled'}</p>
@@ -180,13 +179,13 @@ function Project({id, name, deadline, description, project_type}) {
                     {/* Project Details */}
                     <div className='flex flex-col justify-between h-[80%]'>
                         <p className='scrollbar overflow-scroll text-sm h-[70%]'>
-                            {description ? description : "No Description Available"}
+                            {description ? description[0,2] : "No Description Available"}...
                         </p>
                         <p className='h-[30%] text-lg'>
                             {project_type ? project_type : 'No Type'}
                         </p>
-
                     </div>
+
                 </div>
             </NavLink>
 
