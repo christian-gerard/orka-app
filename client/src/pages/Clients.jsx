@@ -23,7 +23,7 @@ function Clients() {
         city: string(),
         state: string(),
         zip_code: string()
-      });
+    });
 
     const initialValues = {
         name: '',
@@ -105,7 +105,7 @@ function Clients() {
             {/* Clients */}
             <div className='h-[95%] w-full border'>
 
-                <div className='flex flex-col flex-wrap overflow-y-scroll gap-6'>
+                <div className='flex flex-col flex-wrap overflow-y-scroll'>
 
                     {
                         clients ?
