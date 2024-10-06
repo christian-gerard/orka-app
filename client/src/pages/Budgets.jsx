@@ -137,7 +137,7 @@ function Budgets(){
                 </div>
 
                 <div className='h-[50%] lg:h-full w-full'>
-                    <div className='h-full overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll'>
+                    <div className='h-full overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                         <div>
                             {
 

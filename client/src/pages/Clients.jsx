@@ -23,7 +23,7 @@ function Clients() {
         city: string(),
         state: string(),
         zip_code: string()
-      });
+    });
 
     const initialValues = {
         name: '',
@@ -103,9 +103,10 @@ function Clients() {
             </div>
 
             {/* Clients */}
-            <div className='h-[95%] w-full bg-white border w-full bg-black overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
-                {/* Outstanding Tasks */}
-                <div className='flex flex-row flex-wrap w-full h-full gap-10 m-4'>
+            <div className='h-[95%] w-full border'>
+
+                <div className='flex flex-col flex-wrap overflow-y-scroll'>
+
                     {
                         clients ?
 
@@ -116,6 +117,7 @@ function Clients() {
                         <>
                         </>
                     }
+
                 </div>
 
             </div>
@@ -150,11 +152,9 @@ function Clients() {
                                         placeholder='Name'
                                         className='border m-2 p-2'
                                     />
-
                                     {formik.errors.name && formik.touched.name && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.name}</div>
                                     )}
-
                                     <label className='ml-2'> Description </label>
                                     <Field
                                         name='description'
@@ -164,11 +164,9 @@ function Clients() {
                                         placeholder='Description'
                                         className='border m-2 p-2 min-h-[100px] lg:h-[200px]'
                                     />
-
                                     {formik.errors.description && formik.touched.description && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
                                     )}
-
                                     <label className='ml-2'> Industry </label>
                                     <Field
                                         name='industry'
@@ -178,7 +176,6 @@ function Clients() {
                                         placeholder='industry'
                                         className='border m-2 p-2'
                                     />
-
                                     {formik.errors.industry && formik.touched.industry && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.industry.toUpperCase()}</div>
                                     )}
@@ -230,7 +227,6 @@ function Clients() {
                                         placeholder='city'
                                         className='border m-2 p-2'
                                     />
-
                                     {formik.errors.city && formik.touched.city && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.city.toUpperCase()}</div>
                                     )}
@@ -271,7 +267,7 @@ function Clients() {
 
                         </Form>
 
-                    </Formik>
+                </Formik>
 
                 :
 

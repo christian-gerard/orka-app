@@ -20,10 +20,21 @@ function Dashboard() {
             <div className='h-[45%] w-full border'>
 
 
-                <p className='h-[5%]'>Outstanding Tasks</p>
-                <div className='h-[95%] overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll'>
+                <p className='h-[10%] text-2xl flex items-center bg-ocean text-white'>Outstanding Tasks</p>
+                <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                     <div>
 
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
+                        <Task />
                         <Task />
 
                     </div>
@@ -36,10 +47,9 @@ function Dashboard() {
             {/* Bottom Half 50% */}
             <div className='h-[50%] w-full flex flex-row'>
                 {/* Clients */}
-                <div className='w-[50%] h-full border'>
-                    <p className='h-[5%]'>Clients</p>
-                    <div className='h-[95%] overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll'>
-                        <div>
+                <div className='w-[40%] h-full border'>
+                    <p className='h-[10%] text-2xl flex items-center justify-center bg-ocean text-white'>Clients</p>
+                    <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean flex flex-col justify-center bg-ocean w-full'>
                             {
                                 clients ?
 
@@ -50,14 +60,12 @@ function Dashboard() {
                                 <>
                                 </>
                             }
-                        </div>
-                </div>
-
+                    </div>
                 </div>
                 {/* Projects */}
-                <div className='w-[50%] h-full border'>
-                    <p className='h-[5%]'>Projects</p>
-                    <div className='h-[95%] overflow-scroll-y scrollbar scrollbar-thumb-ocean overflow-scroll'>
+                <div className='w-[60%] h-full border'>
+                    <p className='h-[10%] text-2xl flex items-center bg-ocean text-white'>Projects</p>
+                    <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                         <div>
                             {
                                 projects ?

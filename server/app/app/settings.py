@@ -158,5 +158,10 @@ SPECTACULAR_SETTINGS = {
 
 CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "https://main.d2wh6ygix9usfx.amplifyapp.com"
+]
+
 CSRF_USES_SESSIONS = True
 SESSION_COOKIE_AGE = 3600
