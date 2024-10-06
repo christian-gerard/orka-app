@@ -48,8 +48,8 @@ function Dashboard() {
             <div className='h-[50%] w-full flex flex-row'>
                 {/* Clients */}
                 <div className='w-[40%] h-full border'>
-                    <p className='h-[10%] text-2xl flex items-center justify-center bg-ocean text-white'>Clients</p>
-                    <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean flex flex-col justify-center bg-ocean w-full'>
+                    <p className='h-[10%] text-2xl flex items-center bg-ocean text-white'>Clients</p>
+                    <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean flex flex-row flex-wrap w-full'>
                             {
                                 clients ?
 

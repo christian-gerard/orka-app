@@ -156,7 +156,7 @@ function Client({ id, name}) {
                     :
 
                     <div>
-                        <h1>LOADING LOADING LOADING</h1>
+                        <h1>Loading</h1>
                     </div>
 
                 }
@@ -164,7 +164,7 @@ function Client({ id, name}) {
 
             :
 
-            <NavLink to={`/clients/${id}`} className='flex flex-col items-center w-[175px] h-[225px] lg:w-[25%] lg:h-auto bg-red'>
+            <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center w-[175px] h-[225px] lg:w-[250px] lg:h-[275px] '>
                 <div className='rounded-[100%] border w-[150px] h-[150px] bg-ocean'>
                 </div>
                 <p className='text-2xl'>{name ? name : 'UNNAMED'}</p>
