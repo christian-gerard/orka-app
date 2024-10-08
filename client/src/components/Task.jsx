@@ -15,7 +15,7 @@ function Task({deadline, description, category, status, project}) {
             <div className='w-[50%] flex flex-row justify-end gap-2'>
                 <p>{category ? category : "No Category"}</p>
                 <p>{deadline ? deadline : "No Deadline"}</p>
-                <input type='checkbox' className='"peer w-[25px] h-[25px] appearance-none border-2 border-ocean bg-ocean checked:bg-white' onChange={handelStatus} />
+                {/* <input type='checkbox' className='"peer w-[25px] h-[25px] appearance-none border-2 border-ocean bg-ocean checked:bg-white' onChange={handelStatus} /> */}
             </div>
         </div>
     )
