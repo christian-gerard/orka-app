@@ -105,7 +105,7 @@ function Clients() {
             {/* Clients */}
             <div className='h-[95%] w-full border'>
 
-                <div className='flex flex-col flex-wrap overflow-y-scroll'>
+                <div className='flex flex-col flex-wrap w-full justify-center overflow-y-scroll'>
 
                     {
                         clients ?

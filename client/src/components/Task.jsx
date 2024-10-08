@@ -1,5 +1,10 @@
 
 function Task({deadline, description, category, status, project}) {
+
+    const handleStatus = () => {
+        console.log("Handle Status Triggered")
+    }
+
     return (
         <div className='p-1 m-2 border flex flex-row justify-between items-center h-[40px]'>
             <div className='w-[50%] flex flex-row items-center'>
@@ -10,7 +15,7 @@ function Task({deadline, description, category, status, project}) {
             <div className='w-[50%] flex flex-row justify-end gap-2'>
                 <p>{category ? category : "No Category"}</p>
                 <p>{deadline ? deadline : "No Deadline"}</p>
-                <input type='checkbox' className='"peer w-[25px] h-[25px] appearance-none border-2 border-ocean bg-ocean checked:bg-white' />
+                {/* <input type='checkbox' className='"peer w-[25px] h-[25px] appearance-none border-2 border-ocean bg-ocean checked:bg-white' onChange={handelStatus} /> */}
             </div>
         </div>
     )
