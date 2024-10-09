@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-function Budget({id, name, deadline, description, project_type, budget}){
+function Budget({id, name, deadline, description, project_type, budget, expenses}){
     const route = useParams()
     const [currentBudget, setCurrentBudget] = useState(null)
 
@@ -114,9 +114,9 @@ function Budget({id, name, deadline, description, project_type, budget}){
 
             <NavLink to={`/budgets/${id}`} >
                 <div className='border w-full h-[100px]'>
-                    <p>{name ? name : "No Name"}</p>
+                    <p className='text-2xl'>{name ? name : "No Name"}</p>
                     <p>{budget ? budget : "NO BUDGET"}</p>
-                    <p>{deadline ? deadline : "No Deadline"}</p>
+                    {expenses ? 'THEY HERE' : 'THEY NOT HERE' }
                 </div>
             </NavLink>
 
