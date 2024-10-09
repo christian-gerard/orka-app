@@ -141,7 +141,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                         onChange={formik.handleChange}
                                         type='text'
                                         placeholder='Description'
-                                        className='border min-h-[40px] lg:h-[40px]'
+                                        className='border h-[40px]'
                                     />
 
                                     {formik.errors.description && formik.touched.description && (
