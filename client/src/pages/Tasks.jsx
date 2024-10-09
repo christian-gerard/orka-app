@@ -130,9 +130,9 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                         onSubmit={formik.handleSubmit}
                         initialValues={initialValues}
                         >
-                            <div className='bg-white  border h-full sm:h-[40px] w-full lg:h-[80%] lg:w-full '>
+                            <div className='bg-ocean border h-full sm:h-[40px] w-full lg:h-[80%] lg:w-full '>
 
-                                <div className='w-full flex flex-col sm:flex-row lg:gap-2 overflow-scroll scrollbar scrollbar-thumb-ocean items-center'>
+                                <div className='w-full flex flex-col justify-left w-full bg-red sm:flex-row lg:gap-2 overflow-scroll scrollbar scrollbar-thumb-ocean items-center'>
 
                                     <label className='ml-2'> Description </label>
                                     <Field
