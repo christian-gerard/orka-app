@@ -103,9 +103,9 @@ function Clients() {
             </div>
 
             {/* Clients */}
-            <div className='h-[95%] w-full border'>
+            <div className='h-[95%] w-full border overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
 
-                <div className='flex flex-col flex-wrap w-full justify-center overflow-y-scroll'>
+                <div className='flex flex-row flex-wrap flex '>
 
                     {
                         clients ?
