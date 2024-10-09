@@ -53,6 +53,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                     </div>
 
                     <div>
+
                         {
                             newTask ?
 
@@ -63,6 +64,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                             <>
                             </>
                         }
+
                         {
                             currentTasks ?
 
@@ -79,6 +81,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                             </div>
 
                         }
+
                     </div>
                 </div>
 
