@@ -1,9 +1,10 @@
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../context/UserContext'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useParams, useNavigate } from 'react-router-dom'
 import Task from '../components/Task'
 import { object, string, array, number, bool } from "yup";
 import { useFormik, Formik, Form, Field } from 'formik'
+import { toast } from 'react-hot-toast'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 function Project({id, name, deadline, description, project_type}) {
 
     const { token, tasks } = useContext(UserContext)
+    const nav = useNavigate()
     const route = useParams()
     const [currentProject, setCurrentProject] = useState(null)
     const [editProject, setEditProject] = useState(false)
@@ -21,6 +23,33 @@ function Project({id, name, deadline, description, project_type}) {
         formik.resetForm()
         formik.setValues(initialValues)
     }
+
+    const handleDeleteProject = () => {
+
+        console.log("DELETE FIRED")
+        fetch(`/api/account/projects/${route.id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            credentials: 'include',
+        })
+        .then(resp => {
+            console.log(resp)
+            if(resp.status === 204){
+                console.log("IT WORKED")
+                toast.success('Project Deleted')
+                nav('/projects')
+
+
+
+            }
+        })
+
+
+    }
+
     const projectSchema = object({
         name: string(),
         // .required('Please provide a project name'),
@@ -55,10 +84,8 @@ function Project({id, name, deadline, description, project_type}) {
             client: formData.client
         }
 
-        console.log(csrftoken)
-
-        fetch('/api/account/projects/', {
-            method: "PATCh",
+        fetch(`/api/account/projects/${route.id}`, {
+            method: "PATCH",
             body: JSON.stringify(requestData),
             headers: {
                 'Content-Type': 'application/json',
@@ -71,7 +98,7 @@ function Project({id, name, deadline, description, project_type}) {
 
                 return resp.json().then(data => {
 
-
+                    setCurrentProject(data)
                     handleEditProject()
 
                 })
@@ -135,7 +162,7 @@ function Project({id, name, deadline, description, project_type}) {
                     <div className='flex gap-2'>
 
 
-                        <NavLink>
+                        <NavLink onClick={handleDeleteProject}>
                             <DeleteIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
