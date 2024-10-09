@@ -126,13 +126,13 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                         initialValues={initialValues}
                         >
                         <Form
-                        className='flex flex-row justify-center items-center w-full bg-ocean'
+                        className='flex flex-row justify-left lg:justify-center w-full bg-ocean'
                         onSubmit={formik.handleSubmit}
                         initialValues={initialValues}
                         >
-                            <div className='bg-white  border h-[40px] w-full lg:h-[80%] lg:w-full '>
+                            <div className='bg-white  border h-full sm:h-[40px] w-full lg:h-[80%] lg:w-full '>
 
-                                <div className='w-full flex flex-row lg:gap-2 overflow-scroll scrollbar scrollbar-thumb-ocean items-center'>
+                                <div className='w-full flex flex-col sm:flex-row lg:gap-2 overflow-scroll scrollbar scrollbar-thumb-ocean items-center'>
 
                                     <label className='ml-2'> Description </label>
                                     <Field
@@ -141,7 +141,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                         onChange={formik.handleChange}
                                         type='text'
                                         placeholder='Description'
-                                        className='border h-[40px]'
+                                        className='border h-[30px] lg:h-[40px]'
                                     />
 
                                     {formik.errors.description && formik.touched.description && (
@@ -156,7 +156,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                         onChange={formik.handleChange}
                                         type='text'
                                         placeholder='Status'
-                                        className='border '
+                                        className='border h-[30px] lg:h-[40px]'
                                     >
                                         <option value=''>Select Type</option>
                                         <option value='Social Media'>Social Media</option>
@@ -175,7 +175,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                         value={formik.values.budget}
                                         onChange={formik.handleChange}
                                         placeholder='Budget'
-                                        className='border '
+                                        className='border h-[30px] lg:h-[40px]'
                                         step='1000'
                                         min="100"
                                         max="100000000"
@@ -195,7 +195,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                         value={formik.values.deadline}
                                         onChange={formik.handleChange}
                                         placeholder='Deadline'
-                                        className='border '
+                                        className='border h-[30px] lg:h-[40px]'
                                     />
 
                                     {formik.errors.deadline && formik.touched.deadline && (
