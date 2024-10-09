@@ -145,7 +145,7 @@ function Client({ id, name}) {
                 <div className='flex gap-2'>
 
 
-                    <NavLink>
+                    <NavLink onClick={handleDeleteClient}>
                         <DeleteIcon style={{ width: '45px', height: '45px' }}/>
                     </NavLink>
 
