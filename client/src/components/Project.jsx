@@ -200,7 +200,7 @@ function Project({id, name, deadline, description, project_type}) {
                                 {currentProject.description ? currentProject.description : "Description Not Listed"}
                             </div>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[2g5%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
                                 <p>Assigned Users</p>
                                 {currentProject.users ?
 
