@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../context/UserContext'
 import { NavLink, useParams, useNavigate } from 'react-router-dom'
 import Task from '../components/Task'
+import Expense from '../components/Expense'
 import { object, string, array, number, bool } from "yup";
 import { useFormik, Formik, Form, Field } from 'formik'
 import { toast } from 'react-hot-toast'
@@ -26,7 +27,7 @@ function Project({id, name, deadline, description, project_type}) {
 
     const handleDeleteProject = () => {
 
-        console.log("DELETE FIRED")
+
         fetch(`/api/account/projects/${route.id}`, {
             method: "DELETE",
             headers: {
@@ -36,9 +37,8 @@ function Project({id, name, deadline, description, project_type}) {
             credentials: 'include',
         })
         .then(resp => {
-            console.log(resp)
             if(resp.status === 204){
-                console.log("IT WORKED")
+
                 toast.success('Project Deleted')
                 nav('/projects')
 
@@ -140,6 +140,8 @@ function Project({id, name, deadline, description, project_type}) {
 
     }, [route.id])
 
+
+    console.log(currentProject)
     return(
         <>
 
@@ -194,11 +196,11 @@ function Project({id, name, deadline, description, project_type}) {
                                 {currentProject.project_type ? currentProject.project_type : "Description Not Listed"}
                             </div>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[20%]'>
+                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[10%]'>
                                 {currentProject.description ? currentProject.description : "Description Not Listed"}
                             </div>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[15%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[2g5%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
                                 <p>Assigned Users</p>
                                 {currentProject.users ?
 
@@ -225,11 +227,11 @@ function Project({id, name, deadline, description, project_type}) {
                             <div className='border h-[60%] flex flex-row'>
 
                                 <div className='border h-full w-[60%]'>
-                                    <h1>TASKS</h1>
+                                    <h1>Tasks</h1>
                                     {
-                                        tasks ?
+                                        currentProject.tasks ?
 
-                                        <></>
+                                        currentProject.tasks.map(task => <Task key={task.id} {...task} />)
 
                                         :
 
@@ -239,9 +241,21 @@ function Project({id, name, deadline, description, project_type}) {
                                 </div>
 
                                 <div className='border h-full w-[40%]'>
-                                    <h1 className='w-full h-[10%]'>Budget</h1>
-                                    <div className='w-full h-[90%] flex flex-col justify-center bg-ocean items-center'>
-                                        <p className='text-4xl w-full'>{currentProject.budget ? `$${currentProject.budget}` : NONE}</p>
+                                    <h1 className='w-full h-[5%]'>Budget</h1>
+                                    <div className='w-full h-[95%] flex flex-col items-center'>
+                                        <p className='w-full text-xl bg-ocean text-white'>{currentProject.budget ? `$${currentProject.budget}` : NONE}</p>
+                                        <p>{
+                                            currentProject.expenses ?
+
+                                            currentProject.expenses.map(expense => <Expense />)
+
+                                            :
+
+                                            <h1>No Expenses</h1>
+
+                                        }
+
+                                        </p>
                                     </div>
                                 </div>
 
