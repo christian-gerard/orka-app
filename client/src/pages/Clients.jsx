@@ -44,7 +44,7 @@ function Clients() {
         onSubmit: (formData) => {
 
 
-            fetch('/api/account/clients', {
+            fetch('/api/account/clients/', {
                 method: "POST",
                 body: JSON.stringify(formData),
                 headers: {
@@ -57,7 +57,7 @@ function Clients() {
                 if(resp.ok){
 
                     return resp.json().then(data => {
-                        setClients([...clients, data])
+                        setClients([data, ...clients])
                         handleNewClient()
 
                     })
