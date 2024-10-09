@@ -44,7 +44,7 @@ function Clients() {
         onSubmit: (formData) => {
 
 
-            fetch('/api/account/clients', {
+            fetch('/api/account/clients/', {
                 method: "POST",
                 body: JSON.stringify(formData),
                 headers: {
@@ -57,7 +57,7 @@ function Clients() {
                 if(resp.ok){
 
                     return resp.json().then(data => {
-                        setClients([...clients, data])
+                        setClients([data, ...clients])
                         handleNewClient()
 
                     })
@@ -103,9 +103,9 @@ function Clients() {
             </div>
 
             {/* Clients */}
-            <div className='h-[95%] w-full border'>
+            <div className='h-[95%] w-full border overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
 
-                <div className='flex flex-col flex-wrap w-full justify-center overflow-y-scroll'>
+                <div className='flex flex-row flex-wrap flex '>
 
                     {
                         clients ?
