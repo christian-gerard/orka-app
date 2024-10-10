@@ -24,18 +24,15 @@ function Dashboard() {
                 <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                     <div>
 
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
+                        {
+                            tasks ?
+
+                            "TASKS ARE HERE"
+
+                            :
+
+                            "NO TASKS"
+                        }
 
                     </div>
                 </div>

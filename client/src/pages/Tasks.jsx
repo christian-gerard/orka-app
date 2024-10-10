@@ -9,7 +9,7 @@ import Task from '../components/Task'
 
 function Tasks({id, name, deadline, description, project_type, budget}){
 
-    const { token } = useContext(UserContext)
+    const { token, tasks, setTasks } = useContext(UserContext)
     const [currentTasks, setCurrentTasks] = useState(null)
     const [newTask, setNewTask] = useState(false)
 

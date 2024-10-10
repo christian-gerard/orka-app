@@ -32,14 +32,27 @@ export const UserContext = createContext()
 const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
-    const [token, setToken] = useState(null)
+    const [account, setAccount] =  useState(null)
     const [projects, setProjects] = useState(null)
     const [clients, setClients] = useState(null)
-    const [account, setAccount] =  useState(null)
     const [tasks, setTasks] =  useState(null)
-    const [authenticated, setAuthenticated] = useState(null)
-
+    const [token, setToken] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+
+    const updateProjects = () => {
+
+
+    }
+
+    const updateClients = () => {
+
+
+    }
+
+    const updateTasks = () => {
+
+
+    }
 
     useEffect(() => {
 
@@ -69,7 +82,23 @@ const UserProvider = ({children}) => {
 
   return (
 
-    <UserContext.Provider value={{ user, setUser, account, setAccount, isLoading, projects, setProjects, clients, setClients, token, setToken, setCookie, getCookie, tasks}} >
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        account,
+        setAccount,
+        isLoading,
+        projects,
+        setProjects,
+        clients,
+        setClients,
+        token,
+        setToken,
+        setCookie,
+        getCookie,
+        tasks,
+        setTasks}} >
         {children}
     </UserContext.Provider>
 
