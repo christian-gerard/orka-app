@@ -18,23 +18,17 @@ function Tasks({id, name, deadline, description, project_type, budget}){
     }
 
     const taskSchema = object({
-        name: string(),
-        // .required('Please provide a project name'),
         description: string(),
         deadline: string(),
-        // .required(),
-        projectType: string(),
-        // .required('Please provide the project type'),
-        budget: number(),
-        // .required('Please provide a project budget')
+        status: string(),
+        category: string()
       });
 
     const initialValues = {
-        name: '',
         description: '',
         deadline:  '',
-        projectType:  '',
-        budget: ''
+        category:  '',
+        status: ''
     }
 
     const formik = useFormik({
@@ -126,13 +120,13 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                         initialValues={initialValues}
                         >
                         <Form
-                        className='flex flex-row justify-left lg:justify-center w-full bg-ocean'
+                        className='flex flex-row justify-left h-full lg:justify-center w-full border'
                         onSubmit={formik.handleSubmit}
                         initialValues={initialValues}
                         >
-                            <div className='bg-ocean border h-full sm:h-[40px] w-full lg:h-[80%] lg:w-full '>
+                            <div className='h-full sm:h-[40px] w-full lg:h-[80%] lg:w-full '>
 
-                                <div className='flex flex-col justify-left sm:flex-row  overflow-x-scroll scrollbar scrollbar-thumb-ocean'>
+                                <div className='flex flex-col  sm:flex-row  overflow-x-scroll scrollbar scrollbar-thumb-ocean'>
 
                                     <label className='ml-2'> Description </label>
                                     <Field
@@ -141,7 +135,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                         onChange={formik.handleChange}
                                         type='text'
                                         placeholder='Description'
-                                        className='ml-2 border h-[30px] lg:h-[40px]'
+                                        className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                                     />
 
                                     {formik.errors.description && formik.touched.description && (
@@ -150,16 +144,16 @@ function Tasks({id, name, deadline, description, project_type, budget}){
 
                                     <label className='ml-2'> Category </label>
                                     <Field
-                                        name='projectType'
+                                        name='category'
                                         as='select'
-                                        value={formik.values.projectType}
+                                        value={formik.values.category}
                                         onChange={formik.handleChange}
                                         type='text'
                                         placeholder='Status'
-                                        className='ml-2 border h-[30px] lg:h-[40px]'
+                                        className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                                     >
                                         <option value=''>Select Type</option>
-                                        <option value='Social Media'>Social Media</option>
+                                        <option value='Social Media'>Finance</option>
                                         <option value='Commercial'>Commercial</option>
 
                                     </Field>
@@ -170,12 +164,12 @@ function Tasks({id, name, deadline, description, project_type, budget}){
 
                                     <label className='ml-2'> Status </label>
                                     <Field
-                                        name='budget'
-                                        type='number'
-                                        value={formik.values.budget}
+                                        name='status'
+                                        type='text'
+                                        value={formik.values.status}
                                         onChange={formik.handleChange}
-                                        placeholder='Budget'
-                                        className='ml-2 border h-[30px] lg:h-[40px]'
+                                        placeholder='Status'
+                                        className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                                         step='1000'
                                         min="100"
                                         max="100000000"
@@ -195,7 +189,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                         value={formik.values.deadline}
                                         onChange={formik.handleChange}
                                         placeholder='Deadline'
-                                        className='ml-2 border h-[30px] lg:h-[40px]'
+                                        className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                                     />
 
                                     {formik.errors.deadline && formik.touched.deadline && (
@@ -207,7 +201,12 @@ function Tasks({id, name, deadline, description, project_type, budget}){
 
                             </div>
 
-                            <button type='submit' className='bg-black w-[25%] lg:w-[10%] text-white h-full hover:text-ocean'> Add Task</button>
+                            <div className='bg-black w-[25%] lg:w-[10%] text-white h-full hover:text-ocean'>
+
+                                <button type='submit' className='h-[60px] flex items-center'> Add Task</button>
+
+                            </div>
+
 
 
                         </Form>
