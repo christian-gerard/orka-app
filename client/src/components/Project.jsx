@@ -243,19 +243,9 @@ function Project({id, name, deadline, description, project_type}) {
                                 <div className='border h-full w-[40%]'>
                                     <h1 className='w-full h-[5%]'>Budget</h1>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
-                                        <p className='w-full text-xl bg-ocean text-white'>{currentProject.budget ? `$${currentProject.budget}` : NONE}</p>
-                                        <p>{
-                                            currentProject.expenses ?
 
-                                            currentProject.expenses.map(expense => <Expense />)
+                                        <h1 className='bg-red text-white text-5xl w-full h-full flex justify-center items-center'>WIP</h1>
 
-                                            :
-
-                                            <h1>No Expenses</h1>
-
-                                        }
-
-                                        </p>
                                     </div>
                                 </div>
 

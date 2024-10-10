@@ -50,43 +50,7 @@ function Budget({id, name, deadline, description, project_type, budget, expenses
                 <div className='h-[95%] w-full border flex flex-col'>
 
                     <div className='h-[95%] w-full flex flex-col overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
-                        <Expense />
+                        <h1 className='bg-red text-white text-5xl w-full h-full flex justify-center items-center'>WIP</h1>
 
                     </div>
 
