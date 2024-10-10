@@ -284,7 +284,7 @@ function Project({id, name, deadline, description, project_type}) {
                     {/* Project Details */}
                     <div className='flex flex-col justify-between h-[80%]'>
                         <p className='scrollbar overflow-scroll text-sm h-[70%]'>
-                            {description ? description[0,2] : "No Description Available"}...
+                            {description ? description : "No Description Available"}
                         </p>
                         <p className='h-[30%] text-lg'>
                             {project_type ? project_type : 'No Type'}

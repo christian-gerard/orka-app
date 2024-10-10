@@ -32,7 +32,7 @@ export const UserContext = createContext()
 const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
-    const [account, setAccount] =  useState(null)
+    const [accounts, setAccounts] =  useState(null)
     const [projects, setProjects] = useState(null)
     const [clients, setClients] = useState(null)
     const [tasks, setTasks] =  useState(null)
@@ -41,27 +41,22 @@ const UserProvider = ({children}) => {
 
     const updateProjects = () => {
       fetch('/api/account/projects/', {
-        method: "POST",
-        body: JSON.stringify(requestData),
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json' ,
             'Authorization': `Token ${token}`
         },
         credentials: 'include',
-      })
-      .then(resp => {
-          if(resp.ok){
+        })
+        .then( resp => {
+            if(resp.ok){
+                return resp.json().then(data => {
+                    setProjects(data)
+                })
+            }
+        }
 
-              return resp.json().then(data => {
-                  setProjects([data, ...projects])
-                  handleNewProject()
-
-              })
-
-
-
-          }
-      })
+        )
 
     }
 
@@ -85,8 +80,42 @@ const UserProvider = ({children}) => {
     }
 
     const updateTasks = () => {
+      fetch('/api/project/tasks', {
+        method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        },
+        credentials: 'include',
+      })
+      .then(resp => {
+          if(resp.ok){
+              return resp.json().then(data => {
+                  setTasks(data)
+              })
+          }
+      })
 
+    }
 
+    const updateAccounts = () => {
+      fetch('/api/account/accounts/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json' ,
+            'Authorization': `Token ${token}`
+        },
+        credentials: 'include',
+        })
+        .then( resp => {
+            if(resp.ok){
+                return resp.json().then(data => {
+                    setAccounts(data)
+                })
+            }
+        }
+
+        )
     }
 
     useEffect(() => {
@@ -121,8 +150,9 @@ const UserProvider = ({children}) => {
       value={{
         user,
         setUser,
-        account,
-        setAccount,
+        accounts,
+        setAccounts,
+        updateAccounts,
         isLoading,
         projects,
         setProjects,
@@ -133,7 +163,11 @@ const UserProvider = ({children}) => {
         setCookie,
         getCookie,
         tasks,
-        setTasks}} >
+        setTasks,
+        updateProjects,
+        updateClients,
+        updateTasks
+        }} >
         {children}
     </UserContext.Provider>
 

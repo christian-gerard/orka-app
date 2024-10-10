@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
 import Task from '../components/Task'
 import Client from '../components/Client'
@@ -7,7 +7,14 @@ import Project from '../components/Project'
 
 
 function Dashboard() {
-    const { clients, projects, tasks } = useContext(UserContext)
+    const { clients, projects, tasks, updateProjects, updateClients, updateTasks } = useContext(UserContext)
+
+
+    useEffect(() => {
+        updateProjects()
+        updateClients()
+        updateTasks()
+    }, [])
 
     return (
         <div className='h-full w-full'>
@@ -27,7 +34,7 @@ function Dashboard() {
                         {
                             tasks ?
 
-                            "TASKS ARE HERE"
+                            tasks.map(task => <Task key={task.id} {...task} />)
 
                             :
 

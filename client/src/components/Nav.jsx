@@ -17,11 +17,12 @@ import Account from '../components/Account'
 
 function Nav() {
 
-    const { setToken, user } = useContext(UserContext)
+    const { setToken, accounts, updateAccounts } = useContext(UserContext)
     const [navOpen, setNavOpen] = useState(false)
     const [acctMenuOpen, setAcctMenuOpen] = useState(false)
     const handleNav = () => setNavOpen(!navOpen)
     const handleAcctMenu = () => {
+        updateAccounts()
         setAcctMenuOpen(!acctMenuOpen)
     }
 
@@ -168,9 +169,9 @@ function Nav() {
                             <div className='h-[95%] w-full flex items-center'>
                                 <div className='flex flex-row flex-wrap gap-4 mx-4'>
                                     {
-                                        user ?
+                                        accounts ?
 
-                                        user.map(acct => <Account key={acct.id} {...acct}/>)
+                                        accounts.map(acct => <Account key={acct.id} {...acct}/>)
 
                                         :
 

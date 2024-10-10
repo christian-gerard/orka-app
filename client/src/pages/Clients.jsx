@@ -8,7 +8,7 @@ import Client from '../components/Client'
 
 function Clients() {
 
-    const { clients, setClients, projects, token, account } = useContext(UserContext)
+    const { clients, setClients, projects, token, account, updateClients } = useContext(UserContext)
     const [newClient, setNewClient] = useState(false)
 
     const handleNewClient = () => setNewClient(!newClient)
@@ -74,21 +74,7 @@ function Clients() {
 
     useEffect(() => {
 
-        fetch('/api/account/clients', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            credentials:'include'
-        })
-        .then(resp => {
-            if(resp.ok){
-                return resp.json().then(data => {
-                    setClients(data)
-                })
-            }
-        })
+        updateClients()
 
     },[])
 

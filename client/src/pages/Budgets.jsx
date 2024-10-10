@@ -53,7 +53,7 @@ const dummyData = [
 
 
 function Budgets(){
-    const { projects } = useContext(UserContext)
+    const { projects, updateProjects } = useContext(UserContext)
     const chartRef = useRef(null)
     const chartInstanceRef = useRef(null);
     const [budgetChartData, setBudgetChartData] = useState({
@@ -101,6 +101,8 @@ function Budgets(){
                 chartInstanceRef.current.destroy();
             }
         };
+
+        updateProjects()
 
     }, [budgetChartData]);
 
