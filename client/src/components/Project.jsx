@@ -243,19 +243,9 @@ function Project({id, name, deadline, description, project_type}) {
                                 <div className='border h-full w-[40%]'>
                                     <h1 className='w-full h-[5%]'>Budget</h1>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
-                                        <p className='w-full text-xl bg-ocean text-white'>{currentProject.budget ? `$${currentProject.budget}` : NONE}</p>
-                                        <p>{
-                                            currentProject.expenses ?
 
-                                            currentProject.expenses.map(expense => <Expense />)
+                                        <h1 className='bg-red text-white text-5xl w-full h-full flex justify-center items-center'>WIP</h1>
 
-                                            :
-
-                                            <h1>No Expenses</h1>
-
-                                        }
-
-                                        </p>
                                     </div>
                                 </div>
 
@@ -294,7 +284,7 @@ function Project({id, name, deadline, description, project_type}) {
                     {/* Project Details */}
                     <div className='flex flex-col justify-between h-[80%]'>
                         <p className='scrollbar overflow-scroll text-sm h-[70%]'>
-                            {description ? description[0,2] : "No Description Available"}...
+                            {description ? description : "No Description Available"}
                         </p>
                         <p className='h-[30%] text-lg'>
                             {project_type ? project_type : 'No Type'}

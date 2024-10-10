@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
 import Task from '../components/Task'
 import Client from '../components/Client'
@@ -7,7 +7,14 @@ import Project from '../components/Project'
 
 
 function Dashboard() {
-    const { clients, projects, tasks } = useContext(UserContext)
+    const { clients, projects, tasks, updateProjects, updateClients, updateTasks } = useContext(UserContext)
+
+
+    useEffect(() => {
+        updateProjects()
+        updateClients()
+        updateTasks()
+    }, [])
 
     return (
         <div className='h-full w-full'>
@@ -24,18 +31,15 @@ function Dashboard() {
                 <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                     <div>
 
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
-                        <Task />
+                        {
+                            tasks ?
+
+                            tasks.map(task => <Task key={task.id} {...task} />)
+
+                            :
+
+                            "NO TASKS"
+                        }
 
                     </div>
                 </div>

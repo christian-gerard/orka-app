@@ -9,8 +9,7 @@ import Task from '../components/Task'
 
 function Tasks({id, name, deadline, description, project_type, budget}){
 
-    const { token } = useContext(UserContext)
-    const [currentTasks, setCurrentTasks] = useState(null)
+    const { token, tasks, setTasks, updateTasks } = useContext(UserContext)
     const [newTask, setNewTask] = useState(false)
 
     const handleNewTask = () => {
@@ -73,22 +72,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
     })
 
     useEffect(() => {
-        fetch('/api/project/tasks', {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            credentials: 'include',
-        })
-        .then(resp => {
-            if(resp.ok){
-                return resp.json().then(data => {
-                    setCurrentTasks(data)
-                })
-            }
-        })
-
+        updateTasks()
     },[])
 
     return(
@@ -218,11 +202,11 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                         }
 
                         {
-                            currentTasks ?
+                            tasks ?
 
                             <div>
 
-                                {currentTasks.map(task => <Task key={task.id} {...task} />)}
+                                {tasks.map(task => <Task key={task.id} {...task} />)}
 
                             </div>
 

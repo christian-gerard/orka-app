@@ -24,7 +24,7 @@ function getCookie(name) {
 
 function Projects() {
 
-    const { projects, setProjects, clients, token } = useContext(UserContext)
+    const { projects, setProjects, clients, token, updateProjects } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
 
     const csrftoken = getCookie('csrftoken')
@@ -94,30 +94,12 @@ function Projects() {
             }
         })
 
-
-
         }
     })
 
     useEffect(() => {
 
-        fetch('/api/account/projects/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json' ,
-                'Authorization': `Token ${token}`
-            },
-            credentials: 'include',
-        })
-        .then( resp => {
-            if(resp.ok){
-                return resp.json().then(data => {
-                    setProjects(data)
-                })
-            }
-        }
-
-        )
+        updateProjects()
     }, [])
 
     return (
