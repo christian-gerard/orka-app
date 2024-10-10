@@ -40,12 +40,47 @@ const UserProvider = ({children}) => {
     const [isLoading, setIsLoading] = useState(false)
 
     const updateProjects = () => {
+      fetch('/api/account/projects/', {
+        method: "POST",
+        body: JSON.stringify(requestData),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        },
+        credentials: 'include',
+      })
+      .then(resp => {
+          if(resp.ok){
 
+              return resp.json().then(data => {
+                  setProjects([data, ...projects])
+                  handleNewProject()
+
+              })
+
+
+
+          }
+      })
 
     }
 
     const updateClients = () => {
-
+      fetch('/api/account/clients', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        },
+        credentials:'include'
+      })
+      .then(resp => {
+          if(resp.ok){
+              return resp.json().then(data => {
+                  setClients(data)
+              })
+          }
+      })
 
     }
 
