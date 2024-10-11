@@ -9,7 +9,7 @@ import Task from '../components/Task'
 
 function Tasks({id, name, deadline, description, project_type, budget}){
 
-    const { token, tasks, setTasks, updateTasks } = useContext(UserContext)
+    const { token, tasks, setTasks, updateTasks, projects } = useContext(UserContext)
     const [newTask, setNewTask] = useState(false)
 
     const handleNewTask = () => {
@@ -36,15 +36,14 @@ function Tasks({id, name, deadline, description, project_type, budget}){
         onSubmit: (formData) => {
 
         const requestData = {
-            name: formData.name,
             description: formData.description,
             deadline: formData.deadline,
-            budget:formData.budget,
-            project_type: formData.projectType,
+            category: formData.category,
+            status: formData.status,
             client: formData.client
         }
 
-        fetch(`/api/account/projects/${route.id}`, {
+        fetch(`/api/project/tasks/`, {
             method: "POST",
             body: JSON.stringify(requestData),
             headers: {
@@ -108,9 +107,9 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                         onSubmit={formik.handleSubmit}
                         initialValues={initialValues}
                         >
-                            <div className='h-full sm:h-[40px] w-full lg:h-[80%] lg:w-full '>
+                            <div className='sm:h-[40px] w-full lg:h-[80%] lg:w-full '>
 
-                                <div className='flex flex-col  sm:flex-row  overflow-x-scroll scrollbar scrollbar-thumb-ocean'>
+                                <div className='flex flex-col items-center pt-2  sm:flex-row  overflow-x-scroll scrollbar scrollbar-thumb-ocean'>
 
                                     <label className='ml-2'> Description </label>
                                     <Field
@@ -149,15 +148,13 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                     <label className='ml-2'> Status </label>
                                     <Field
                                         name='status'
-                                        type='text'
+                                        as='select'
                                         value={formik.values.status}
                                         onChange={formik.handleChange}
                                         placeholder='Status'
                                         className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
-                                        step='1000'
-                                        min="100"
-                                        max="100000000"
                                     >
+                                        <option value='Not Started'>Not Started</option>
 
                                     </Field>
 
@@ -179,15 +176,42 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                     {formik.errors.deadline && formik.touched.deadline && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.deadline.toUpperCase()}</div>
                                     )}
+                                    <label className='ml-2'> Project </label>
+                                    <Field
+                                        name='project'
+                                        type='date'
+                                        as='select'
+                                        value={formik.values.project}
+                                        onChange={formik.handleChange}
+                                        placeholder='Project'
+                                        className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                                    >
+                                        <option value=''>Select Project</option>
+                                        {
+                                            projects ?
+
+                                            projects.map(project =>
+                                                <option value={project.id}>{project.name}</option>
+                                            )
+                                            :
+
+                                            <></>
+                                        }
+
+                                    </Field>
+
+                                    {formik.errors.deadline && formik.touched.deadline && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.deadline.toUpperCase()}</div>
+                                    )}
 
                                 </div>
 
 
                             </div>
 
-                            <div className='bg-black w-[25%] lg:w-[10%] text-white h-full hover:text-ocean'>
+                            <div className='bg-black w-[25%] lg:w-[10%] text-white h-full hover:text-ocean flex justify-center items-center h-full'>
 
-                                <button type='submit' className='h-[60px] flex items-center'> Add Task</button>
+                                <button type='submit' className='flex items-center'> Add Task</button>
 
                             </div>
 

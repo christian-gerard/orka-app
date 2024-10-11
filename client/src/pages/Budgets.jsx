@@ -106,7 +106,6 @@ function Budgets(){
 
     }, [budgetChartData]);
 
-    console.log(projects)
 
     return(
         <div className='h-full w-full'>

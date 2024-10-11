@@ -96,7 +96,7 @@ function Clients() {
                     {
                         clients ?
 
-                        clients.map(client => <Client key={client.key} {...client} />)
+                        clients.map(client => <Client key={client.id} {...client} />)
 
                         :
 
