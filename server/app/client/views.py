@@ -32,4 +32,4 @@ class ContactViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Override the create method to add the authenticated user"""
-        serializer.save(users=[self.request.user])
+        serializer.save(users=self.request.user)

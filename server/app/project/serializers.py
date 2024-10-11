@@ -18,10 +18,10 @@ class TaskSerializer(serializers.ModelSerializer):
 
 class TaskDetailSerializer(TaskSerializer):
     """Serializes Account Detail Data"""
-    users = UserSerializer(many=True, read_only=True)
+    # users = UserSerializer(many=True, read_only=True)
 
     class Meta(TaskSerializer.Meta):
-        fields = TaskSerializer.Meta.fields + ['users']
+        fields = TaskSerializer.Meta.fields
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
