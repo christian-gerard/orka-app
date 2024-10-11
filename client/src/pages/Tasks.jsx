@@ -155,7 +155,11 @@ function Tasks(){
                                             placeholder='Status'
                                             className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                                         >
+                                             <option value=''>Select Status</option>
                                             <option value='Not Started'>Not Started</option>
+                                            <option value='Doing'>Doing</option>
+                                            <option value='Blocked'>Blocked</option>
+                                            <option value='Complete'>Complete</option>
 
                                         </Field>
 
