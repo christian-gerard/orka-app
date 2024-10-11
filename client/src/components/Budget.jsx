@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../context/UserContext'
 import { NavLink, useParams } from 'react-router-dom'
 import Expense from '../components/Expense'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -7,13 +8,21 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 
 function Budget({id, name, deadline, description, project_type, budget, expenses}){
+    const { token } = useContext(UserContext)
     const route = useParams()
     const [currentBudget, setCurrentBudget] = useState(null)
 
     useEffect(() => {
 
         if(route.id !== undefined) {
-            fetch(`/api/account/projects/${route.id}`)
+            fetch(`/api/account/projects/${route.id}`,{
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`
+                },
+                credentials: 'include',
+            })
             .then(resp => {
                 if(resp.ok){
                     return resp.json().then((data) => {
@@ -40,6 +49,10 @@ function Budget({id, name, deadline, description, project_type, budget, expenses
                     <NavLink to='/budgets'>
                         <ArrowBackIcon style={{ width: '45px', height: '45px' }}/>
                     </NavLink>
+
+                    <div>
+                        <p>{currentBudget ? currentBudget.budget : 'None'}</p>
+                    </div>
 
 
                     </div>

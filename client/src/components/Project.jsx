@@ -141,7 +141,6 @@ function Project({id, name, deadline, description, project_type}) {
     }, [route.id])
 
 
-    console.log(currentProject)
     return(
         <>
 
@@ -205,7 +204,7 @@ function Project({id, name, deadline, description, project_type}) {
                                 {currentProject.users ?
 
                                     currentProject.users.map(user =>
-                                        <div className='flex flex-row border'>
+                                        <div key={user.id} className='flex flex-row border'>
                                             <div className='px-2'>
                                                 <p>{user.first_name} {user.last_name}</p>
                                             </div>

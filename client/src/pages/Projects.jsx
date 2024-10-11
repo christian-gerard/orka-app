@@ -119,7 +119,7 @@ function Projects() {
             {/* Projects */}
             <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar scrollbar-thumb-ocean overflow-scroll'>
                 {
-                    projects !== null ?
+                    (projects !== null) ?
 
                     projects.map(proj => <Project key={proj.id} {...proj} />)
 

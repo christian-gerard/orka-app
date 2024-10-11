@@ -122,7 +122,6 @@ function Client({ id, name}) {
 
     },[route.id])
 
-    console.log(currentClient)
 
     return(
         <>
