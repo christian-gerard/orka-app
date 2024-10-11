@@ -141,8 +141,6 @@ function Project({id, name, deadline, description, project_type}) {
 
     }, [route.id])
 
-    console.log(currentProject.tasks.length)
-
 
     return(
         <>
@@ -183,7 +181,7 @@ function Project({id, name, deadline, description, project_type}) {
                 { currentProject ?
 
 
-                    <div className=' h-[95%] w-full '>
+                    <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
                         <div className='h-[10%] flex flex-row justify-between px-6'>
 
@@ -208,11 +206,11 @@ function Project({id, name, deadline, description, project_type}) {
 
                                     currentProject.users.map(user =>
                                         <div key={user.id} className='flex flex-row border items-center justify-between'>
-                                            <div className='px-2 text-xl bold'>
+                                            <div className='px-2 text-md sm:text-xl bold flex flex-nowrap flex-row'>
                                                 <p>{user.first_name} {user.last_name}</p>
                                             </div>
 
-                                            <div className='px-2 underline bg-ocean text-white text-lg'>
+                                            <div className='px-2 underline bg-ocean text-white text-md sm:text-lg'>
                                                 <p>{user.email}</p>
                                             </div>
 
@@ -237,7 +235,7 @@ function Project({id, name, deadline, description, project_type}) {
 
                                         :
 
-                                        <p className='text-xl w-full h-full flex justify-center items-center'>No Current Tasks</p>
+                                        <p className='text-md sm:text-xl w-full h-full flex justify-center items-center'>No Current Tasks</p>
 
                                     }
                                 </div>
@@ -246,7 +244,7 @@ function Project({id, name, deadline, description, project_type}) {
                                     <h1 className='w-full h-[5%]'>Budget</h1>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
-                                        <p className='text-xl w-full h-full flex justify-center items-center'>No Current Expenses</p>
+                                        <p className='text-md sm:text-xl w-full h-full flex justify-center items-center'>No Current Expenses</p>
 
                                     </div>
                                 </div>
