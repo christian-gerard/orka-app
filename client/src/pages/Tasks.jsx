@@ -7,7 +7,7 @@ import { useFormik, Formik, Form, Field } from 'formik'
 import { toast } from 'react-hot-toast'
 import Task from '../components/Task'
 
-function Tasks({id, name, deadline, description, project_type, budget}){
+function Tasks(){
 
     const { token, tasks, setTasks, updateTasks, projects } = useContext(UserContext)
     const [newTask, setNewTask] = useState(false)
@@ -27,7 +27,8 @@ function Tasks({id, name, deadline, description, project_type, budget}){
         description: '',
         deadline:  '',
         category:  '',
-        status: ''
+        status: '',
+        project: ''
     }
 
     const formik = useFormik({
