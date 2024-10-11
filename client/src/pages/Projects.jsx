@@ -118,7 +118,7 @@ function Projects() {
 
 
             {/* Projects */}
-            <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar scrollbar-thumb-ocean overflow-scroll'>
+            <div className='h-[95%] w-full flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll'>
                 {
                     (projects !== null) ?
 
@@ -207,7 +207,9 @@ function Projects() {
                                     >
                                         <option value=''>Select Type</option>
                                         <option value='Social Media'>Social Media</option>
-                                        <option value='Commercial'>Commercial</option>
+                                        <option value='ReBrand'>ReBrand</option>
+                                        <option value='Consulting'>Consulting</option>
+                                        <option value='Video'>Video</option>
 
                                     </Field>
 
@@ -216,19 +218,23 @@ function Projects() {
                                     )}
 
                                     <label className='ml-2'> Budget </label>
-                                    <Field
-                                        name='budget'
-                                        type='number'
-                                        value={formik.values.budget}
-                                        onChange={formik.handleChange}
-                                        placeholder='Budget'
-                                        className='border m-2 p-2'
-                                        step='1000'
-                                        min="100"
-                                        max="100000000"
-                                    >
+                                    <div className='ml-2 flex flex-row flex-nowrap items-center'>
+                                        <span className='text-xl w-[5%] flex justify-center'>$</span>
 
-                                    </Field>
+                                        <Field
+                                            name='budget'
+                                            type='number'
+                                            value={formik.values.budget}
+                                            onChange={formik.handleChange}
+                                            placeholder='Budget'
+                                            className='border m-2 p-2 w-[95%]'
+                                            step='1000'
+                                            min="1000"
+                                            max="100000000"
+                                        >
+
+                                        </Field>
+                                    </div>
 
                                     {formik.errors.budget && formik.touched.budget && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.budget.toUpperCase()}</div>
