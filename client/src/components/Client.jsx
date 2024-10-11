@@ -254,11 +254,11 @@ function Client({ id, name}) {
 
             :
 
-            <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center w-[175px] h-[225px] lg:w-[250px] lg:h-[275px] '>
-                <div className='rounded-[100%] border w-[150px] h-[150px] bg-ocean'>
+            <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center size-[200px] sm:w-[175px] sm:h-[225px] lg:w-[250px] lg:h-[275px] '>
+                <div className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean'>
                 </div>
-                <p className='text-2xl'>{name ? name : 'UNNAMED'}</p>
-                <p className='text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p>
+                <p className='text-md sm:text-2xl'>{name ? name : 'UNNAMED'}</p>
+                <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p>
             </NavLink>
 
         }
