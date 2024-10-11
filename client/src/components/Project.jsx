@@ -207,12 +207,12 @@ function Project({id, name, deadline, description, project_type}) {
                                 {currentProject.users ?
 
                                     currentProject.users.map(user =>
-                                        <div key={user.id} className='flex flex-row border'>
-                                            <div className='px-2'>
+                                        <div key={user.id} className='flex flex-row border items-center justify-between'>
+                                            <div className='px-2 text-xl bold'>
                                                 <p>{user.first_name} {user.last_name}</p>
                                             </div>
 
-                                            <div className='px-2'>
+                                            <div className='px-2 underline bg-ocean text-white text-lg'>
                                                 <p>{user.email}</p>
                                             </div>
 
