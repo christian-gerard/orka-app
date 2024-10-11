@@ -175,13 +175,12 @@ function Client({ id, name}) {
 
                             </div>
 
-                            <div className='w-full h-[15%] border'>
+                            <div className='w-full h-[145%] border'>
                                 <h1>Current Projects</h1>
                                 {
                                     projects ?
 
-                                    // projects.map(project => <Project key={project.id} {...project} />)
-                                    <></>
+                                    projects.map(project => <Project key={project.id} {...project} />)
 
                                     :
 
@@ -217,7 +216,7 @@ function Client({ id, name}) {
                                 }
                             </div>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[60%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[35%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
                                 <p>Contacts</p>
                                 {currentClient.contacts ?
 

@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../context/UserContext'
-import { NavLink, useParams, useNavigate } from 'react-router-dom'
+import { NavLink, useParams, useNavigate, useLocation } from 'react-router-dom'
 import Task from '../components/Task'
 import Expense from '../components/Expense'
 import { object, string, array, number, bool } from "yup";
@@ -16,6 +16,7 @@ function Project({id, name, deadline, description, project_type}) {
     const { token, tasks, projects, setProjects} = useContext(UserContext)
     const nav = useNavigate()
     const route = useParams()
+    const path = useLocation()
     const [currentProject, setCurrentProject] = useState(null)
     const [editProject, setEditProject] = useState(false)
 
@@ -114,7 +115,7 @@ function Project({id, name, deadline, description, project_type}) {
 
     useEffect(() => {
 
-        if(route.id !== undefined){
+        if(route.id !== undefined && path.pathname.includes('projects')) {
 
             fetch(`/api/account/projects/${route.id}`, {
                 method: "GET",
@@ -141,12 +142,13 @@ function Project({id, name, deadline, description, project_type}) {
 
     }, [route.id])
 
+        console.log(path)
 
     return(
         <>
 
         {
-            route.id ?
+            route.id && path.pathname.includes('projects') ?
 
             <div className='h-full w-full border'>
 
