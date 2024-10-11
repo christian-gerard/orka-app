@@ -171,7 +171,7 @@ function Client({ id, name}) {
 
                                 <p className='text-4xl'>{currentClient.name ? currentClient.name : 'No Name'}</p>
 
-                                <p className='text-2xl'>{currentClient.type ? currentClient.type : 'No Type'}</p>
+                                <p className='text-2xl'>{currentClient.industry ? currentClient.industry : 'Industry Not Listed'}</p>
 
                             </div>
 
@@ -216,7 +216,7 @@ function Client({ id, name}) {
                                 }
                             </div>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[15%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
                                 <p>Contacts</p>
                                 {currentClient.contacts ?
 
