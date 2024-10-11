@@ -8,10 +8,15 @@ import Client from '../components/Client'
 
 function Clients() {
 
-    const { clients, setClients, projects, token, account, updateClients } = useContext(UserContext)
+    const { clients, setClients, projects, token, accounts, updateAccounts, updateClients } = useContext(UserContext)
     const [newClient, setNewClient] = useState(false)
 
-    const handleNewClient = () => setNewClient(!newClient)
+    const handleNewClient = () => {
+        formik.resetForm()
+        updateAccounts()
+        setNewClient(!newClient)
+
+    }
 
     const clientSchema = object({
         name: string(),
@@ -22,7 +27,7 @@ function Clients() {
         address_two: string(),
         city: string(),
         state: string(),
-        zip_code: string()
+        zip_code: string(),
     });
 
     const initialValues = {
@@ -34,19 +39,32 @@ function Clients() {
         address_two: '',
         city: '',
         state: '',
-        zip_code: '',
-        account: null
+        zip_code: ''
     }
+
 
     const formik = useFormik({
         initialValues,
         validationSchema: clientSchema,
         onSubmit: (formData) => {
 
+            const requestData = {
+                name: formData.name,
+                description: formData.description,
+                industry: formData.industry,
+                ein: formData.ein,
+                address_one: formData.address_one,
+                address_two: formData.address_two,
+                city: formData.city,
+                state: formData.state,
+                zip_code: formData.zip_code,
+                account: accounts ? accounts[0].id : null
+            }
+
 
             fetch('/api/account/clients/', {
                 method: "POST",
-                body: JSON.stringify(formData),
+                body: JSON.stringify(requestData),
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Token ${token}`
@@ -59,6 +77,7 @@ function Clients() {
                     return resp.json().then(data => {
                         setClients([data, ...clients])
                         handleNewClient()
+                        toast.success('Client Added')
 
                     })
 

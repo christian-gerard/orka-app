@@ -1,16 +1,18 @@
 import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useParams, useNavigate } from 'react-router-dom'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
+import { toast } from 'react-hot-toast'
 import CloseIcon from '@mui/icons-material/Close';
 import Project from '../components/Project'
 
 function Client({ id, name}) {
     const route = useParams()
+    const nav = useNavigate()
     const { clients, setClients, token, projects } = useContext(UserContext)
     const [currentClient, setCurrentClient] = useState(null)
     const [editClient, setEditClient] = useState(false)
@@ -63,7 +65,7 @@ function Client({ id, name}) {
         city: currentClient ? currentClient.city : '',
         state: currentClient ? currentClient.state : '',
         zip_code: currentClient ? currentClient.zip_code : '',
-        account: 1
+        account: currentClient ? currentClient.account : null,
     }
 
     const formik = useFormik({
@@ -72,7 +74,7 @@ function Client({ id, name}) {
         onSubmit: (formData) => {
 
 
-            fetch('/api/account/clients/', {
+            fetch(`/api/account/clients/${route.id}`, {
                 method: "PATCH",
                 body: JSON.stringify(formData),
                 headers: {
@@ -83,9 +85,11 @@ function Client({ id, name}) {
             })
             .then(resp => {
                 if(resp.ok){
-
-                    handleEditClient()
-
+                    return resp.json().then(data => {
+                        setCurrentClient(data)
+                        handleEditClient()
+                        toast.success('Client Updated')
+                    })
 
 
                 }
