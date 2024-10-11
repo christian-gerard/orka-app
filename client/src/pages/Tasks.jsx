@@ -13,6 +13,7 @@ function Tasks(){
     const [newTask, setNewTask] = useState(false)
 
     const handleNewTask = () => {
+        formik.resetForm()
         setNewTask(!newTask)
     }
 
@@ -55,14 +56,10 @@ function Tasks(){
         })
         .then(resp => {
             if(resp.ok){
-
                 return resp.json().then(data => {
-                    setCurrentProject(data)
-                    handleEditProject()
+                    setTasks([...data, tasks])
+                    handleNewTask()
                 })
-
-
-
             }
         })
 
