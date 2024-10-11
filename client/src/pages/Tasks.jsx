@@ -9,7 +9,7 @@ import Task from '../components/Task'
 
 function Tasks(){
 
-    const { token, tasks, setTasks, updateTasks, projects } = useContext(UserContext)
+    const { token, tasks, setTasks, updateTasks, projects, updateProjects } = useContext(UserContext)
     const [newTask, setNewTask] = useState(false)
 
     const handleNewTask = () => {
@@ -57,8 +57,8 @@ function Tasks(){
         .then(resp => {
             if(resp.ok){
                 return resp.json().then(data => {
-                    setTasks([...data, tasks])
-                    handleNewTask()
+                    setTasks([data, ...tasks])
+                    toast.success('Task Added')
                 })
             }
         })
@@ -70,6 +70,8 @@ function Tasks(){
 
     useEffect(() => {
         updateTasks()
+
+        updateProjects()
     },[])
 
     return(
@@ -77,19 +79,16 @@ function Tasks(){
             {/* Page Header 10%*/}
             <div className='h-[5%] w-full text-3xl flex justify-between items-bottom'>
                 <p className=''>Tasks</p>
+                <p className='flex items-center text-xl text-white bg-black pr-2' onClick={handleNewTask}>
+                            { newTask ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon /> }
+                            Add Task
+                        </p>
             </div>
 
             {/* main body */}
             <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar-thin scrollbar-thumb-ocean overflow-scroll'>
 
                 <div>
-                    <div className='flex flex-row justify-between items-center'>
-                        <p>My Tasks</p>
-                        <p className='flex items-center' onClick={handleNewTask}>
-                            { newTask ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon /> }
-                            Add Task
-                        </p>
-                    </div>
 
                     <div>
 
@@ -116,7 +115,7 @@ function Tasks(){
                                             onChange={formik.handleChange}
                                             type='text'
                                             placeholder='Description'
-                                            className='ml-2 mr-2 border'
+                                            className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                                         />
 
                                         {formik.errors.description && formik.touched.description && (
@@ -232,7 +231,7 @@ function Tasks(){
 
                             <div>
 
-                                {tasks.map(task => <Task key={task.id} {...task} />)}
+                                {tasks.filter(task => task.status !== 'Complete').map(task => <Task key={task.id} {...task} />)}
 
                             </div>
 

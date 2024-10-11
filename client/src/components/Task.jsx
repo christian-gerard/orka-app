@@ -8,7 +8,37 @@ function Task({id, deadline, description, category, status, project}) {
     const { projects, updateProjects, tasks, token, setTasks } = useContext(UserContext)
 
     const handleStatus = () => {
-        console.log("Handle Status Triggered")
+
+        const requestData = {
+            status: "Complete"
+        }
+
+        fetch(`/api/project/tasks/${id}`, {
+            method: "PATCH",
+            body: JSON.stringify(requestData),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${token}`
+            },
+            credentials: 'include',
+        })
+        .then(resp => {
+            if(resp.ok){
+                const newTasks = tasks.filter(task => task.id !== id)
+                setTasks(newTasks)
+                toast.success(`Task Marked Complete`)
+            }
+        })
+    }
+
+    const determineColor = () => {
+        if(status === "Not Started") {
+            return "bg-black text-white"
+        } else if (status === "DOING") {
+            return "bg-red"
+        } else {
+            return "bg-ocean"
+        }
     }
 
     const handleTaskDelete = () => {
@@ -60,10 +90,9 @@ function Task({id, deadline, description, category, status, project}) {
             </div>
 
             <div className='w-[50%] flex flex-row justify-end gap-2'>
-                <p>{status ? status : "No Status"}</p>
-                <p>{category ? category : "No Category"}</p>
-                <p>{deadline ? deadline : "No Deadline"}</p>
-                <input type='checkbox' className='peer w-[25px] h-[25px] border-2 checked:text-white' />
+                <p className={determineColor()}>{status ? status : "No Status"}</p>
+                <p>{deadline ? deadline.slice(5,11) : "No Deadline"}</p>
+                <input type='checkbox' className='peer w-[25px] h-[25px] border-2 checked:text-white' onClick={handleStatus} />
             </div>
         </div>
     )
