@@ -120,14 +120,14 @@ function Projects() {
             {/* Projects */}
             <div className='h-[95%] w-full flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll'>
                 {
-                    (projects !== null) ?
+                    projects && projects.length !== 0 ?
 
                     projects.map(proj => <Project key={proj.id} {...proj} />)
 
                     :
 
                     <div className='w-full h-full text-4xl flex justify-center items-center'>
-                        <h1>No Projects Available...</h1>
+                        <h1>No Current Projects</h1>
                     </div>
                 }
             </div>

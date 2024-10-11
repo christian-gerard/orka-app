@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../context/UserContext'
-import { NavLink, useParams, useNavigate } from 'react-router-dom'
+import { NavLink, useParams, useNavigate, useLocation } from 'react-router-dom'
 import Task from '../components/Task'
 import Expense from '../components/Expense'
 import { object, string, array, number, bool } from "yup";
@@ -16,6 +16,7 @@ function Project({id, name, deadline, description, project_type}) {
     const { token, tasks, projects, setProjects} = useContext(UserContext)
     const nav = useNavigate()
     const route = useParams()
+    const path = useLocation()
     const [currentProject, setCurrentProject] = useState(null)
     const [editProject, setEditProject] = useState(false)
 
@@ -114,7 +115,7 @@ function Project({id, name, deadline, description, project_type}) {
 
     useEffect(() => {
 
-        if(route.id !== undefined){
+        if(route.id !== undefined && path.pathname.includes('projects')) {
 
             fetch(`/api/account/projects/${route.id}`, {
                 method: "GET",
@@ -141,12 +142,13 @@ function Project({id, name, deadline, description, project_type}) {
 
     }, [route.id])
 
+        console.log(path)
 
     return(
         <>
 
         {
-            route.id ?
+            route.id && path.pathname.includes('projects') ?
 
             <div className='h-full w-full border'>
 
@@ -192,7 +194,7 @@ function Project({id, name, deadline, description, project_type}) {
 
                         <div className='bg-white h-[90%] w-full px-6'>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[5%]'>
+                            <div className='h-[5%]'>
                                 {currentProject.project_type ? currentProject.project_type : "Description Not Listed"}
                             </div>
 
@@ -224,9 +226,9 @@ function Project({id, name, deadline, description, project_type}) {
                                 }
                             </div>
 
-                            <div className='border h-[60%] flex flex-row'>
+                            <div className='border-x h-[60%] flex flex-row'>
 
-                                <div className='border h-full w-[60%]'>
+                                <div className=' h-full w-[60%]'>
                                     <h1>Tasks</h1>
                                     {
                                         currentProject.tasks.length !== 0 ?
@@ -240,7 +242,7 @@ function Project({id, name, deadline, description, project_type}) {
                                     }
                                 </div>
 
-                                <div className='border h-full w-[40%]'>
+                                <div className='border-l h-full w-[40%]'>
                                     <h1 className='w-full h-[5%]'>Budget</h1>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
@@ -273,10 +275,10 @@ function Project({id, name, deadline, description, project_type}) {
             :
 
             <NavLink to={`/projects/${id}`}>
-                <div className='w-full h-[150px] p-2 border'>
+                <div className='w-full h-[175px] p-2 border'>
 
                     {/* Project Box Header */}
-                    <div className='flex flex-row justify-between h-[20%] border-b'>
+                    <div className='flex flex-row justify-between h-[20%] border-b text-white bg-ocean p-1'>
                         <p className='text-[0.8em] sm:text-xl'>{name ? name.slice(0,20) : 'Untitled'}</p>
                         <p className='text-[0.8em] sm:text-lg'>{deadline ? deadline.slice(5,12) : 'No Deadline'}</p>
                     </div>

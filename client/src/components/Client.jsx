@@ -1,16 +1,18 @@
 import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useParams, useNavigate } from 'react-router-dom'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
+import { toast } from 'react-hot-toast'
 import CloseIcon from '@mui/icons-material/Close';
 import Project from '../components/Project'
 
 function Client({ id, name}) {
     const route = useParams()
+    const nav = useNavigate()
     const { clients, setClients, token, projects } = useContext(UserContext)
     const [currentClient, setCurrentClient] = useState(null)
     const [editClient, setEditClient] = useState(false)
@@ -63,7 +65,7 @@ function Client({ id, name}) {
         city: currentClient ? currentClient.city : '',
         state: currentClient ? currentClient.state : '',
         zip_code: currentClient ? currentClient.zip_code : '',
-        account: 1
+        account: currentClient ? currentClient.account : null,
     }
 
     const formik = useFormik({
@@ -72,7 +74,7 @@ function Client({ id, name}) {
         onSubmit: (formData) => {
 
 
-            fetch('/api/account/clients/', {
+            fetch(`/api/account/clients/${route.id}`, {
                 method: "PATCH",
                 body: JSON.stringify(formData),
                 headers: {
@@ -83,9 +85,11 @@ function Client({ id, name}) {
             })
             .then(resp => {
                 if(resp.ok){
-
-                    handleEditClient()
-
+                    return resp.json().then(data => {
+                        setCurrentClient(data)
+                        handleEditClient()
+                        toast.success('Client Updated')
+                    })
 
 
                 }
@@ -167,21 +171,20 @@ function Client({ id, name}) {
 
                                 <p className='text-4xl'>{currentClient.name ? currentClient.name : 'No Name'}</p>
 
-                                <p className='text-2xl'>{currentClient.type ? currentClient.type : 'No Type'}</p>
+                                <p className='text-2xl'>{currentClient.industry ? currentClient.industry : 'Industry Not Listed'}</p>
 
                             </div>
 
-                            <div className='w-full h-[15%] border'>
+                            <div className='w-full h-[50%] border overflow-y-scroll scrollbar-thumb-ocean'>
                                 <h1>Current Projects</h1>
                                 {
                                     projects ?
 
-                                    // projects.map(project => <Project key={project.id} {...project} />)
-                                    <></>
+                                    projects.map(project => <Project key={project.id} {...project} />)
 
                                     :
 
-                                    <p>No Projects</p>
+                                    <p className='text-xl w-full flex justify-center items-center'>No Projects</p>
 
 
                                 }
@@ -208,12 +211,12 @@ function Client({ id, name}) {
 
                                     :
 
-                                    "no current users"
+                                    <p className='text-xl w-full flex justify-center items-center'>No Client Users</p>
 
                                 }
                             </div>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[60%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
                                 <p>Contacts</p>
                                 {currentClient.contacts ?
 
@@ -232,7 +235,7 @@ function Client({ id, name}) {
 
                                     :
 
-                                    "no current contacts"
+                                    <p className='text-xl w-full flex justify-center items-center'>No Contacts</p>
 
                                 }
                             </div>
@@ -250,11 +253,11 @@ function Client({ id, name}) {
 
             :
 
-            <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center w-[175px] h-[225px] lg:w-[250px] lg:h-[275px] '>
-                <div className='rounded-[100%] border w-[150px] h-[150px] bg-ocean'>
+            <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center size-[200px] sm:w-[175px] sm:h-[225px] lg:w-[250px] lg:h-[275px] '>
+                <div className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean'>
                 </div>
-                <p className='text-2xl'>{name ? name : 'UNNAMED'}</p>
-                <p className='text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p>
+                <p className='text-md sm:text-2xl'>{name ? name : 'UNNAMED'}</p>
+                <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p>
             </NavLink>
 
         }
