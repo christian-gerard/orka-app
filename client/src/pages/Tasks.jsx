@@ -40,7 +40,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
             deadline: formData.deadline,
             category: formData.category,
             status: formData.status,
-            client: formData.client
+            project: formData.project
         }
 
         fetch(`/api/project/tasks/`, {
