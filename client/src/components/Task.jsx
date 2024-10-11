@@ -18,10 +18,6 @@ function Task({deadline, description, category, status, project}) {
         updateProjects()
     },[])
 
-
-    console.log(projects[0].id)
-    console.log(project)
-
     return (
         <div className='p-1 m-2 border flex flex-row justify-between items-center h-[40px]'>
 
