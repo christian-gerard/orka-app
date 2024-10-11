@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
+import { toast } from 'react-hot-toast'
 import Project from '../components/Project'
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -51,7 +52,7 @@ function Projects() {
         description: '',
         deadline: '',
         projectType: '',
-        budget: 1000,
+        budget: 1000.00,
         client: null
     }
 
@@ -82,17 +83,17 @@ function Projects() {
         })
         .then(resp => {
             if(resp.ok){
-
                 return resp.json().then(data => {
                     setProjects([data, ...projects])
                     handleNewProject()
+                    toast.success('New Project Added')
 
                 })
-
-
-
+            } else {
+                toast.error('Error while saving project')
             }
         })
+        .catch( err => console.log(err))
 
         }
     })

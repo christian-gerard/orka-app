@@ -41,11 +41,11 @@ function Project({id, name, deadline, description, project_type}) {
 
                 toast.success('Project Deleted')
                 nav('/projects')
-
-
-
+            } else {
+                toast.error("Unable to Delete Project")
             }
         })
+        .catch( err => console.log(err))
 
 
     }
@@ -95,18 +95,15 @@ function Project({id, name, deadline, description, project_type}) {
         })
         .then(resp => {
             if(resp.ok){
-
                 return resp.json().then(data => {
 
                     setCurrentProject(data)
                     handleEditProject()
 
                 })
-
-
-
             }
         })
+        .catch( err => console.log(err))
 
 
 
@@ -131,8 +128,11 @@ function Project({id, name, deadline, description, project_type}) {
                     return resp.json().then( data => {
                         setCurrentProject(data)
                     })
+                } else {
+                    toast.error('Unable to Refresh')
                 }
             })
+            .catch( err => console.log(err))
 
         }
 
