@@ -185,7 +185,7 @@ function Client({ id, name}) {
 
                                     :
 
-                                    <p>No Projects</p>
+                                    <p className='text-xl w-full flex justify-center items-center'>No Projects</p>
 
 
                                 }
@@ -212,7 +212,7 @@ function Client({ id, name}) {
 
                                     :
 
-                                    "no current users"
+                                    <p className='text-xl w-full flex justify-center items-center'>No Client Users</p>
 
                                 }
                             </div>
@@ -236,7 +236,7 @@ function Client({ id, name}) {
 
                                     :
 
-                                    "no current contacts"
+                                    <p className='text-xl w-full flex justify-center items-center'>No Contacts</p>
 
                                 }
                             </div>
