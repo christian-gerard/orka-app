@@ -19,7 +19,8 @@ function Task({deadline, description, category, status, project}) {
     },[])
 
 
-    console.log(projects.filter(proj => proj.id === project))
+    console.log(projects[0].id)
+    console.log(project)
 
     return (
         <div className='p-1 m-2 border flex flex-row justify-between items-center h-[40px]'>
@@ -32,7 +33,7 @@ function Task({deadline, description, category, status, project}) {
                     {projects ?
                        "TESTING"
                         :
-                        "No Project"
+                        "<><><>"
                     }
                 </p>
                 <p>{description ? description : "No Description"}</p>
