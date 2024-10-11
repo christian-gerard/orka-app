@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 function Project({id, name, deadline, description, project_type}) {
 
-    const { token, tasks } = useContext(UserContext)
+    const { token, tasks, projects, setProjects} = useContext(UserContext)
     const nav = useNavigate()
     const route = useParams()
     const [currentProject, setCurrentProject] = useState(null)
@@ -38,14 +38,15 @@ function Project({id, name, deadline, description, project_type}) {
         })
         .then(resp => {
             if(resp.status === 204){
-
+                // const updatedProj = projects.filter(proj => proj.id !== id)
+                // setProjects(updatedProj)
                 toast.success('Project Deleted')
                 nav('/projects')
             } else {
                 toast.error("Unable to Delete Project")
             }
         })
-        .catch( err => console.log(err))
+        // .catch( err => console.log(err))
 
 
     }
