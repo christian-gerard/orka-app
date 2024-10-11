@@ -141,6 +141,8 @@ function Project({id, name, deadline, description, project_type}) {
 
     }, [route.id])
 
+    console.log(currentProject.tasks.length)
+
 
     return(
         <>
@@ -186,7 +188,7 @@ function Project({id, name, deadline, description, project_type}) {
                         <div className='h-[10%] flex flex-row justify-between px-6'>
 
                             <p className='text-5xl flex items-center'>{currentProject.name ? currentProject.name : "name not known"}</p>
-                            <p className='text-3xl flex items-center'>{currentProject.deadline ? currentProject.deadline: "No Deadline"}</p>
+                            <p className='text-3xl flex items-center'>{currentProject.deadline ? currentProject.deadline.slice(5,12): "No Deadline"}</p>
 
                         </div>
 
@@ -219,7 +221,7 @@ function Project({id, name, deadline, description, project_type}) {
 
                                     :
 
-                                    "no current users"
+                                    <p className='text-xl w-full h-full flex justify-center items-center'>No Current Users</p>
 
                                 }
                             </div>
@@ -229,13 +231,13 @@ function Project({id, name, deadline, description, project_type}) {
                                 <div className='border h-full w-[60%]'>
                                     <h1>Tasks</h1>
                                     {
-                                        currentProject.tasks ?
+                                        currentProject.tasks.length !== 0 ?
 
                                         currentProject.tasks.map(task => <Task key={task.id} {...task} />)
 
                                         :
 
-                                        <p>No Project Tasks</p>
+                                        <p className='text-xl w-full h-full flex justify-center items-center'>No Current Tasks</p>
 
                                     }
                                 </div>
@@ -244,7 +246,7 @@ function Project({id, name, deadline, description, project_type}) {
                                     <h1 className='w-full h-[5%]'>Budget</h1>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
-                                        <h1 className='bg-red text-white text-5xl w-full h-full flex justify-center items-center'>WIP</h1>
+                                        <p className='text-xl w-full h-full flex justify-center items-center'>No Current Expenses</p>
 
                                     </div>
                                 </div>
