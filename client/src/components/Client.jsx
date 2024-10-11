@@ -175,7 +175,7 @@ function Client({ id, name}) {
 
                             </div>
 
-                            <div className='w-full h-[145%] border'>
+                            <div className='w-full h-[50%] border overflow-y-scroll scrollbar-thumb-ocean'>
                                 <h1>Current Projects</h1>
                                 {
                                     projects ?
@@ -216,7 +216,7 @@ function Client({ id, name}) {
                                 }
                             </div>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[35%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[15%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
                                 <p>Contacts</p>
                                 {currentClient.contacts ?
 
