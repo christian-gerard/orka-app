@@ -32,13 +32,13 @@ function Dashboard() {
                     <div>
 
                         {
-                            tasks ?
+                            tasks && tasks.length !== 0 ?
 
-                            tasks.map(task => <Task key={task.id} {...task} />)
+                            tasks.filter(task => task.status !== 'Complete').map(task => <Task key={task.id} {...task} />)
 
                             :
 
-                            "NO TASKS"
+                            <p className='text-xl w-full h-full flex justify-center items-center'>No Current Tasks</p>
                         }
 
                     </div>
