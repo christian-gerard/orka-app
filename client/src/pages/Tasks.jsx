@@ -109,7 +109,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                         >
                             <div className='sm:h-[40px] w-full lg:h-[80%] lg:w-full '>
 
-                                <div className='flex flex-col items-center pt-2  sm:flex-row  overflow-x-scroll scrollbar scrollbar-thumb-ocean'>
+                                <div className='flex flex-col items-center py-2  sm:flex-row'>
 
                                     <label className='ml-2'> Description </label>
                                     <Field
@@ -118,7 +118,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
                                         onChange={formik.handleChange}
                                         type='text'
                                         placeholder='Description'
-                                        className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                                        className='ml-2 mr-2 border h-[30px] w-[350px] lg:h-[40px]'
                                     />
 
                                     {formik.errors.description && formik.touched.description && (
@@ -209,7 +209,7 @@ function Tasks({id, name, deadline, description, project_type, budget}){
 
                             </div>
 
-                            <div className='bg-black w-[25%] lg:w-[10%] text-white h-full hover:text-ocean flex justify-center items-center h-full'>
+                            <div className='bg-black text-white h-full hover:text-ocean'>
 
                                 <button type='submit' className='flex items-center'> Add Task</button>
 

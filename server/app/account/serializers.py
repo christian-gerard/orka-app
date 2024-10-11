@@ -34,17 +34,17 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['id', 'name', 'description', 'industry', 'ein', 'address_one', 'address_two', 'city', 'state', 'zip_code', 'projects']
+        fields = ['id', 'name', 'description', 'industry', 'ein', 'address_one', 'address_two', 'city', 'state', 'zip_code', 'account', 'projects']
         read_only_fields = ["id"]
 
 
 class ClientDetailSerializer(ClientSerializer):
     """Serializes Account Detail Data"""
     projects = ProjectSerializer(many=True, read_only=True)
-    contacts = ContactSerializer(many=True, read_only=True)
+    # contacts = ContactSerializer(many=True, read_only=True)
 
     class Meta(ClientSerializer.Meta):
-        fields = ClientSerializer.Meta.fields + ['projects', 'contacts']
+        fields = ClientSerializer.Meta.fields + ['projects']
 
 
 class AccountSerializer(serializers.ModelSerializer):

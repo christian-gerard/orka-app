@@ -51,7 +51,7 @@ function Nav() {
             { navOpen ?
 
                 // Background Blur
-                <div className='fixed inset-0 backdrop-blur'>
+                <div className='fixed sm:hidden inset-0 backdrop-blur '>
 
                     {/* Menu */}
                     <div className='bg-black p-4'>
@@ -62,7 +62,12 @@ function Nav() {
                         </div>
 
                         {/* Page Navigation */}
-                        <div className='py-4'>
+                        <div className='py-4 flex flex-wrap'>
+
+                            <NavLink to='/' onClick={handleNav}>
+                                <span className='mx-2 italic text-lg hover:text-ocean' >Dashboard</span>
+                            </NavLink>
+
                             <NavLink to='/projects' onClick={handleNav}>
                                 <span className='mx-2 italic text-lg hover:text-ocean' >Projects</span>
                             </NavLink>

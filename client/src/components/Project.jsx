@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 function Project({id, name, deadline, description, project_type}) {
 
-    const { token, tasks } = useContext(UserContext)
+    const { token, tasks, projects, setProjects} = useContext(UserContext)
     const nav = useNavigate()
     const route = useParams()
     const [currentProject, setCurrentProject] = useState(null)
@@ -38,14 +38,15 @@ function Project({id, name, deadline, description, project_type}) {
         })
         .then(resp => {
             if(resp.status === 204){
-
+                // const updatedProj = projects.filter(proj => proj.id !== id)
+                // setProjects(updatedProj)
                 toast.success('Project Deleted')
                 nav('/projects')
-
-
-
+            } else {
+                toast.error("Unable to Delete Project")
             }
         })
+        // .catch( err => console.log(err))
 
 
     }
@@ -95,18 +96,15 @@ function Project({id, name, deadline, description, project_type}) {
         })
         .then(resp => {
             if(resp.ok){
-
                 return resp.json().then(data => {
 
                     setCurrentProject(data)
                     handleEditProject()
 
                 })
-
-
-
             }
         })
+        .catch( err => console.log(err))
 
 
 
@@ -131,8 +129,11 @@ function Project({id, name, deadline, description, project_type}) {
                     return resp.json().then( data => {
                         setCurrentProject(data)
                     })
+                } else {
+                    toast.error('Unable to Refresh')
                 }
             })
+            .catch( err => console.log(err))
 
         }
 
@@ -180,12 +181,12 @@ function Project({id, name, deadline, description, project_type}) {
                 { currentProject ?
 
 
-                    <div className=' h-[95%] w-full '>
+                    <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
                         <div className='h-[10%] flex flex-row justify-between px-6'>
 
                             <p className='text-5xl flex items-center'>{currentProject.name ? currentProject.name : "name not known"}</p>
-                            <p className='text-3xl flex items-center'>{currentProject.deadline ? currentProject.deadline: "No Deadline"}</p>
+                            <p className='text-3xl flex items-center'>{currentProject.deadline ? currentProject.deadline.slice(5,12): "No Deadline"}</p>
 
                         </div>
 
@@ -204,12 +205,12 @@ function Project({id, name, deadline, description, project_type}) {
                                 {currentProject.users ?
 
                                     currentProject.users.map(user =>
-                                        <div key={user.id} className='flex flex-row border'>
-                                            <div className='px-2'>
+                                        <div key={user.id} className='flex flex-row border items-center justify-between'>
+                                            <div className='px-2 text-md sm:text-xl bold flex flex-nowrap flex-row'>
                                                 <p>{user.first_name} {user.last_name}</p>
                                             </div>
 
-                                            <div className='px-2'>
+                                            <div className='px-2 underline bg-ocean text-white text-md sm:text-lg'>
                                                 <p>{user.email}</p>
                                             </div>
 
@@ -218,7 +219,7 @@ function Project({id, name, deadline, description, project_type}) {
 
                                     :
 
-                                    "no current users"
+                                    <p className='text-xl w-full h-full flex justify-center items-center'>No Current Users</p>
 
                                 }
                             </div>
@@ -228,13 +229,13 @@ function Project({id, name, deadline, description, project_type}) {
                                 <div className='border h-full w-[60%]'>
                                     <h1>Tasks</h1>
                                     {
-                                        currentProject.tasks ?
+                                        currentProject.tasks.length !== 0 ?
 
                                         currentProject.tasks.map(task => <Task key={task.id} {...task} />)
 
                                         :
 
-                                        <p>No Project Tasks</p>
+                                        <p className='text-md sm:text-xl w-full h-full flex justify-center items-center'>No Current Tasks</p>
 
                                     }
                                 </div>
@@ -243,7 +244,7 @@ function Project({id, name, deadline, description, project_type}) {
                                     <h1 className='w-full h-[5%]'>Budget</h1>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
-                                        <h1 className='bg-red text-white text-5xl w-full h-full flex justify-center items-center'>WIP</h1>
+                                        <p className='text-md sm:text-xl w-full h-full flex justify-center items-center'>No Current Expenses</p>
 
                                     </div>
                                 </div>
@@ -276,16 +277,16 @@ function Project({id, name, deadline, description, project_type}) {
 
                     {/* Project Box Header */}
                     <div className='flex flex-row justify-between h-[20%] border-b'>
-                        <p className='text-2xl'>{name ? name : 'Untitled'}</p>
-                        <p className='text-lg'>{deadline ? deadline : 'No Deadline'}</p>
+                        <p className='text-[0.8em] sm:text-xl'>{name ? name.slice(0,20) : 'Untitled'}</p>
+                        <p className='text-[0.8em] sm:text-lg'>{deadline ? deadline.slice(5,12) : 'No Deadline'}</p>
                     </div>
 
                     {/* Project Details */}
                     <div className='flex flex-col justify-between h-[80%]'>
-                        <p className='scrollbar overflow-scroll text-sm h-[70%]'>
-                            {description ? description : "No Description Available"}
+                        <p className='scrollbar overflow-scroll text-[0.8em] sm:text-lg h-[75%]'>
+                            {description ? description.slice(0,125) : "No Description Available"}
                         </p>
-                        <p className='h-[30%] text-lg'>
+                        <p className='h-[25%] text-[0.8em] sm:text-lg'>
                             {project_type ? project_type : 'No Type'}
                         </p>
                     </div>

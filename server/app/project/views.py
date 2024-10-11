@@ -36,7 +36,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Override the create method to add the authenticated user"""
-        serializer.save(users=[self.request.user])
+        serializer.save(users=self.request.user)
 
 class ExpenseViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
@@ -57,4 +57,4 @@ class ExpenseViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Override the create method to add the authenticated user"""
-        serializer.save(users=[self.request.user])
+        serializer.save(users=self.request.user)
