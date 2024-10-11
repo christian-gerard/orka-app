@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from 'react'
 import Close from '@mui/icons-material/Close';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -16,6 +17,7 @@ function Task({deadline, description, category, status, project}) {
             </div>
 
             <div className='w-[50%] flex flex-row justify-end gap-2'>
+                <p>{status ? status : "No Status"}</p>
                 <p>{category ? category : "No Category"}</p>
                 <p>{deadline ? deadline : "No Deadline"}</p>
                 <input type='checkbox' className='peer w-[25px] h-[25px] border-2 checked:text-white' />
