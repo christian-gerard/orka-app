@@ -5,7 +5,7 @@ import Close from '@mui/icons-material/Close';
 import CloseIcon from '@mui/icons-material/Close';
 
 function Task({id, deadline, description, category, status, project}) {
-    const { projects, updateProjects, tasks, token } = useContext(UserContext)
+    const { projects, updateProjects, tasks, token, setTasks } = useContext(UserContext)
 
     const handleStatus = () => {
         console.log("Handle Status Triggered")
@@ -23,6 +23,8 @@ function Task({id, deadline, description, category, status, project}) {
         })
         .then(resp => {
             if(resp.ok){
+                const newTasks = tasks.filter(task => task.id !== id)
+                setTasks(newTasks)
                 toast.success(`Task Deleted`)
             }
         })
