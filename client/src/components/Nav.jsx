@@ -64,7 +64,7 @@ function Nav() {
                         {/* Page Navigation */}
                         <div className='py-4 flex flex-wrap'>
 
-                            <NavLink to='/dashboard' onClick={handleNav}>
+                            <NavLink to='/' onClick={handleNav}>
                                 <span className='mx-2 italic text-lg hover:text-ocean' >Dashboard</span>
                             </NavLink>
 
