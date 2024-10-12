@@ -90,10 +90,19 @@ function Budget({id, name, deadline, description, project_type, budget, client, 
             :
 
             <NavLink to={`/budgets/${id}`} >
-                <div className='border w-full h-[100px]'>
-                    <p className='text-2xl'>{name ? name : "No Name"}</p>
-                    <p>{budget ? budget : "NO BUDGET"}</p>
-                    {expenses ? "YEP" : "No Current Expenses" }
+                <div className='border w-full h-[100px] flex justify-between flex-col'>
+                    <div className='flex flex-row items-center justify-between'>
+                        <p className='text-xl'>{name ? name : "No Name"}</p>
+                    </div>
+                    <div className='flex flex-row justify-between items-center'>
+                        {expenses ? <p>{expenses.length} Entries</p> : "---" }
+                        <div className='flex flex-row items-end'>
+                        <p className='text-xl sm:text-xl'>$95,000.00</p>
+                        <p className='text-xl sm:text-2xl'>/${budget ? budget : "NO BUDGET"}</p>
+
+
+                        </div>
+                    </div>
                 </div>
             </NavLink>
 

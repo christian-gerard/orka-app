@@ -134,8 +134,8 @@ function Budgets(){
 
                 <div className='h-[50%] lg:h-full w-full'>
                     <div className='border-l h-full overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
-                        <p>Project Budget</p>
-                        <div>
+                    <p className='h-[5%] text-2xl flex items-center bg-ocean text-white'>Project Budgets</p>
+                        <div className='h-[95%]'>
                             {
 
                                 projects ?
