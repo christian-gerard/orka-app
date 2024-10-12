@@ -35,9 +35,11 @@ const UserProvider = ({children}) => {
     const [accounts, setAccounts] =  useState(null)
     const [projects, setProjects] = useState(null)
     const [clients, setClients] = useState(null)
+    const [expenses, setExpenses] = useState(null)
     const [tasks, setTasks] =  useState(null)
     const [token, setToken] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+
 
     const updateProjects = () => {
       fetch('/api/account/projects/', {
@@ -118,6 +120,26 @@ const UserProvider = ({children}) => {
         )
     }
 
+    const updateExpenses = () => {
+      fetch('/api/project/expenses/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json' ,
+            'Authorization': `Token ${token}`
+        },
+        credentials: 'include',
+        })
+        .then( resp => {
+            if(resp.ok){
+                return resp.json().then(data => {
+                    setExpenses(data)
+                })
+            }
+        }
+
+        )
+    }
+
     useEffect(() => {
 
       fetch('/api/user/me/',{
@@ -166,7 +188,10 @@ const UserProvider = ({children}) => {
         setTasks,
         updateProjects,
         updateClients,
-        updateTasks
+        updateTasks,
+        expenses,
+        setExpenses,
+        updateExpenses
         }} >
         {children}
     </UserContext.Provider>

@@ -7,12 +7,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-function Budget({id, name, deadline, description, project_type, budget, client, expenses}){
-    const { token } = useContext(UserContext)
+function Budget({id, name, deadline, description, project_type, budget, client}){
+    const { token, expenses, updateExpenses } = useContext(UserContext)
     const route = useParams()
     const [currentBudget, setCurrentBudget] = useState(null)
 
     useEffect(() => {
+
+        updateExpenses()
 
         if(route.id !== undefined) {
             fetch(`/api/account/projects/${route.id}`,{
@@ -33,6 +35,8 @@ function Budget({id, name, deadline, description, project_type, budget, client, 
         }
 
     }, [route.id])
+
+    console.log(expenses)
 
     return(
 
@@ -63,8 +67,16 @@ function Budget({id, name, deadline, description, project_type, budget, client, 
                 <div className='h-[95%] w-full border flex flex-col'>
 
                     <div className='h-[95%] w-full flex flex-col overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
-                        <h1 className='bg-red text-white text-5xl w-full h-full flex justify-center items-center'>WIP</h1>
+                        {/* <h1 className='bg-red text-white text-5xl w-full h-full flex justify-center items-center'>WIP</h1> */}
+                        {
+                            expenses && expenses.length !== 0  ?
 
+                                expenses.filter(expense => expense.project === currentBudget.id).map(expense => <Expense key={expense.id} {...expense} />)
+
+                                :
+
+                                <></>
+                        }
                     </div>
 
                     <div className=' h-[5%] w-full flex flex-row'>
