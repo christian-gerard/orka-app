@@ -126,7 +126,7 @@ function Budgets(){
                     <div className=' h-[50%] w-full flex flex-col justify-center items-center'>
                         <div className='h-[100px] w-full flex flex-row justify-around items-center'>
                             <p className='text-2xl'>Total Spend</p>
-                            <p className='text-3xl bold bg-ocean rounded-lg flex justify-center text-white p-2'>$123,456.00</p>
+                            <p className='text-3xl bold bg-ocean rounded-lg flex justify-center text-white p-2'>$00</p>
                         </div>
                     </div>
 
