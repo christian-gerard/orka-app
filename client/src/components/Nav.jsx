@@ -17,7 +17,7 @@ import Account from '../components/Account'
 
 function Nav() {
 
-    const { setToken, accounts, updateAccounts } = useContext(UserContext)
+    const { logout, accounts, updateAccounts } = useContext(UserContext)
     const [navOpen, setNavOpen] = useState(false)
     const [acctMenuOpen, setAcctMenuOpen] = useState(false)
     const handleNav = () => setNavOpen(!navOpen)
@@ -26,10 +26,6 @@ function Nav() {
         setAcctMenuOpen(!acctMenuOpen)
     }
 
-    const logout = () => {
-        setToken(null)
-        toast.success('Logging Out')
-    }
 
     return(
         <div className='bg-black text-white'>

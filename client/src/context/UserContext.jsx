@@ -27,6 +27,21 @@ function setCookie(name, value, days = 7) {
   document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/`;
 }
 
+function clearAllCookies() {
+  // Get all the cookies as a single string
+  const cookies = document.cookie.split(";");
+
+  // Loop through all cookies and delete them
+  for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i];
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      // Set the cookie's expiry date to a past date to delete it
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+  }
+
+}
+
 export const UserContext = createContext()
 
 const UserProvider = ({children}) => {
@@ -140,6 +155,11 @@ const UserProvider = ({children}) => {
         )
     }
 
+    const logout = () => {
+      clearAllCookies()
+      toast.success('Logged Out')
+    }
+
     useEffect(() => {
 
       fetch('/api/user/me/',{
@@ -191,7 +211,8 @@ const UserProvider = ({children}) => {
         updateTasks,
         expenses,
         setExpenses,
-        updateExpenses
+        updateExpenses,
+        logout
         }} >
         {children}
     </UserContext.Provider>
