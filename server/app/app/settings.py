@@ -52,10 +52,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -163,5 +163,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://main.d2wh6ygix9usfx.amplifyapp.com"
 ]
 
-CSRF_USES_SESSIONS = True
-SESSION_COOKIE_AGE = 3600
+# CSRF_USES_SESSIONS = True
+# SESSION_COOKIE_AGE = 3600
+
+# CSRF_COOKIE_HTTPONLY = False
+# SESSION_COOKIE_HTTPONLY = True

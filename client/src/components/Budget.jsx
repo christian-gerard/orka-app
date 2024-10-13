@@ -7,12 +7,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-function Budget({id, name, deadline, description, project_type, budget, expenses}){
-    const { token } = useContext(UserContext)
+function Budget({id, name, deadline, description, project_type, budget, client}){
+    const { token, expenses, updateExpenses } = useContext(UserContext)
     const route = useParams()
     const [currentBudget, setCurrentBudget] = useState(null)
 
     useEffect(() => {
+
+        updateExpenses()
 
         if(route.id !== undefined) {
             fetch(`/api/account/projects/${route.id}`,{
@@ -33,6 +35,8 @@ function Budget({id, name, deadline, description, project_type, budget, expenses
         }
 
     }, [route.id])
+
+    console.log(expenses)
 
     return(
 
@@ -63,8 +67,16 @@ function Budget({id, name, deadline, description, project_type, budget, expenses
                 <div className='h-[95%] w-full border flex flex-col'>
 
                     <div className='h-[95%] w-full flex flex-col overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
-                        <h1 className='bg-red text-white text-5xl w-full h-full flex justify-center items-center'>WIP</h1>
+                        {/* <h1 className='bg-red text-white text-5xl w-full h-full flex justify-center items-center'>WIP</h1> */}
+                        {
+                            expenses && expenses.length !== 0  ?
 
+                                expenses.filter(expense => expense.project === currentBudget.id).map(expense => <Expense key={expense.id} {...expense} />)
+
+                                :
+
+                                <></>
+                        }
                     </div>
 
                     <div className=' h-[5%] w-full flex flex-row'>
@@ -89,11 +101,20 @@ function Budget({id, name, deadline, description, project_type, budget, expenses
 
             :
 
-            <NavLink to={`/budgets/${id}`} >
-                <div className='border w-full h-[100px]'>
-                    <p className='text-2xl'>{name ? name : "No Name"}</p>
-                    <p>{budget ? budget : "NO BUDGET"}</p>
-                    {expenses ? 'THEY HERE' : 'THEY NOT HERE' }
+            <NavLink >
+                <div className='border w-full h-[100px] flex justify-between flex-col'>
+                    <div className='flex flex-row items-center justify-between'>
+                        <p className='text-xl'>{name ? name : "No Name"}</p>
+                    </div>
+                    <div className='flex flex-row justify-between items-center'>
+                        {expenses ? <p>{expenses.length} Entries</p> : "---" }
+                        <div className='flex flex-row items-end'>
+                        <p className='text-xl sm:text-xl'>$00</p>
+                        <p className='text-xl sm:text-2xl'>/${budget ? budget : "NO BUDGET"}</p>
+
+
+                        </div>
+                    </div>
                 </div>
             </NavLink>
 
