@@ -11,6 +11,7 @@ from user.serializers import (
 )
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import logout
 
 class CreateUserView(generics.CreateAPIView):
@@ -39,6 +40,7 @@ class LogoutView(APIView):
     authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
+    @csrf_protect
     def post(self, request):
         """Log out the user by clearing the session"""
         logout(request)
