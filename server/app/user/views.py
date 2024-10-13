@@ -40,7 +40,7 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 @method_decorator(csrf_exempt, name='dispatch')
 class LogoutView(APIView):
     """Log out the authenticated user"""
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
 
