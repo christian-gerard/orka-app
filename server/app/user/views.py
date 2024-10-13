@@ -11,7 +11,8 @@ from user.serializers import (
 )
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.contrib.auth import logout
 
 class CreateUserView(generics.CreateAPIView):
@@ -35,12 +36,14 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
         """Retrieve and Return Auth User"""
         return self.request.user
 
+
+@method_decorator(csrf_exempt, name='dispatch')
 class LogoutView(APIView):
     """Log out the authenticated user"""
-    authentication_classes = [authentication.SessionAuthentication]
+    authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    @csrf_protect
+
     def post(self, request):
         """Log out the user by clearing the session"""
         logout(request)
