@@ -1,6 +1,7 @@
 
 import { createContext, useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 function getCookie(name) {
   let cookieValue = null;
@@ -41,6 +42,7 @@ function clearAllCookies() {
   }
 
 }
+
 
 export const UserContext = createContext()
 
@@ -156,8 +158,24 @@ const UserProvider = ({children}) => {
     }
 
     const logout = () => {
+      fetch('/api/user/logout/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' ,
+            'Authorization': `Token ${token}`
+        },
+        credentials: 'include',
+        })
+        .then( resp => {
+            if(resp.ok){
+              setUser(null)
+              toast.success('Logout Successful')
+            }
+        }
+
+        )
       clearAllCookies()
-      toast.success('Logged Out')
+
     }
 
     useEffect(() => {
