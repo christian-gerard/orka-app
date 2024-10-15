@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -159,9 +160,11 @@ SPECTACULAR_SETTINGS = {
 CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    "http://localhost:5731",
     "https://main.d2wh6ygix9usfx.amplifyapp.com"
 ]
+
+CORS_ALLOWED_CREDENTIALS=True
 
 # CSRF_USES_SESSIONS = True
 # SESSION_COOKIE_AGE = 3600
