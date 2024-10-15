@@ -155,6 +155,7 @@ const UserProvider = ({children}) => {
         }
 
         )
+        .catch(err => console.log(err))
     }
 
     const logout = () => {
