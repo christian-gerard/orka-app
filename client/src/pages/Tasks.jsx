@@ -57,6 +57,7 @@ function Tasks(){
         .then(resp => {
             if(resp.ok){
                 return resp.json().then(data => {
+                    formik.resetForm()
                     setTasks([data, ...tasks])
                     toast.success('Task Added')
                 })
@@ -133,8 +134,10 @@ function Tasks(){
                                             className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                                         >
                                             <option value=''>Select Type</option>
-                                            <option value='Social Media'>Finance</option>
-                                            <option value='Commercial'>Commercial</option>
+                                            <option value='Finance'>Finance</option>
+                                            <option value='Creative'>Creative</option>
+                                            <option value='Client'>Production</option>
+                                            <option value='Client'>Client</option>
 
                                         </Field>
 
@@ -231,7 +234,10 @@ function Tasks(){
 
                             <div>
 
-                                {tasks.filter(task => task.status !== 'Complete').map(task => <Task key={task.id} {...task} />)}
+                                {tasks
+                                .filter(task => task.status !== 'Complete')
+                                .sort((a, b) => a.status.localeCompare(b.status))
+                                .map(task => <Task key={task.id} {...task} />)}
 
                             </div>
 

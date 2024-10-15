@@ -34,10 +34,10 @@ function Task({id, deadline, description, category, status, project}) {
     const determineColor = () => {
         if(status === "Not Started") {
             return "bg-black text-white"
-        } else if (status === "DOING") {
-            return "bg-red"
+        } else if (status === "Doing") {
+            return "bg-doing"
         } else {
-            return "bg-ocean"
+            return "bg-ocean text-white"
         }
     }
 
@@ -83,7 +83,7 @@ function Task({id, deadline, description, category, status, project}) {
                 <div onClick={handleTaskDelete} className='mx-1'>
                     <CloseIcon />
                 </div>
-                <p className=' border border-black  p-[0.1em] mx-1'>
+                <p className=' border border-black  p-[0.1em] mx-1 flex flex-nowrap max-h-[30px]'>
                     {findProjectName()}
                 </p>
                 <p>{description ? description : "No Description"}</p>

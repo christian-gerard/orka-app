@@ -29,16 +29,19 @@ function Dashboard() {
 
                 <p className='h-[10%] text-2xl flex items-center bg-ocean text-white'>Outstanding Tasks</p>
                 <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
-                    <div>
+                    <div className='h-full w-full'>
 
                         {
                             tasks && tasks.length !== 0 ?
 
-                            tasks.filter(task => task.status !== 'Complete').map(task => <Task key={task.id} {...task} />)
+                            tasks
+                            .filter(task => task.status !== 'Complete')
+                            .sort((a, b) => a.status.localeCompare(b.status))
+                            .map(task => <Task key={task.id} {...task} />)
 
                             :
 
-                            <p className='text-xl w-full h-full flex justify-center items-center'>No Current Tasks</p>
+                            <p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Tasks</p>
                         }
 
                     </div>

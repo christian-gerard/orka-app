@@ -7,7 +7,7 @@ export default defineConfig(({ command }) => {
     return {
       server: {
         proxy: {
-          '/api': 'https://ec2-184-72-8-99.us-west-1.compute.amazonaws.com',
+          '/api': 'http://ec2-184-72-8-99.us-west-1.compute.amazonaws.com',
         },
       },
       build: {

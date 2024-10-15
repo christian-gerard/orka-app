@@ -10,6 +10,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 function Project({id, name, deadline, description, project_type}) {
 
@@ -246,7 +248,7 @@ function Project({id, name, deadline, description, project_type}) {
                                     <h1 className='w-full h-[5%]'>Budget</h1>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
-                                        <p className='text-md sm:text-xl w-full h-full flex justify-center items-center'>No Current Expenses</p>
+                                        <p className='w-full h-full flex justify-center items-center text-white text-6xl bg-red'>" WIP "</p>
 
                                     </div>
                                 </div>
@@ -264,7 +266,11 @@ function Project({id, name, deadline, description, project_type}) {
 
                     :
 
-                    <p>LOADING</p>
+                    <div className='w-full h-full flex justify-center items-center'>
+                        <Box sx={{ display: 'flex' }}>
+                            <CircularProgress size="125px" color='ocean' />
+                        </Box>
+                    </div>
 
                 }
 
@@ -279,7 +285,7 @@ function Project({id, name, deadline, description, project_type}) {
 
                     {/* Project Box Header */}
                     <div className='flex flex-row justify-between h-[20%] border-b text-white bg-ocean p-1'>
-                        <p className='text-[0.8em] sm:text-xl'>{name ? name.slice(0,20) : 'Untitled'}</p>
+                        <p className='text-[0.8em] sm:text-xl'>{name ? name.slice(0,30) : 'Untitled'}</p>
                         <p className='text-[0.8em] sm:text-lg'>{deadline ? deadline.slice(5,12) : 'No Deadline'}</p>
                     </div>
 
