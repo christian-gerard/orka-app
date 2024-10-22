@@ -271,7 +271,7 @@ function Client({ id, name}) {
                 <div className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean'>
                 </div>
                 <p className='text-md sm:text-2xl'>{name ? name : 'UNNAMED'}</p>
-                <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p>
+                {/* <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p> */}
             </NavLink>
 
         }

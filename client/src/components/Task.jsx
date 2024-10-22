@@ -77,19 +77,19 @@ function Task({id, deadline, description, category, status, project}) {
 
 
     return (
-        <div className='p-1 m-2 border flex flex-row justify-between items-center h-[40px]'>
+        <div className='p-1 m-2 border flex flex-row justify-between items-center h-[40px] text-sm'>
 
-            <div className='w-[50%] flex flex-row items-center'>
+            <div className='w-[70%] flex flex-row items-center'>
                 <div onClick={handleTaskDelete} className='mx-1'>
                     <CloseIcon />
                 </div>
-                <p className=' border border-black  p-[0.1em] mx-1 flex flex-nowrap max-h-[30px]'>
+                <p className=' border border-black  text-lg p-[0.1em] mx-1 flex flex-nowrap max-h-[30px]'>
                     {findProjectName()}
                 </p>
                 <p>{description ? description : "No Description"}</p>
             </div>
 
-            <div className='w-[50%] flex flex-row justify-end gap-2'>
+            <div className='w-[30%] flex flex-row justify-end gap-2'>
                 <p className={determineColor()}>{status ? status : "No Status"}</p>
                 <p>{deadline ? deadline.slice(5,11) : "No Deadline"}</p>
                 <input type='checkbox' className='peer w-[25px] h-[25px] border-2 checked:text-white' onClick={handleStatus} />

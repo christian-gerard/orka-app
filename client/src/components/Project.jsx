@@ -397,8 +397,7 @@ function Project({id, name, deadline, description, project_type}) {
                                         onChange={formik.handleChange}
                                         placeholder='Budget'
                                         className='border m-2 p-2'
-                                        step='1000'
-                                        min="100"
+                                        min="1000"
                                         max="100000000"
                                     >
 
