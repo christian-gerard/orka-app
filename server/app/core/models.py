@@ -38,12 +38,9 @@ class UserManager(BaseUserManager):
 class AccountManager(models.Manager):
     """Manager for Accounts"""
 
-    def create_account(self, name, type, user, **extra_fields):
+    def create_account(self, name, type, **extra_fields):
         """Create, Save and Return a New Account"""
-        if not user:
-            raise ValueError("Accounts must include at least 1 user")
         account = self.model(name=name, type=type, **extra_fields)
-        account.users.set([user])
         account.save(using=self._db)
 
         return account
@@ -66,11 +63,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=250, unique=True)
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255, default="Last")
+    last_name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     account = models.ForeignKey(
         Account,
         related_name='users',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        default=1
     )
 
     objects = UserManager()
@@ -93,7 +93,7 @@ class Client(models.Model):
     city = models.CharField(max_length=300)
     state = models.CharField(max_length=300)
     zip_code = models.CharField(max_length=300)
-    country = models.CharField(max_length=300)
+    country = models.CharField(max_length=300, default="USA")
 
     account = models.ForeignKey(
         Account,
@@ -167,15 +167,21 @@ class Expense(models.Model):
         max_digits=200
     )
     category = models.CharField(max_length=255)
+    status = models.CharField(max_length=300)
 
     project = models.ForeignKey(
         Project,
-        related_name='project_expenses',
+        null=True,
+        blank=True,
+        related_name='expenses',
         on_delete=models.CASCADE,
     )
     budget = models.ForeignKey(
         Budget,
-        related_name='budget_expenses'
+        null=True,
+        blank=True,
+        related_name='expenses',
+        on_delete=models.CASCADE
     )
 
     def __str__(self):

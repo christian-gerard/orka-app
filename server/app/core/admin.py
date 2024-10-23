@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
     ordering = ['id']
     list_display = ['email']
     fieldsets = (
-        (None, {'fields': ('email', 'password', 'accounts')}),
+        (None, {'fields': ('email', 'password')}),
         (
             _('Permissions'),
             {
@@ -49,7 +49,6 @@ class AccountAdmin(admin.ModelAdmin):
     """Define the admin pages for Accounts"""
     ordering = ['id']
     list_display = ['name', 'type']
-    filter_horizontal = ('users',)
     fieldsets = (
         (None, {'fields': ('name', 'type')}),
     )
@@ -71,5 +70,6 @@ admin.site.register(models.Account, AccountAdmin)
 admin.site.register(models.Client)
 admin.site.register(models.Project)
 admin.site.register(models.Contact)
+admin.site.register(models.Budget)
 admin.site.register(models.Expense)
 admin.site.register(models.Task)
