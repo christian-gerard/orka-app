@@ -3,26 +3,49 @@ Views for Account API
 """
 
 from rest_framework import viewsets, mixins
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from core.models import Contact
+from core.models import Client, Contact
 from client.serializers import (
+    ClientSerializer,
+    ClientDetailSerializer,
     ContactSerializer,
     ContactDetailSerializer
 )
+
+class ContactViewSet(viewsets.ModelViewSet):
+    """View for Manage Client APIs"""
+    serializer_class = ClientDetailSerializer
+    queryset = Client.objects.all()
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Retrieves Accounts for Authenticated User"""
+        return self.queryset.all().filter(user=self.request.user).order_by('id')
+
+    def get_serializer_class(self):
+        """Return the serializer per request"""
+        if self.action == 'list':
+            return ClientSerializer
+        return self.serializer_class
+
+    def perform_create(self, serializer):
+        """Override the create method to add the authenticated user"""
+        serializer.save(user=self.request.user)
 
 
 class ContactViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ContactDetailSerializer
     queryset = Contact.objects.all()
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
-        return self.queryset.all().filter(users=self.request.user).order_by('id')
+        return self.queryset.all().filter(user=self.request.user).order_by('id')
 
     def get_serializer_class(self):
         """Return the serializer per request"""
@@ -32,4 +55,4 @@ class ContactViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Override the create method to add the authenticated user"""
-        serializer.save(users=self.request.user)
+        serializer.save(user=self.request.user)

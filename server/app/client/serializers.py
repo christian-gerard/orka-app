@@ -3,7 +3,21 @@ Serializers for the Account API
 """
 from rest_framework import serializers
 
-from core.models import Contact
+from core.models import Client, Contact
+
+class ClientSerializer(serializers.ModelSerializer):
+    """Serializes Client Data"""
+
+    class Meta:
+        model = Client
+        fields = ['name', 'client_type']
+        read_only_fields = ["id"]
+
+class ClientDetailSerializer(serializers.ModelSerializer):
+    """Serializes Client Data"""
+
+    class Meta(ClientSerializer.Meta):
+        fields = ClientSerializer.Meta.fields
 
 
 class ContactSerializer(serializers.ModelSerializer):
