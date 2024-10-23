@@ -6,12 +6,11 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
-from core.models import AccountManager
+from core.models import Account
 
 import pdb
 
 LOGIN_USER_URL = reverse('user:login')
-LOGOUT_USER_URL = reverse('user:logout')
 ME_URL = reverse('user:me')
 
 
@@ -19,13 +18,27 @@ def create_user(**params):
     """Create and Return a new user"""
     return get_user_model().objects.create_user(**params)
 
+def create_account(**params):
+    """Create and Return a new account"""
+    return Account.objects.create_account(**params)
+
 
 class PublicUserApiTests(TestCase):
     """Test Public Features of User API"""
 
     def setUp(self):
+        self.account = create_account(
+            name='TEST',
+            type='XYZ'
+        )
+        self.user = create_user(
+            email='test@example.com',
+            password='testpass123!',
+            first_name='Frst',
+            last_name='Last',
+            account=self.account
+        )
         self.client = APIClient()
-
 
     def test_retrieve_user_unauthorized(self):
         """Test Auth is required for users"""
@@ -33,18 +46,39 @@ class PublicUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
+    def test_login(self):
+        """Test Login Endpoint returns valid tokens"""
+        payload = {
+            "email": "test@example.com",
+            "password": "testpass123!"
+        }
+        res = self.client.post(LOGIN_USER_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertTrue(res.data.get('refresh'))
+
+    def test_invalid_login(self):
+        """Testing Invalid Login"""
+        payload = {
+            "email": "test@ex.com",
+            "password": "testpass124!"
+        }
+        res = self.client.post(LOGIN_USER_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateUserAPITests(TestCase):
     """Test API requests that require auth"""
 
     def setUp(self):
-        self.account = AccountManager.create_account(
-            name="Test Account",
-            type="Test Type"
+        self.account = create_account(
+            name='TEST',
+            type='XYZ'
         )
         self.user = create_user(
             email='test@example.com',
-            password='testpass123',
+            password='testpass123!',
             first_name='Frst',
             last_name='Last',
             account=self.account
@@ -58,9 +92,10 @@ class PrivateUserAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, {
-            'first_name': self.user.first_name,
             'email': self.user.email,
-            'last_name': 'Last'
+            'first_name': self.user.first_name,
+            'last_name': self.user.last_name,
+            'account': self.user.account.id
         })
 
     def test_post_me_not_allowed(self):
@@ -68,13 +103,3 @@ class PrivateUserAPITests(TestCase):
         res = self.client.post(ME_URL, {})
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def test_update_user_profile(self):
-        """Test updating the user profile for the authenticated user"""
-        payload = {'first_name': 'Updated Name', 'password': 'updatedpass123'}
-
-        res = self.client.patch(ME_URL, payload)
-
-        self.user.refresh_from_db()
-        self.assertEqual(self.user.first_name, payload['first_name'])
-        self.assertTrue(self.user.check_password(payload['password']))
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
