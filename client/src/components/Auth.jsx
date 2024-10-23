@@ -65,7 +65,7 @@ function Auth() {
           last_name:formData.lastName
         }
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/user/create/`,{
+        fetch(`/api/user/create/`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ function Auth() {
           password: formData.loginPassword
         }
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/user/session/`,{
+        fetch(`/api/user/session/`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

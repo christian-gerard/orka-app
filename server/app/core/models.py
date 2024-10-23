@@ -38,12 +38,9 @@ class UserManager(BaseUserManager):
 class AccountManager(models.Manager):
     """Manager for Accounts"""
 
-    def create_account(self, name, type, user, **extra_fields):
+    def create_account(self, name, type, **extra_fields):
         """Create, Save and Return a New Account"""
-        if not user:
-            raise ValueError("Accounts must include at least 1 user")
         account = self.model(name=name, type=type, **extra_fields)
-        account.users.set([user])
         account.save(using=self._db)
 
         return account
@@ -66,10 +63,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=250, unique=True)
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255, default="Last")
+    last_name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    accounts = models.ManyToManyField(Account, related_name='users')
+    account = models.ForeignKey(
+        Account,
+        related_name='users',
+        on_delete=models.CASCADE,
+        default=1
+    )
 
     objects = UserManager()
 
@@ -84,13 +86,14 @@ class Client(models.Model):
 
     name = models.CharField(max_length=255)
     description = models.TextField()
-    industry = models.CharField(max_length=255)
+    client_type = models.CharField(max_length=255)
     ein = models.CharField(max_length=10)
     address_one = models.CharField(max_length=300)
     address_two = models.CharField(max_length=300, default=None)
     city = models.CharField(max_length=300)
     state = models.CharField(max_length=300)
     zip_code = models.CharField(max_length=300)
+    country = models.CharField(max_length=300, default="USA")
 
     account = models.ForeignKey(
         Account,
@@ -109,10 +112,6 @@ class Project(models.Model):
     description = models.TextField()
     deadline = models.DateField()
     project_type = models.CharField(max_length=255)
-    budget = models.DecimalField(
-        decimal_places=2,
-        max_digits=200
-    )
 
     users = models.ManyToManyField(User, related_name='projects')
     client = models.ForeignKey(
@@ -131,12 +130,27 @@ class Contact(models.Model):
     last_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=255)
     role = models.CharField(max_length=255)
-    poc = models.BooleanField(default=False)
     description = models.TextField()
 
     client = models.ForeignKey(
         Client,
         related_name='contacts',
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.first_name
+
+
+class Budget(models.Model):
+    """Budget Model"""
+    description = models.CharField(max_length=255)
+    category = models.CharField(max_length=255)
+    amount = models.CharField(max_length=255)
+
+    project = models.ForeignKey(
+        Project,
+        related_name='budgets',
         on_delete=models.CASCADE
     )
 
@@ -153,11 +167,21 @@ class Expense(models.Model):
         max_digits=200
     )
     category = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)
+    status = models.CharField(max_length=300)
+
     project = models.ForeignKey(
         Project,
+        null=True,
+        blank=True,
         related_name='expenses',
         on_delete=models.CASCADE,
+    )
+    budget = models.ForeignKey(
+        Budget,
+        null=True,
+        blank=True,
+        related_name='expenses',
+        on_delete=models.CASCADE
     )
 
     def __str__(self):

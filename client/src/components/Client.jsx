@@ -9,6 +9,8 @@ import { object, string, array, number, bool } from "yup";
 import { toast } from 'react-hot-toast'
 import CloseIcon from '@mui/icons-material/Close';
 import Project from '../components/Project'
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 function Client({ id, name}) {
     const route = useParams()
@@ -175,12 +177,14 @@ function Client({ id, name}) {
 
                             </div>
 
-                            <div className='w-full h-[50%] border overflow-y-scroll scrollbar-thumb-ocean'>
-                                <h1>Current Projects</h1>
+                            <p className='text-xl'>Client Projects</p>
+                            <div className='w-full h-[50%] border scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
                                 {
                                     projects ?
 
-                                    projects.map(project => <Project key={project.id} {...project} />)
+                                    projects
+                                    .filter(project => project.client === currentClient.id)
+                                    .map(project => <Project key={project.id} {...project} />)
 
                                     :
 
@@ -192,8 +196,8 @@ function Client({ id, name}) {
 
 
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[15%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
-                                <p>Assigned Users</p>
+                            <p className='text-xl'>Assigned Users</p>
+                            <div className='h-[15%]  border'>
                                 {currentClient.users ?
 
                                     currentClient.users.map(user =>
@@ -211,13 +215,17 @@ function Client({ id, name}) {
 
                                     :
 
-                                    <p className='text-xl w-full flex justify-center items-center'>No Client Users</p>
+                                    <div className='w-full h-[95%] flex flex-col items-center'>
+
+                                        <p className='w-full h-full flex justify-center items-center text-white text-4xl bg-red'>" WIP "</p>
+
+                                    </div>
 
                                 }
                             </div>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] w-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
-                                <p>Contacts</p>
+                            <p className='text-xl'>Contacts</p>
+                            <div className=' scrollbar-thumb-ocean h-[25%] w-full  scrollbar-thumb-ocean border'>
                                 {currentClient.contacts ?
 
                                     currentClient.contacts.map(contact =>
@@ -235,7 +243,11 @@ function Client({ id, name}) {
 
                                     :
 
-                                    <p className='text-xl w-full flex justify-center items-center'>No Contacts</p>
+                                    <div className='w-full h-[95%] flex flex-col items-center'>
+
+                                        <p className='w-full h-full flex justify-center items-center text-white text-4xl bg-red'>" WIP "</p>
+
+                                    </div>
 
                                 }
                             </div>
@@ -244,8 +256,10 @@ function Client({ id, name}) {
 
                     :
 
-                    <div>
-                        <h1>Loading</h1>
+                    <div className='w-full h-full flex justify-center items-center'>
+                        <Box sx={{ display: 'flex' }}>
+                            <CircularProgress size="125px" color='ocean' />
+                        </Box>
                     </div>
 
                 }
@@ -257,7 +271,7 @@ function Client({ id, name}) {
                 <div className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean'>
                 </div>
                 <p className='text-md sm:text-2xl'>{name ? name : 'UNNAMED'}</p>
-                <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p>
+                {/* <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p> */}
             </NavLink>
 
         }

@@ -76,9 +76,9 @@ function Nav() {
                                 <span className='mx-2 italic text-lg hover:text-ocean' >Tasks</span>
                             </NavLink>
 
-                            <NavLink to='/budgets' onClick={handleNav}>
+                            {/* <NavLink to='/budgets' onClick={handleNav}>
                                 <span className='mx-2 italic text-lg hover:text-ocean' >Budgets</span>
-                            </NavLink>
+                            </NavLink> */}
 
                         </div>
 
@@ -129,7 +129,7 @@ function Nav() {
                             <TaskAltIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
-                        <NavLink to='/budgets' className='hover:text-ocean'>
+                        <NavLink to='/budgets' className='text-red hover:text-black'>
                             <AttachMoneyIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
@@ -137,11 +137,11 @@ function Nav() {
 
                     <div className='flex flex-col gap-4 bg-black pb-8 border-t border-white'>
 
-                        <div className='hover:text-ocean flex justify-center mt-4' onClick={handleAcctMenu}>
+                        <div className='text-red hover:text-black flex justify-center mt-4' onClick={handleAcctMenu}>
                             <div className='h-[45px] w-[45px] rounded-[100%] border flex items-center justify-center text-[1em]'> J&M </div>
                         </div>
 
-                        <NavLink to='/settings' className='hover:text-ocean'>
+                        <NavLink to='/settings' className='text-red hover:text-black'>
                             <SettingsIcon style={{width: '45px', height: '45px'}} />
                         </NavLink>
 

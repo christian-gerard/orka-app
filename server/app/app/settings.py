@@ -35,7 +35,6 @@ ALLOWED_HOSTS.extend(
 )
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,7 +48,10 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'core',
     'user',
-    'account',
+    'client',
+    'expense',
+    'project',
+    'task'
 ]
 
 MIDDLEWARE = [
@@ -82,6 +84,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'app.wsgi.application'
+
+REST_FRAMEWORK = {
+    # Other existing settings
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ),
+
+    # Optional: You can add other DRF settings as needed
+}
 
 
 # Database
