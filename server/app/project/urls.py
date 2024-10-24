@@ -12,9 +12,10 @@ from rest_framework.routers import DefaultRouter
 from project import views
 
 router = DefaultRouter()
-router.register('tasks', views.TaskViewSet)
-router.register('expenses', views.ExpenseViewSet)
 router.register('projects', views.ProjectViewSet)
+router.register('tasks', views.TaskViewSet)
+router.register('budgets', views.BudgetViewSet)
+router.register('expenses', views.ExpenseViewSet)
 
 app_name = 'project'
 

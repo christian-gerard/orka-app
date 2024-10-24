@@ -46,6 +46,62 @@ class AccountManager(models.Manager):
         return account
 
 
+class ClientManager(models.Manager):
+    """Client Manager"""
+
+    def create_client(
+            self,
+            name,
+            description,
+            client_type,
+            ein,
+            address_one,
+            address_two,
+            city,
+            state,
+            zip_code,
+            account,
+            **args):
+        client = self.model(
+            name=name,
+            description=description,
+            client_type=client_type,
+            ein=ein,
+            address_one=address_one,
+            address_two=address_two,
+            city=city,
+            state=state,
+            zip_code=zip_code,
+            account=account,
+            **args
+        )
+        client.save(using=self._db)
+
+        return client
+
+
+class ProjectManager(models.Manager):
+    pass
+
+
+class ContactManager(models.Manager):
+    """Contact Model Manager"""
+    def create_contact(self, client, **params):
+        defaults = {
+            "first_name":"Test",
+            "last_name":"Testington",
+            "phone_number":"000-000-0000",
+            "role":"Project Manager",
+            "description":"Client Description...",
+            "client": client
+        }
+        defaults.update(params)
+
+        contact = Contact.objects.create(**defaults)
+
+        return contact
+
+
 class Account(models.Model):
     """Account Objects"""
 
@@ -74,7 +130,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     objects = UserManager()
-
     USERNAME_FIELD = 'email'
 
     def __str__(self):
@@ -100,6 +155,8 @@ class Client(models.Model):
         related_name='clients',
         on_delete=models.CASCADE
     )
+
+    objects=ClientManager()
 
     def __str__(self):
         return self.name
@@ -137,6 +194,8 @@ class Contact(models.Model):
         related_name='contacts',
         on_delete=models.CASCADE
     )
+
+    objects = ContactManager()
 
     def __str__(self):
         return self.first_name

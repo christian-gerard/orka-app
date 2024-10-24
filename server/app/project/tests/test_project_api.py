@@ -21,14 +21,11 @@ from account.serializers import (
 )
 
 
-ACCOUNT_URL = reverse("account:account-list")
-
-PROJECT_URL = "/api/account/projects/"
+PROJECT_URL = reverse('project:project-list')
 
 def detail_url(account_id):
     """Return detail url for specific account"""
-    return reverse('account:account-detail', args=[account_id])
-
+    return reverse(':account-detail', args=[account_id])
 
 def create_account(user, **params):
     """Create and Return sample account"""
