@@ -23,7 +23,6 @@ class ClientViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
-        pdb.set_trace()
         return self.queryset.all().filter(account=self.request.user.account).order_by('id')
 
     def get_serializer_class(self):

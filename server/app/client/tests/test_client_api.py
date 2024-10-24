@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Account, Client
+from client.serializers import ClientSerializer
 import pdb
 
 CLIENT_URL = reverse("client:client-list")
@@ -102,15 +103,18 @@ class PrivateClientAPITests(TestCase):
     def test_get_client_list(self):
         """Testing Client List GET Method"""
         res = self.client.get(CLIENT_URL)
-        pdb.set_trace()
+        queryset = Client.objects.filter(account=self.account)
+        serializer = ClientSerializer(queryset, many=True)
+
         # Response is Healthy
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         # Returns ONLY User Account Clients
+        self.assertEqual(res.data, serializer.data)
 
     def test_get_client_detail(self):
         """Testing Client List GET Method"""
         res = self.client.get(detail_url(self.client_1.id))
-
+        pdb.set_trace()
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
 
