@@ -13,6 +13,7 @@ from client.serializers import ClientSerializer, ClientDetailSerializer
 import pdb
 
 CLIENT_URL = reverse("client:client-list")
+CONTACT_URL = CLIENT_URL + "contacts/"
 
 def detail_url(client_id):
     """Return detail url for specific account"""
@@ -23,6 +24,10 @@ def create_account(**params):
     return Account.objects.create_account(**params)
 
 def create_client(**params):
+    """Create and Return a new client"""
+    return Client.objects.create_client(**params)
+
+def create_contact(**params):
     """Create and Return a new client"""
     return Client.objects.create_client(**params)
 
@@ -173,3 +178,8 @@ class PrivateClientAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data["name"], "PATCH")
+
+    def test_create_contact(self):
+        """Test Contact POST Method"""
+
+        pass
