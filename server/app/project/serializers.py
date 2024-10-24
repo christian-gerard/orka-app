@@ -7,39 +7,6 @@ from core.models import Task, Expense, Project
 from user.serializers import UserSerializer
 
 
-class TaskSerializer(serializers.ModelSerializer):
-    """Serializes Account Data"""
-
-    class Meta:
-        model = Task
-        fields = ['id', 'deadline', 'description', 'category', 'status', 'project']
-        read_only_fields = ["id"]
-
-
-class TaskDetailSerializer(TaskSerializer):
-    """Serializes Account Detail Data"""
-    # users = UserSerializer(many=True, read_only=True)
-
-    class Meta(TaskSerializer.Meta):
-        fields = TaskSerializer.Meta.fields
-
-
-class ExpenseSerializer(serializers.ModelSerializer):
-    """Serializes Account Data"""
-
-    class Meta:
-        model = Expense
-        fields = ['id', 'date', 'description', 'amount', 'category', 'status', 'project']
-        read_only_fields = ["id"]
-
-
-class ExpenseDetailSerializer(ExpenseSerializer):
-    """Serializes Account Detail Data"""
-
-    class Meta(TaskSerializer.Meta):
-        fields = TaskSerializer.Meta.fields
-
-
 class ProjectSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
 
