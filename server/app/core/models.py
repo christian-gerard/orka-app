@@ -46,6 +46,40 @@ class AccountManager(models.Manager):
         return account
 
 
+class ClientManager(models.Manager):
+    """Client Manager"""
+
+    def create_client(
+            self,
+            name,
+            description,
+            client_type,
+            ein,
+            address_one,
+            address_two,
+            city,
+            state,
+            zip_code,
+            account,
+            **args):
+        client = self.model(
+            name=name,
+            description=description,
+            client_type=client_type,
+            ein=ein,
+            address_one=address_one,
+            address_two=address_two,
+            city=city,
+            state=state,
+            zip_code=zip_code,
+            account=account,
+            **args
+        )
+        client.save(using=self._db)
+
+        return client
+
+
 class Account(models.Model):
     """Account Objects"""
 
@@ -99,6 +133,8 @@ class Client(models.Model):
         related_name='clients',
         on_delete=models.CASCADE
     )
+
+    objects=ClientManager()
 
     def __str__(self):
         return self.name

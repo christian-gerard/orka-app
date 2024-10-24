@@ -1,8 +1,8 @@
 """
-Views for Account API
+Views for Client API
 """
 
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from core.models import Client, Contact
@@ -12,16 +12,19 @@ from client.serializers import (
     ContactSerializer,
     ContactDetailSerializer
 )
+import pdb
 
 class ClientViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ClientDetailSerializer
     queryset = Client.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
-        return self.queryset.all().order_by('id')
+        pdb.set_trace()
+        return self.queryset.all().filter(account=self.request.user.account).order_by('id')
 
     def get_serializer_class(self):
         """Return the serializer per request"""
@@ -38,6 +41,7 @@ class ContactViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ContactDetailSerializer
     queryset = Contact.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""

@@ -1,20 +1,21 @@
 """
-Tests for the user api
+Tests Client API
 """
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from rest_framework.test import APIClient
+
 from rest_framework import status
+from rest_framework.test import APIClient
+
 from core.models import Account, Client
+import pdb
 
-LOGIN_USER_URL = reverse('user:login')
-ME_URL = reverse('user:me')
+CLIENT_URL = reverse("client:client-list")
 
-
-def create_user(**params):
-    """Create and Return a new user"""
-    return get_user_model().objects.create_user(**params)
+def detail_url(client_id):
+    """Return detail url for specific account"""
+    return reverse('client:client-detail', args=[client_id])
 
 def create_account(**params):
     """Create and Return a new account"""
@@ -22,86 +23,102 @@ def create_account(**params):
 
 def create_client(**params):
     """Create and Return a new client"""
-    return Client(**params).save()
+    return Client.objects.create_client(**params)
 
 
-
-class PublicUserApiTests(TestCase):
-    """Test Public Features of User API"""
+class PublicClientAPITests(TestCase):
+    """Test Unauthenticated API Requests"""
 
     def setUp(self):
-        self.account = create_account(
-            name='TEST',
-            type='XYZ'
-        )
-        self.user = create_user(
-            email='test@example.com',
-            password='testpass123!',
-            first_name='Frst',
-            last_name='Last',
-            account=self.account
-        )
         self.client = APIClient()
 
-    def test_retrieve_user_unauthorized(self):
-        """Test Auth is required for users"""
-        res = self.client.get(ME_URL)
+    def test_auth_required(self):
+        """Test Auth is required to call API"""
+
+        res = self.client.get(CLIENT_URL)
 
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_login(self):
-        """Test Login Endpoint returns valid tokens"""
-        payload = {
-            "email": "test@example.com",
-            "password": "testpass123!"
-        }
-        res = self.client.post(LOGIN_USER_URL, payload)
 
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertTrue(res.data.get('refresh'))
-
-    def test_invalid_login(self):
-        """Testing Invalid Login"""
-        payload = {
-            "email": "test@ex.com",
-            "password": "testpass124!"
-        }
-        res = self.client.post(LOGIN_USER_URL, payload)
-
-        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
-
-
-class PrivateUserAPITests(TestCase):
-    """Test API requests that require auth"""
+class PrivateClientAPITests(TestCase):
+    """Test Authorized Requests to Client API"""
 
     def setUp(self):
+        self.client = APIClient()
         self.account = create_account(
             name='TEST',
             type='XYZ'
         )
-        self.user = create_user(
+        self.account_other = create_account(
+            name='UNAUTHORIZED',
+            type='UNAUTHORIZED'
+        )
+        self.user = get_user_model().objects.create_user(
             email='test@example.com',
             password='testpass123!',
             first_name='Frst',
             last_name='Last',
             account=self.account
         )
-        self.client = APIClient()
-        self.client.force_authenticate(user=self.user)
+        self.client.force_authenticate(self.user)
 
-    def test_retrieve_profile_success(self):
-        """Test retrieving profile for logged in user"""
-        res = self.client.get(ME_URL)
+        self.client_1 = create_client(
+            name="TEST CLIENT",
+            description="TEST DESCRIPTION",
+            client_type="TEST TYPE",
+            ein="99-9999999",
+            address_one="TEST STREET",
+            address_two="TEST SUITE",
+            city="TEST CITY",
+            state="TEST STATE",
+            zip_code="99999",
+            account=self.account
+        )
+        self.client_2 = create_client(
+            name="2 TEST CLIENT",
+            description="2 TEST DESCRIPTION",
+            client_type="2 TEST TYPE",
+            ein="99-9999999",
+            address_one="2 TEST STREET",
+            address_two="2 TEST SUITE",
+            city="2 TEST CITY",
+            state="2 TEST STATE",
+            zip_code="99999",
+            account=self.account
+        )
+        self.client_other = create_client(
+            name="TEST CLIENT",
+            description="TEST DESCRIPTION",
+            client_type="TEST TYPE",
+            ein="99-9999999",
+            address_one="2 TEST STREET",
+            address_two="2 TEST SUITE",
+            city="2 TEST CITY",
+            state="2 TEST STATE",
+            zip_code="99999",
+            account=self.account_other
+        )
+
+    def test_get_client_list(self):
+        """Testing Client List GET Method"""
+        res = self.client.get(CLIENT_URL)
+        pdb.set_trace()
+        # Response is Healthy
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        # Returns ONLY User Account Clients
+
+    def test_get_client_detail(self):
+        """Testing Client List GET Method"""
+        res = self.client.get(detail_url(self.client_1.id))
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, {
-            'email': self.user.email,
-            'first_name': self.user.first_name,
-            'last_name': self.user.last_name,
-            'account': self.user.account.id
-        })
 
-    def test_post_me_not_allowed(self):
-        """Test that POST method is not allowed on ME endpoint"""
-        res = self.client.post(ME_URL, {})
-        self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_create_client(self):
+        """Test Client POST Method"""
+        pass
+
+
+
+
+

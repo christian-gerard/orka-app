@@ -10,14 +10,14 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['name', 'client_type', 'address_one', 'address_two', 'zip_code', 'state', 'country', 'account']
+        fields = ['name', 'client_type']
         read_only_fields = ["id"]
 
 class ClientDetailSerializer(serializers.ModelSerializer):
     """Serializes Client Data"""
 
     class Meta(ClientSerializer.Meta):
-        fields = ClientSerializer.Meta.fields
+        fields = ClientSerializer.Meta.fields + ["description", "address_one", "address_two", "city", "zip_code", "country", "ein"]
 
 
 class ContactSerializer(serializers.ModelSerializer):
