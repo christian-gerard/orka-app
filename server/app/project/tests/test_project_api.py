@@ -23,9 +23,9 @@ from account.serializers import (
 
 PROJECT_URL = reverse('project:project-list')
 
-def detail_url(account_id):
-    """Return detail url for specific account"""
-    return reverse(':account-detail', args=[account_id])
+def list_url(model_name):
+    """Return the List URL"""
+    return reverse(f"{model_name}:{model_name}-list")
 
 def create_account(user, **params):
     """Create and Return sample account"""
