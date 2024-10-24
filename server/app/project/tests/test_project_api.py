@@ -123,22 +123,19 @@ class PrivateProjectAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    # def test_create_project(self):
-    #     """Test Adding a project """
+    def test_create_project(self):
+        """Test Adding a project """
 
-    #     create_project(self.user)
 
-    #     client = create_client(self.user)
+        payload = {
+            "name": "Example Project",
+            "deadline": "2024-10-02",
+            "description": "Example description of project",
+            "project_type": "exampleType",
+            "client": self.client_1.id
+        }
 
-    #     payload = {
-    #         "name": "Example Project",
-    #         "deadline": "2024-10-02",
-    #         "description": "Example description of project",
-    #         "project_type": "exampleType",
-    #         "budget": 1000.00,
-    #         "client": client.id
-    #     }
 
-    #     res = self.client.post(PROJECT_URL, payload)
+        res = self.client.post(PROJECT_URL, payload)
 
-    #     self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
