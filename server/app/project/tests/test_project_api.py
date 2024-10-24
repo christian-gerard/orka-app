@@ -61,11 +61,58 @@ class PrivateProjectAPITests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        # self.user = get_user_model().objects.create_user(
-        #     "test@example.com",
-        #     "testpass123"
-        # )
-        # self.client.force_authenticate(self.user)
+        self.account = create_account(
+            name='TEST',
+            type='XYZ'
+        )
+        self.account_other = create_account(
+            name='UNAUTHORIZED',
+            type='UNAUTHORIZED'
+        )
+        self.user = get_user_model().objects.create_user(
+            email='test@example.com',
+            password='testpass123!',
+            first_name='Frst',
+            last_name='Last',
+            account=self.account
+        )
+        self.client.force_authenticate(self.user)
+        self.client_1 = create_client(
+            name="TEST CLIENT",
+            description="TEST DESCRIPTION",
+            client_type="TEST TYPE",
+            ein="99-9999999",
+            address_one="TEST STREET",
+            address_two="TEST SUITE",
+            city="TEST CITY",
+            state="TEST STATE",
+            zip_code="99999",
+            account=self.account
+        )
+        self.client_2 = create_client(
+            name="2 TEST CLIENT",
+            description="2 TEST DESCRIPTION",
+            client_type="2 TEST TYPE",
+            ein="99-9999999",
+            address_one="2 TEST STREET",
+            address_two="2 TEST SUITE",
+            city="2 TEST CITY",
+            state="2 TEST STATE",
+            zip_code="99999",
+            account=self.account
+        )
+        self.client_other = create_client(
+            name="TEST CLIENT",
+            description="TEST DESCRIPTION",
+            client_type="TEST TYPE",
+            ein="99-9999999",
+            address_one="2 TEST STREET",
+            address_two="2 TEST SUITE",
+            city="2 TEST CITY",
+            state="2 TEST STATE",
+            zip_code="99999",
+            account=self.account_other
+        )
 
     # def test_retrieve_project_list(self):
     #     """Test Retrieving a list of accounts"""
