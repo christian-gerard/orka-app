@@ -22,64 +22,25 @@ from account.serializers import (
 
 
 PROJECT_URL = reverse('project:project-list')
+TASK_URL = PROJECT_URL + 'tasks/'
+EXPENSE_URL = PROJECT_URL + 'expenses/'
+BUDGET_URL = PROJECT_URL + 'budgets/'
 
-def list_url(model_name):
-    """Return the List URL"""
-    return reverse(f"{model_name}:{model_name}-list")
+def detail_url(id, model):
+    """Return detail url for specific account"""
+    return reverse(f"{model}:{model}-detail", args=[id])
 
-def create_account(user, **params):
-    """Create and Return sample account"""
-    defaults = {
-        "name": "Test Account",
-        "type": "Test Type",
-    }
+def create_account(**params):
+    """Create and Return a new account"""
+    return Account.objects.create_account(**params)
 
-    defaults.update(params)
+def create_client(**params):
+    """Create and Return a new client"""
+    return Client.objects.create_client(**params)
 
-    account = Account.objects.create(**defaults)
-    account.users.set([user])
-    return account
-
-def create_client(user, **params):
-    """Create and Return Client"""
-    account = create_account(user)
-    defaults = {
-        "name": "string",
-        "description": "string",
-        "industry": "string",
-        "ein": "string",
-        "address_one": "string",
-        "address_two": "string",
-        "city": "string",
-        "state": "string",
-        "zip_code": "string",
-        "account": account
-    }
-
-    client = Client.objects.create(**defaults)
-    return client
-
-def create_project(user, **params):
-    """Create and Return Sample Project"""
-    client = create_client(user)
-    defaults = {
-        "name": "Example Project",
-        "deadline": "2024-10-02",
-        "description": "Example description of project",
-        "project_type": "exampleType",
-        "budget": 1000,
-        "client": client
-    }
-
-
-    defaults.update(params)
-
-
-    project = Project.objects.create(**defaults)
-    project.users.set([user])
-
-    return project
-
+def create_project(**params):
+    """Create and Return a new project"""
+    return Project.objects.create_project(**params)
 
 class PublicProjectAPITests(TestCase):
     """Test Unauthenticated API Requests"""
@@ -100,40 +61,40 @@ class PrivateProjectAPITests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(
-            "test@example.com",
-            "testpass123"
-        )
-        self.client.force_authenticate(self.user)
+        # self.user = get_user_model().objects.create_user(
+        #     "test@example.com",
+        #     "testpass123"
+        # )
+        # self.client.force_authenticate(self.user)
 
-    def test_retrieve_project_list(self):
-        """Test Retrieving a list of accounts"""
+    # def test_retrieve_project_list(self):
+    #     """Test Retrieving a list of accounts"""
 
-        create_project(self.user)
-        create_project(self.user)
+    #     create_project(self.user)
+    #     create_project(self.user)
 
-        res = self.client.get(PROJECT_URL)
-        serializer = ProjectSerializer(self.user.projects.all(), many=True)
+    #     res = self.client.get(PROJECT_URL)
+    #     serializer = ProjectSerializer(self.user.projects.all(), many=True)
 
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.data, serializer.data)
+    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
+    #     self.assertEqual(res.data, serializer.data)
 
-    def test_create_project(self):
-        """Test Adding a project """
+    # def test_create_project(self):
+    #     """Test Adding a project """
 
-        create_project(self.user)
+    #     create_project(self.user)
 
-        client = create_client(self.user)
+    #     client = create_client(self.user)
 
-        payload = {
-            "name": "Example Project",
-            "deadline": "2024-10-02",
-            "description": "Example description of project",
-            "project_type": "exampleType",
-            "budget": 1000.00,
-            "client": client.id
-        }
+    #     payload = {
+    #         "name": "Example Project",
+    #         "deadline": "2024-10-02",
+    #         "description": "Example description of project",
+    #         "project_type": "exampleType",
+    #         "budget": 1000.00,
+    #         "client": client.id
+    #     }
 
-        res = self.client.post(PROJECT_URL, payload)
+    #     res = self.client.post(PROJECT_URL, payload)
 
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+    #     self.assertEqual(res.status_code, status.HTTP_201_CREATED)

@@ -14,11 +14,9 @@ from project import views
 router = DefaultRouter()
 router.register('projects', views.ProjectViewSet)
 router.register('tasks', views.TaskViewSet)
-router.register('budgets', views.BudgetViewSet)
-router.register('expenses', views.ExpenseViewSet)
 
 app_name = 'project'
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include(router.urls))
 ]
