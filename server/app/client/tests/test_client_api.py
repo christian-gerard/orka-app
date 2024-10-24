@@ -6,9 +6,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
-from core.models import Account
-
-import pdb
+from core.models import Account, Client
 
 LOGIN_USER_URL = reverse('user:login')
 ME_URL = reverse('user:me')
@@ -21,6 +19,11 @@ def create_user(**params):
 def create_account(**params):
     """Create and Return a new account"""
     return Account.objects.create_account(**params)
+
+def create_client(**params):
+    """Create and Return a new client"""
+    return Client(**params).save()
+
 
 
 class PublicUserApiTests(TestCase):
@@ -102,4 +105,3 @@ class PrivateUserAPITests(TestCase):
         """Test that POST method is not allowed on ME endpoint"""
         res = self.client.post(ME_URL, {})
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-
