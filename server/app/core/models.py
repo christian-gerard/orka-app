@@ -81,7 +81,19 @@ class ClientManager(models.Manager):
 
 
 class ProjectManager(models.Manager):
-    pass
+    def create_project(self, client, **params):
+        defaults = {
+            "name":"Test Project",
+            "description":"Client Description...",
+            "deadline": "2024-10-10",
+            "project_type": "TEST TYPE",
+            "client": client
+        }
+        defaults.update(params)
+
+        project = Project.objects.create(**defaults)
+
+        return project
 
 
 class ContactManager(models.Manager):
@@ -176,6 +188,8 @@ class Project(models.Model):
         related_name='projects',
         on_delete=models.CASCADE
     )
+
+    objects = ProjectManager()
 
     def __str__(self):
         return self.name

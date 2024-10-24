@@ -11,11 +11,7 @@ from rest_framework.test import APIClient
 from core.models import Account, Client, Project
 import pdb
 
-from account.serializers import (
-    AccountSerializer,
-    AccountDetailSerializer,
-    ClientSerializer,
-    ClientDetailSerializer,
+from project.serializers import (
     ProjectSerializer,
     ProjectDetailSerializer,
 )
@@ -113,18 +109,19 @@ class PrivateProjectAPITests(TestCase):
             zip_code="99999",
             account=self.account_other
         )
+        self.project_other = create_project(client=self.client_other)
+        self.project_1 = create_project(client=self.client_1)
+        self.project_2 = create_project(client=self.client_1)
 
-    # def test_retrieve_project_list(self):
-    #     """Test Retrieving a list of accounts"""
+    def test_retrieve_project_list(self):
+        """Test Retrieving a list of accounts"""
 
-    #     create_project(self.user)
-    #     create_project(self.user)
+        res = self.client.get(PROJECT_URL)
+        queryset = Project.objects.all()
+        serializer = ProjectSerializer(queryset, many=True)
 
-    #     res = self.client.get(PROJECT_URL)
-    #     serializer = ProjectSerializer(self.user.projects.all(), many=True)
-
-    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(res.data, serializer.data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
 
     # def test_create_project(self):
     #     """Test Adding a project """

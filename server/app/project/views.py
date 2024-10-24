@@ -82,9 +82,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieves Projects"""
-        if not self.request.user.is_authenticated:
-            return Project.objects.none()
-        return self.queryset.all().filter(users=self.request.user).order_by('id')
+        return self.queryset.all().order_by('id')
 
     def get_serializer_class(self):
         """Return the serializer per request"""
