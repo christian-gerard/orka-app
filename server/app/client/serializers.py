@@ -17,7 +17,7 @@ class ClientDetailSerializer(serializers.ModelSerializer):
     """Serializes Client Data"""
 
     class Meta(ClientSerializer.Meta):
-        fields = ClientSerializer.Meta.fields + ["description", "address_one", "address_two", "city", "zip_code", "country", "ein"]
+        fields = ClientSerializer.Meta.fields + ["description", "address_one", "address_two", "city", "zip_code", "country", "ein", "account"]
 
 
 class ContactSerializer(serializers.ModelSerializer):

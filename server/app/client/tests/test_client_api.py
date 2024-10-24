@@ -114,17 +114,36 @@ class PrivateClientAPITests(TestCase):
     def test_get_client_detail(self):
         """Testing Client List GET Method"""
         res = self.client.get(detail_url(self.client_1.id))
+        invalid_res = self.client.get(detail_url(self.client_other.id))
         serializer = ClientDetailSerializer(self.client_1)
 
         # Check if response healthy
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+        # Check that user is unable to access other account clients
+        self.assertEqual(invalid_res.status_code, status.HTTP_404_NOT_FOUND)
         # Check if response data is valid
         self.assertEqual(res.data, serializer.data)
 
 
     def test_create_client(self):
         """Test Client POST Method"""
-        pass
+        payload = {
+            "name": "TEST CLIENT",
+            "description": "TEST DESCRIPTION",
+            "client_type": "TEST TYPE",
+            "ein":"99-9999999",
+            "address_one": "TEST STREET",
+            "address_two": "TEST SUITE",
+            "city": "TEST CITY",
+            "state": "TEST STATE",
+            "zip_code": "99999",
+            "country": "USA",
+            "account": self.account.id
+        }
+        res = self.client.post(CLIENT_URL, payload)
+
+
+        pdb.set_trace()
 
 
 
