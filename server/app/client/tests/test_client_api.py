@@ -142,8 +142,39 @@ class PrivateClientAPITests(TestCase):
         }
         res = self.client.post(CLIENT_URL, payload)
 
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
-        pdb.set_trace()
+    def test_delete_client(self):
+        """Test Client DELETE Method"""
+        client_del = create_client(
+            name="2 TEST CLIENT",
+            description="2 TEST DESCRIPTION",
+            client_type="2 TEST TYPE",
+            ein="99-9999999",
+            address_one="2 TEST STREET",
+            address_two="2 TEST SUITE",
+            city="2 TEST CITY",
+            state="2 TEST STATE",
+            zip_code="99999",
+            account=self.account
+        )
+        res = self.client.delete(detail_url(client_del.id))
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_patch_client(self):
+        """Test Client DELETE Method"""
+        payload = {
+            "name": "PATCH",
+            "city": "PATCH"
+        }
+
+        res = self.client.patch(detail_url(self.client_1.id), payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data["name"], "PATCH")
+
+
 
 
 

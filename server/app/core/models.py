@@ -80,6 +80,10 @@ class ClientManager(models.Manager):
         return client
 
 
+class ProjectManager(models.Manager):
+    pass
+
+
 class Account(models.Model):
     """Account Objects"""
 
