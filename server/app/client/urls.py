@@ -1,22 +1,17 @@
 """
-URL MAPPINGS FOR ACCOUNT MAP
+URL MAPPINGS FOR THE CLIENT API
 """
 
-from django.urls import (
-    path,
-    include,
-)
+from django.urls import path, include
+from client import views
 
 from rest_framework.routers import DefaultRouter
 
-from project import views
-
 router = DefaultRouter()
-router.register('contacts', views.TaskViewSet)
-
+router.register('', views.ClientViewSet)
 
 app_name = 'client'
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include(router.urls))
 ]

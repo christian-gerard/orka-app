@@ -14,6 +14,7 @@ from project import views
 router = DefaultRouter()
 router.register('tasks', views.TaskViewSet)
 router.register('expenses', views.ExpenseViewSet)
+router.register('projects', views.ProjectViewSet)
 
 app_name = 'project'
 
