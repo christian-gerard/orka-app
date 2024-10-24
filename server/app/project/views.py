@@ -8,12 +8,14 @@ from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
-from core.models import Task, Expense
+from core.models import Task, Expense, Project
 from project.serializers import (
     TaskSerializer,
     TaskDetailSerializer,
     ExpenseSerializer,
-    ExpenseDetailSerializer
+    ExpenseDetailSerializer,
+    ProjectDetailSerializer,
+    ProjectSerializer
 )
 
 
@@ -58,3 +60,24 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Override the create method to add the authenticated user"""
         serializer.save(users=self.request.user)
+
+class ProjectViewSet(viewsets.ModelViewSet):
+    """View for Manage Client APIs"""
+    serializer_class = ProjectDetailSerializer
+    queryset = Project.objects.all()
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """Retrieves Accounts for Authenticated User"""
+        return self.queryset.all().filter(users=self.request.user).order_by('id')
+
+    def get_serializer_class(self):
+        """Return the serializer per request"""
+        if self.action == 'list':
+            return ProjectSerializer
+        return self.serializer_class
+
+    def perform_create(self, serializer):
+        """Override the create method to add the authenticated user"""
+        serializer.save(users=[self.request.user])
