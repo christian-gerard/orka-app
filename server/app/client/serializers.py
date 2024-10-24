@@ -10,11 +10,11 @@ class ContactSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Contact
-        fields = ['first_name', 'last_name', 'phone_number', 'role', 'poc', 'description', 'client']
+        fields = ['first_name', 'last_name', 'phone_number', 'role', 'description', 'client']
         read_only_fields = ["id"]
 
 
-class ContactDetailSerializer(ContactSerializer):
+class ContactDetailSerializer(serializers.ModelSerializer):
     """Serializes Account Detail Data"""
 
     class Meta(ContactSerializer.Meta):
@@ -31,9 +31,9 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ClientDetailSerializer(serializers.ModelSerializer):
     """Serializes Client Data"""
-    contacts = ContactSerializer(many=True)
+    contacts = ContactSerializer(many=True, read_only=True)
 
     class Meta(ClientSerializer.Meta):
-        fields = ClientSerializer.Meta.fields + ["description", "address_one", "address_two", "city", "zip_code", "country", "ein", "account"]
+        fields = ClientSerializer.Meta.fields + ["description", "address_one", "address_two", "city", "zip_code", "country", "ein", "account", "contacts"]
 
 

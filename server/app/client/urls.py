@@ -8,7 +8,8 @@ from client import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('', views.ClientViewSet)
+router.register('clients', views.ClientViewSet)
+router.register('contacts', views.ContactViewSet)
 
 app_name = 'client'
 

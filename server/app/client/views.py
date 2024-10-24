@@ -12,7 +12,6 @@ from client.serializers import (
     ContactSerializer,
     ContactDetailSerializer
 )
-import pdb
 
 class ClientViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
@@ -31,9 +30,6 @@ class ClientViewSet(viewsets.ModelViewSet):
             return ClientSerializer
         return self.serializer_class
 
-    def perform_create(self, serializer):
-        """Override the create method to add the authenticated user"""
-        serializer.save()
 
 
 class ContactViewSet(viewsets.ModelViewSet):
@@ -52,6 +48,3 @@ class ContactViewSet(viewsets.ModelViewSet):
             return ContactSerializer
         return self.serializer_class
 
-    def perform_create(self, serializer):
-        """Override the create method to add the authenticated user"""
-        serializer.save()

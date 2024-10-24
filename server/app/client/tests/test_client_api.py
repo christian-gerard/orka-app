@@ -146,7 +146,6 @@ class PrivateClientAPITests(TestCase):
             "account": self.account.id
         }
         res = self.client.post(CLIENT_URL, payload)
-
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
 
     def test_delete_client(self):
@@ -181,5 +180,15 @@ class PrivateClientAPITests(TestCase):
 
     def test_create_contact(self):
         """Test Contact POST Method"""
+        payload = {
+            "first_name":"Test",
+            "last_name":"Testington",
+            "phone_number":"000-000-0000",
+            "role":"Project Manager",
+            "description":"Client Description...",
+            "client": self.client_1
+        }
 
-        pass
+        res = self.client.post(CONTACT_URL, payload)
+
+        pdb.set_trace()

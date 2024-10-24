@@ -84,6 +84,24 @@ class ProjectManager(models.Manager):
     pass
 
 
+class ContactManager(models.Manager):
+    """Contact Model Manager"""
+    def create_contact(self, client, **params):
+        defaults = {
+            "first_name":"Test",
+            "last_name":"Testington",
+            "phone_number":"000-000-0000",
+            "role":"Project Manager",
+            "description":"Client Description...",
+            "client": client
+        }
+        defaults.update(params)
+
+        contact = Contact.objects.create(**defaults)
+
+        return contact
+
+
 class Account(models.Model):
     """Account Objects"""
 
@@ -176,6 +194,8 @@ class Contact(models.Model):
         related_name='contacts',
         on_delete=models.CASCADE
     )
+
+    objects = ContactManager()
 
     def __str__(self):
         return self.first_name
