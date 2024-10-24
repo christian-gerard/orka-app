@@ -8,7 +8,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Account, Client
+from core.models import Account, Client, Contact
 from client.serializers import ClientSerializer, ClientDetailSerializer
 import pdb
 
@@ -29,7 +29,7 @@ def create_client(**params):
 
 def create_contact(**params):
     """Create and Return a new client"""
-    return Client.objects.create_client(**params)
+    return Contact.objects.create_contact(**params)
 
 
 class PublicClientAPITests(TestCase):
