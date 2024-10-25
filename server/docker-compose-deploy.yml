@@ -1,19 +1,4 @@
 services:
-  app:
-    build:
-      context: .
-    restart: always
-    volumes:
-      - static-data:/vol/web
-    environment:
-      - DB_HOST=db
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASS=${DB_PASS}
-      - SECRET_KEY=${DJANGO_SECRET_KEY}
-      - ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
-    depends_on:
-      - db
 
   db:
     image: postgres:13-alpine
@@ -26,16 +11,44 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
 
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email 1@christiangerard.me -d api.orka-app.com --agree-tos
+
+  app:
+    build:
+      context: .
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - static-data:/vol/web
+    environment:
+      - DB_HOST=db
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - SECRET_KEY=${DJANGO_SECRET_KEY}
+      - ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
+
   proxy:
     build:
       context: ./proxy
     restart: always
     depends_on:
       - app
+      - certbot
     ports:
-      - 80:8000
+      - 80:80
+      - 443:443
     volumes:
       - static-data:/vol/static
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
 
 volumes:
   postgres-data:

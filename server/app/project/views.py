@@ -2,7 +2,7 @@
 Views for Project API
 """
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -45,7 +45,7 @@ class BudgetViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
-        return self.queryset.all().filter(users=self.request.user).order_by('id')
+        return self.queryset.all().order_by('id')
 
     def get_serializer_class(self):
         """Return the serializer per request"""
@@ -78,10 +78,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
     """View for Manage PROJECT APIs"""
     serializer_class = ProjectDetailSerializer
     queryset = Project.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """Retrieves Projects"""
-        return self.queryset.all().filter(users=self.request.user).order_by('id')
+        return self.queryset.all().order_by('id')
 
     def get_serializer_class(self):
         """Return the serializer per request"""
@@ -97,12 +98,25 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def add_user(self, request, pk=None):
         """Add a user to a project"""
         project = self.get_object()
-        user_id = request.data.get('user_id')
+        user_id = request.data.get('user')
         try:
             user = get_user_model().objects.get(id=user_id)
             if user in project.users.all():
                 return Response({"detail": "User already in project."}, status=status.HTTP_400_BAD_REQUEST)
             project.users.add(user)
-            return Response({"detail": "User added to project."}, status=status.HTTP_200_OK)
+            return Response({"detail": "User added to project."}, status=status.HTTP_201_CREATED)
+        except get_user_model().DoesNotExist:
+            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    @action(detail=True, methods=['post'], url_path='delete-user', url_name='delete_user')
+    def delete_user(self, request, pk=None):
+        """Add a user to a project"""
+        project = self.get_object()
+        user_id = request.data.get('user')
+        try:
+            user = get_user_model().objects.get(id=user_id)
+            if user in project.users.all():
+                project.users.remove(user)
+                return Response({"detail": "User added to project."}, status=status.HTTP_204_NO_CONTENT)
         except get_user_model().DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)

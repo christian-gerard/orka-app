@@ -81,8 +81,36 @@ class ClientManager(models.Manager):
 
 
 class ProjectManager(models.Manager):
-    pass
+    def create_project(self, client, **params):
+        defaults = {
+            "name":"Test Project",
+            "description":"Client Description...",
+            "deadline": "2024-10-10",
+            "project_type": "TEST TYPE",
+            "client": client
+        }
+        defaults.update(params)
 
+        project = Project.objects.create(**defaults)
+
+        return project
+
+
+class BudgetManager(models.Manager):
+    """Budget Manager"""
+
+    def create_budget(self, project, **params):
+        defaults = {
+            "description":"Budget Description...",
+            "category": "Budget Category",
+            "amount": 100000.00,
+            "project": project
+        }
+        defaults.update(params)
+
+        budget = Budget.objects.create(**defaults)
+
+        return budget
 
 class ContactManager(models.Manager):
     """Contact Model Manager"""
@@ -177,6 +205,8 @@ class Project(models.Model):
         on_delete=models.CASCADE
     )
 
+    objects = ProjectManager()
+
     def __str__(self):
         return self.name
 
@@ -212,6 +242,8 @@ class Budget(models.Model):
         related_name='budgets',
         on_delete=models.CASCADE
     )
+
+    objects = BudgetManager()
 
     def __str__(self):
         return self.first_name

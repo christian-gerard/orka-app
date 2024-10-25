@@ -35,7 +35,7 @@ urlpatterns = [
     ),
     path('api/user/', include('user.urls')),
     path('api/', include('client.urls')),
-    path('api/', include('project.urls') )
+    path('api/', include('project.urls'))
 ]
 
 if settings.DEBUG:

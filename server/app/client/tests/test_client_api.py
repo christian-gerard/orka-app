@@ -67,7 +67,6 @@ class PrivateClientAPITests(TestCase):
             account=self.account
         )
         self.client.force_authenticate(self.user)
-
         self.client_1 = create_client(
             name="TEST CLIENT",
             description="TEST DESCRIPTION",
@@ -191,4 +190,3 @@ class PrivateClientAPITests(TestCase):
 
         res = self.client.post(CONTACT_URL, payload)
 
-        pdb.set_trace()
