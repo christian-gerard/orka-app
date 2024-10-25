@@ -126,7 +126,6 @@ class PrivateProjectAPITests(TestCase):
     def test_create_project(self):
         """Test Adding a project """
 
-
         payload = {
             "name": "Example Project",
             "deadline": "2024-10-02",
@@ -138,3 +137,12 @@ class PrivateProjectAPITests(TestCase):
         res = self.client.post(PROJECT_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+    def test_delete_project(self):
+        """Test Deleting a Project"""
+
+        project = create_project(client=self.client_1)
+
+        res = self.client.delete(detail_url(project.id, "project"))
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
