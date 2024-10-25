@@ -22,6 +22,7 @@ TASK_URL = PROJECT_URL + 'tasks/'
 EXPENSE_URL = PROJECT_URL + 'expenses/'
 BUDGET_URL = PROJECT_URL + 'budgets/'
 
+
 def detail_url(id, model):
     """Return detail url for specific account"""
     return reverse(f"{model}:{model}-detail", args=[id])
@@ -160,5 +161,9 @@ class PrivateProjectAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data["name"], "PATCHED!")
+
+    def test_add_user_to_project(self):
+        """Test adding a user to project"""
+
 
 
