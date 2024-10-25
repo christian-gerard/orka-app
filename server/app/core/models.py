@@ -96,6 +96,22 @@ class ProjectManager(models.Manager):
         return project
 
 
+class BudgetManager(models.Manager):
+    """Budget Manager"""
+
+    def create_budget(self, project, **params):
+        defaults = {
+            "description":"Budget Description...",
+            "category": "Budget Category",
+            "amount": 100000.00,
+            "project": project
+        }
+        defaults.update(params)
+
+        budget = Budget.objects.create(**defaults)
+
+        return budget
+
 class ContactManager(models.Manager):
     """Contact Model Manager"""
     def create_contact(self, client, **params):
@@ -226,6 +242,8 @@ class Budget(models.Model):
         related_name='budgets',
         on_delete=models.CASCADE
     )
+
+    objects = BudgetManager()
 
     def __str__(self):
         return self.first_name

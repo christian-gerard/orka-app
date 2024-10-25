@@ -8,7 +8,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Account, Client, Project
+from core.models import Account, Client, Project, Budget
 import pdb
 
 from project.serializers import (
@@ -38,6 +38,10 @@ def create_client(**params):
 def create_project(**params):
     """Create and Return a new project"""
     return Project.objects.create_project(**params)
+
+def create_budget(**params):
+    """Create and Return a new project"""
+    return Budget.objects.create_budget(**params)
 
 class PublicProjectAPITests(TestCase):
     """Test Unauthenticated API Requests"""
@@ -113,6 +117,9 @@ class PrivateProjectAPITests(TestCase):
         self.project_other = create_project(client=self.client_other)
         self.project_1 = create_project(client=self.client_1)
         self.project_2 = create_project(client=self.client_1)
+        self.budget_1 = create_budget(project=self.project_1)
+        self.budget_2 = create_budget(project=self.project_1)
+        self.budget_3 = create_budget(project=self.project_1)
 
     def test_retrieve_project_list(self):
         """Test Retrieving a list of accounts"""
@@ -164,6 +171,26 @@ class PrivateProjectAPITests(TestCase):
 
     def test_add_user_to_project(self):
         """Test adding a user to project"""
+        project = create_project(client=self.client_1)
 
+        payload = {
+            "user": self.user.id
+        }
+        res = self.client.post(detail_url(project.id, "project") + "add-user/", payload)
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+    def test_delete_user_from_project(self):
+        """Test adding a user to project"""
+        project = create_project(client=self.client_1)
+        payload = {
+            "user": self.user.id
+        }
+        self.client.post(detail_url(project.id, "project") + "add-user/", payload)
+
+        res = self.client.post(detail_url(project.id, "project") + "delete-user/", payload)
+
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
 
 

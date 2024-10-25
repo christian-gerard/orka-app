@@ -95,31 +95,28 @@ class ProjectViewSet(viewsets.ModelViewSet):
         serializer.save(users=[self.request.user])
 
     @action(detail=True, methods=['post'], url_path='add-user', url_name='add_user')
-    def add_user(self, request):
+    def add_user(self, request, pk=None):
         """Add a user to a project"""
         project = self.get_object()
-        pdb.set_trace()
         user_id = request.data.get('user')
         try:
-            user = get_user_model().objects.get(id=user)
+            user = get_user_model().objects.get(id=user_id)
             if user in project.users.all():
                 return Response({"detail": "User already in project."}, status=status.HTTP_400_BAD_REQUEST)
             project.users.add(user)
-            return Response({"detail": "User added to project."}, status=status.HTTP_200_OK)
+            return Response({"detail": "User added to project."}, status=status.HTTP_201_CREATED)
         except get_user_model().DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
     @action(detail=True, methods=['post'], url_path='delete-user', url_name='delete_user')
-    def delete_user(self, request):
+    def delete_user(self, request, pk=None):
         """Add a user to a project"""
         project = self.get_object()
-        pdb.set_trace()
         user_id = request.data.get('user')
         try:
-            user = get_user_model().objects.get(id=user)
+            user = get_user_model().objects.get(id=user_id)
             if user in project.users.all():
-                return Response({"detail": "User already in project."}, status=status.HTTP_400_BAD_REQUEST)
-            project.users.add(user)
-            return Response({"detail": "User added to project."}, status=status.HTTP_200_OK)
+                project.users.remove(user)
+                return Response({"detail": "User added to project."}, status=status.HTTP_204_NO_CONTENT)
         except get_user_model().DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
