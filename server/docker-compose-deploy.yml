@@ -37,7 +37,6 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     command: certonly --dns-route53 --force-renewal --email 1@christiangerard.me -d api.orka-app.com --agree-tos --noninteractive
 
-
   app:
     build:
       context: .
