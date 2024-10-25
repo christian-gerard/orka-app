@@ -11,12 +11,32 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
 
+  proxy:
+    build:
+      context: ./proxy
+    restart: always
+    depends_on:
+      - app
+      - certbot
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - static-data:/vol/static
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
   certbot:
-    image: certbot/certbot
+    image: certbot/dns-route53
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email 1@christiangerard.me -d api.orka-app.com --agree-tos
+      - ~/.aws:/root/.aws
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    command: certonly --dns-route53 --force-renewal --email 1@christiangerard.me -d api.orka-app.com --agree-tos --noninteractive
+
 
   app:
     build:
@@ -34,20 +54,6 @@ services:
       - SECRET_KEY=${DJANGO_SECRET_KEY}
       - ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS}
 
-  proxy:
-    build:
-      context: ./proxy
-    restart: always
-    depends_on:
-      - app
-      - certbot
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - static-data:/vol/static
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
 
 
 volumes:
