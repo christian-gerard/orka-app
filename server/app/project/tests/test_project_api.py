@@ -135,7 +135,6 @@ class PrivateProjectAPITests(TestCase):
             "client": self.client_1.id
         }
 
-
         res = self.client.post(PROJECT_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
