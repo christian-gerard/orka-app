@@ -146,3 +146,19 @@ class PrivateProjectAPITests(TestCase):
         res = self.client.delete(detail_url(project.id, "project"))
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_patch_project(self):
+        """Test Patching a Project"""
+
+        project = create_project(client=self.client_1,name="ORIGINAL")
+
+        payload = {
+            "name": "PATCHED!"
+        }
+
+        res = self.client.patch(detail_url(project.id, "project"), payload)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data["name"], "PATCHED!")
+
+
