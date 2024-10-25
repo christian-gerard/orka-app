@@ -13,6 +13,7 @@ server {
 }
 
 server {
+
     listen 443 ssl;
     server_name api.orka-app.com;
 
