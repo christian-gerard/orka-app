@@ -20,7 +20,7 @@ from project.serializers import (
 PROJECT_URL = reverse('project:project-list')
 TASK_URL = PROJECT_URL + 'tasks/'
 EXPENSE_URL = PROJECT_URL + 'expenses/'
-BUDGET_URL = PROJECT_URL + 'budgets/'
+BUDGET_URL = '/api/budgets/'
 
 
 def detail_url(id, model):
@@ -192,5 +192,12 @@ class PrivateProjectAPITests(TestCase):
 
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_retrieve_budget_list(self):
+        """Test GET Method on Budgets"""
+
+        res = self.client.get(BUDGET_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
 
 

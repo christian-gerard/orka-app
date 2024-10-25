@@ -45,7 +45,7 @@ class BudgetViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
-        return self.queryset.all().filter(users=self.request.user).order_by('id')
+        return self.queryset.all().order_by('id')
 
     def get_serializer_class(self):
         """Return the serializer per request"""
