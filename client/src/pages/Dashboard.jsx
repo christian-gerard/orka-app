@@ -7,7 +7,7 @@ import Project from '../components/Project'
 
 
 function Dashboard() {
-    const { clients, projects, tasks} = useContext(UserContext)
+    const { } = useContext(UserContext)
 
 
     useEffect(() => {
@@ -29,7 +29,7 @@ function Dashboard() {
                 <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                     <div className='h-full w-full'>
 
-                        {
+                        {/* {
                             tasks && tasks.length !== 0 ?
 
                             tasks
@@ -40,7 +40,7 @@ function Dashboard() {
                             :
 
                             <p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Tasks</p>
-                        }
+                        } */}
 
                     </div>
                 </div>
@@ -51,28 +51,12 @@ function Dashboard() {
 
             {/* Bottom Half 50% */}
             <div className='h-[50%] w-full flex flex-row'>
-                {/* Clients */}
-                <div className='w-[40%] h-full border'>
-                    <p className='h-[10%] text-2xl flex items-center bg-ocean text-white'>Clients</p>
-                    <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean flex flex-row flex-wrap w-full'>
-                            {
-                                clients ?
-
-                                clients.map(client => <Client key={client.key} {...client} />)
-
-                                :
-
-                                <>
-                                </>
-                            }
-                    </div>
-                </div>
                 {/* Projects */}
-                <div className='w-[60%] h-full border'>
+                <div className='w-full h-full border'>
                     <p className='h-[10%] text-2xl flex items-center bg-ocean text-white'>Projects</p>
                     <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                         <div>
-                            {
+                            {/* {
                                 projects ?
 
                                 projects.map(project => <Project key={project.id} {...project} />)
@@ -81,7 +65,7 @@ function Dashboard() {
 
                                 <>
                                 </>
-                            }
+                            } */}
                         </div>
                     </div>
 
