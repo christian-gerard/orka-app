@@ -10,9 +10,6 @@ from user.serializers import (
     RefreshSerializer,
     AuthSerializer,
 )
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.settings import api_settings
-from django.contrib.auth import logout, login
 
 
 class ManageUserView(TokenRefreshView):

@@ -21,7 +21,7 @@ function CircularSize() {
 
 
 function App() {
-  const { user, token, isLoading } = useContext(UserContext)
+  const { user } = useContext(UserContext)
 
 
 
@@ -30,19 +30,13 @@ function App() {
 
         <Toaster />
 
-        {
-          isLoading ?
 
-            <div className='fixed inset-0 bg-white backdrop-blur-sm bg-opacity-30 z-50 flex items-center justify-center'>
+            {/* <div className='fixed inset-0 bg-white z-50 flex items-center justify-center flex gap-10'>
               <CircularSize />
-            </div>
+              <p className='text-6xl'>Loading...</p>
+            </div> */}
 
-            :
 
-            <>
-            </>
-
-        }
 
         { user ?
 
