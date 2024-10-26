@@ -53,15 +53,29 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5731",
+    "http://localhost:5173",
+    "https://orka-app.com",
+    "https://www.orka-app.com"
+]
+
+CORS_ALLOW_HEADERS = [
+    'Authorization',
+    'Content-Type'
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'app.urls'
 
@@ -161,14 +175,6 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
 }
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5731",
-    "https://main.d2wh6ygix9usfx.amplifyapp.com"
-]
-
-CORS_ALLOWED_CREDENTIALS=True
 
 from datetime import timedelta
 SIMPLE_JWT = {
@@ -176,8 +182,3 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1)
 }
 
-# CSRF_USES_SESSIONS = True
-# SESSION_COOKIE_AGE = 3600
-
-# CSRF_COOKIE_HTTPONLY = False
-# SESSION_COOKIE_HTTPONLY = True
