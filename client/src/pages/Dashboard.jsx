@@ -27,36 +27,60 @@ function Dashboard() {
         .then(resp => {
             if(resp.status == 200){
                 tasks = resp.data
+                if(tasks && tasks.length !== 0) {
+                    setOutstandingTasks(
+                        tasks
+                        .filter(task => task.status !== 'Complete')
+                        .sort((a, b) => a.status.localeCompare(b.status))
+                        .map(task => <Task key={task.id} {...task} />)
+                    )
+
+                } else {
+                    setOutstandingTasks(<p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Tasks</p>)
+                }
             } else if (resp.status == 401){
                 toast.error('Unauthorized')
             }
         })
 
 
-
-
-        if(tasks && tasks.length !== 0) {
-            setOutstandingTasks(
-                tasks
-                .filter(task => task.status !== 'Complete')
-                .sort((a, b) => a.status.localeCompare(b.status))
-                .map(task => <Task key={task.id} {...task} />)
-            )
-
-        } else {
-            setOutstandingTasks(<p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Tasks</p>)
-        }
-
     }
 
     const renderMyProjects = () => {
-        axios.get(`${API_URL}/api/projects/`)
+
+        const token = accessToken
+        let projects = null
+
+
+        axios.get(`${API_URL}/api/projects/`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+
+            if(resp.status == 200){
+                projects = resp.data
+                if(projects && projects.length !== 0) {
+                    setMyProjects(
+                        projects
+                        .map(proj => <Project key={proj.id} {...proj} />)
+                    )
+                } else {
+                    setMyProjects(<p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Projects</p>)
+                }
+            } else if (resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
     }
 
 
     useEffect(() => {
         renderOutstandingTasks()
+        renderMyProjects()
     }, [])
+
 
     return (
         <div className='h-full w-full'>
@@ -90,13 +114,7 @@ function Dashboard() {
                     <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                         <div className='h-full w-full'>
                             {
-                                myProjects ?
-
-                                myProjects.map(project => <Project key={project.id} {...project} />)
-
-                                :
-
-                                <p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Projects</p>
+                                myProjects
                             }
                         </div>
                     </div>

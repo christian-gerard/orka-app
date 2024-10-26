@@ -12,14 +12,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import axios from 'axios'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 function Project({id, name, deadline, description, project_type}) {
 
-    const { token, tasks, projects, setProjects} = useContext(UserContext)
+    const { accessToken, tasks, projects, setProjects} = useContext(UserContext)
     const nav = useNavigate()
     const route = useParams()
     const path = useLocation()
-    const [currentProject, setCurrentProject] = useState(null)
+    const [project, setProject] = useState(null)
     const [editProject, setEditProject] = useState(false)
 
     const handleEditProject = () => {
@@ -29,27 +32,23 @@ function Project({id, name, deadline, description, project_type}) {
     }
 
     const handleDeleteProject = () => {
-
-
-        fetch(`/api/account/projects/${route.id}`, {
-            method: "DELETE",
+        const token = accessToken
+        axios.get(`${API_URL}/api/projects/${route.id}`, {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            credentials: 'include',
-        })
-        .then(resp => {
-            if(resp.status === 204){
-                // const updatedProj = projects.filter(proj => proj.id !== id)
-                // setProjects(updatedProj)
-                toast.success('Project Deleted')
-                nav('/projects')
-            } else {
-                toast.error("Unable to Delete Project")
+                Authorization: `Bearer ${token}`
             }
         })
-        // .catch( err => console.log(err))
+        .then(resp => {
+            if(resp.status == 200){
+                setProject(resp.data)
+            } else if(resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
 
 
     }
