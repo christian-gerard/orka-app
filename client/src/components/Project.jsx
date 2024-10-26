@@ -141,6 +141,7 @@ function Project({id, name, deadline, description, project_type}) {
 
     }, [route.id])
 
+    console.log(project)
 
     return(
         <>
