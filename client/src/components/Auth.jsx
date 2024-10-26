@@ -36,7 +36,6 @@ function Auth() {
   const loginSchema = object({
     loginEmail: string()
     .email('Must provide a valid email')
-    .matches("\.(com|edu)$", 'Please include a valid domain')
     .required("Email is Required"),
     loginPassword: string()
     .min(8, "Must be at least 8 characters")
