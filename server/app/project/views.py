@@ -26,6 +26,7 @@ class ExpenseViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = ExpenseDetailSerializer
     queryset = Expense.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
@@ -42,6 +43,7 @@ class BudgetViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = BudgetDetailSerializer
     queryset = Budget.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""
@@ -58,6 +60,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""
     serializer_class = TaskDetailSerializer
     queryset = Task.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """Retrieves Accounts for Authenticated User"""

@@ -2,23 +2,38 @@
 Views for the user api
 """
 
-from rest_framework import generics, authentication, permissions, status
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics, authentication, permissions, status, viewsets
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from core.models import User
 from user.serializers import (
-    UserSerializer,
+    RefreshSerializer,
     AuthSerializer,
+    UserSerializer,
+    UserDetailSerializer
 )
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.settings import api_settings
-from django.contrib.auth import logout, login
 
-
-class ManageUserView(generics.RetrieveUpdateAPIView):
-    """Manage the authenticated user"""
-    serializer_class = UserSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    """Manager User Methods"""
+    serializer_class = UserDetailSerializer
+    queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        """Retrieves Accounts for Authenticated User"""
+        return self.queryset.all().order_by('id')
+
+    def get_serializer_class(self):
+        """Return the serializer per request"""
+        if self.action == 'list':
+            return UserSerializer
+        return self.serializer_class
+
+    def get_object(self):
+        return self.request.user
+
+class ManageUserView(TokenRefreshView):
+    """Manage the authenticated user"""
+    serializer_class = RefreshSerializer
 
     def get_object(self):
         """Retrieve and Return Auth User"""
@@ -27,5 +42,7 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 class LoginView(TokenObtainPairView):
     """Login the user"""
     serializer_class = AuthSerializer
+
+
 
 

@@ -5,17 +5,28 @@ from django.contrib.auth import get_user_model
 
 
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from account.serializers import AccountSerializer
 from django.utils.translation import gettext as _
+
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializes User Data"""
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'account']
-        extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
+        fields = ['id', 'email', 'first_name', 'last_name']
+
+
+
+class UserDetailSerializer(UserSerializer):
+    """Serializes Account Detail Data"""
+    account = AccountSerializer()
+
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + ['account']
+
+
 
     # SAVING FOR POST MVP
 
@@ -35,6 +46,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     #     return user
 
+class RefreshSerializer(TokenRefreshSerializer):
+    """Getting Access Token after Refresh"""
+
 
 class AuthSerializer(TokenObtainPairSerializer):
     """Serializer for JWT Auth Token"""
@@ -42,6 +56,5 @@ class AuthSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         """Validate and Authenticate the User"""
         data = super().validate(attrs)
-        data['email'] = self.user.email
         return data
 

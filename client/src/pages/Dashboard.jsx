@@ -7,13 +7,11 @@ import Project from '../components/Project'
 
 
 function Dashboard() {
-    const { clients, projects, tasks, updateProjects, updateClients, updateTasks } = useContext(UserContext)
+    const { clients, projects, tasks} = useContext(UserContext)
 
 
     useEffect(() => {
-        updateProjects()
-        updateClients()
-        updateTasks()
+
     }, [])
 
     return (
