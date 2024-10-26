@@ -8,12 +8,13 @@ import Client from '../components/Client'
 
 function Clients() {
 
-    const { clients, setClients, projects, token, accounts, updateAccounts, updateClients } = useContext(UserContext)
+    const { } = useContext(UserContext)
+    const [clients, setClients] = useState(null)
     const [newClient, setNewClient] = useState(false)
 
     const handleNewClient = () => {
         formik.resetForm()
-        updateAccounts()
+
         setNewClient(!newClient)
 
     }
@@ -94,7 +95,7 @@ function Clients() {
 
     useEffect(() => {
 
-        updateClients()
+
 
     },[])
 

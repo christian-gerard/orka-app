@@ -3,32 +3,16 @@ import { UserContext } from '../context/UserContext'
 import { toast } from 'react-hot-toast'
 import Project from '../components/Project'
 import CloseIcon from '@mui/icons-material/Close';
-
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
 
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+
 
 function Projects() {
 
-    const { projects, setProjects, clients, token, updateProjects } = useContext(UserContext)
+    const { } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
 
-    const csrftoken = getCookie('csrftoken')
 
     const handleNewProject = () => {
         setNewProject(!newProject)
@@ -100,7 +84,6 @@ function Projects() {
 
     useEffect(() => {
 
-        updateProjects()
     }, [])
 
     return (
@@ -119,7 +102,7 @@ function Projects() {
 
             {/* Projects */}
             <div className='h-[95%] w-full flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll'>
-                {
+                {/* {
                     projects && projects.length !== 0 ?
 
                     projects.map(proj => <Project key={proj.id} {...proj} />)
@@ -129,7 +112,7 @@ function Projects() {
                     <div className='w-full h-full text-4xl flex justify-center items-center'>
                         <h1>No Current Projects</h1>
                     </div>
-                }
+                } */}
             </div>
 
             {
@@ -249,14 +232,14 @@ function Projects() {
                                         className='border m-2 p-2'
                                     >
                                         <option value=''>Select Client</option>
-                                        {
+                                        {/* {
                                             clients ?
 
                                             clients.map(client => <option value={client.id}>{client.name}</option>)
                                             :
                                             <></>
 
-                                        }
+                                        } */}
 
                                     </Field>
 
