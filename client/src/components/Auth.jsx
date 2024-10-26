@@ -22,7 +22,6 @@ function Auth() {
     .required("Last Name is Required"),
     email: string()
     .email("Must provide a valid address")
-    .matches("\.(com|edu)$", 'Please include a valid domain')
     .required("Email is Required"),
     password: string()
     .min(8,"Password must be at least 8 characters")
