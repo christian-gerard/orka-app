@@ -30,10 +30,25 @@ const UserProvider = ({children}) => {
 
       if(refreshData["refresh"]) {
 
-        axios.post('/api/user/me/', refreshData)
+        axios.post('/api/user/refresh/', refreshData)
         .then(resp => {
           if(resp.status == 200){
-            setAccessToken(resp.data['access'])
+
+            const access = resp.data.access
+
+            axios.get('/api/user/', {
+              headers: {
+                Authorization: `Bearer ${access}`
+              }
+            })
+            .then(resp => {
+              if(resp.status == 200){
+                setUser(resp.data)
+                setAccessToken(access)
+              } else if(resp.status == 401) {
+                toast.error('Invalid Login')
+              }
+            })
 
 
           } else if(resp.status == 401) {
@@ -59,7 +74,7 @@ const UserProvider = ({children}) => {
 
     }, [])
 
-
+  console.log(user)
 
   return (
 

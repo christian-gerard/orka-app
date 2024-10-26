@@ -10,7 +10,7 @@ import Cookies from 'js-cookie'
 
 function Auth() {
 
-  const { user, setUser, token, setToken } = useContext(UserContext)
+  const { user, setUser, accessToken, setAccessToken } = useContext(UserContext)
   const [newUser, setNewUser] = useState(false)
 
   const handleNewUser = () => setNewUser(!newUser)
@@ -112,6 +112,22 @@ function Auth() {
             const data = resp.data
 
             Cookies.set('refreshToken', data.refresh, { expires: 7, secure: true });
+
+            axios.get('/api/user/', {
+              headers: {
+                Authorization: `Bearer ${data.access}`
+              }
+            })
+            .then(resp => {
+              if(resp.status == 200){
+                setUser(resp.data)
+              } else if(resp.status == 401) {
+                toast.error('Invalid Login')
+              }
+            })
+
+            setAccessToken(data.access)
+
             toast.success('Login Successful');
           }
           else {
