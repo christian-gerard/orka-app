@@ -4,12 +4,13 @@ import { UserContext } from '../context/UserContext';
 import { useFormik } from "formik";
 import * as Yup from 'yup'
 import { object, string} from 'yup'
+import axios from 'axios'
 import toast from 'react-hot-toast'
 import Cookie from 'js-cookie'
 
 function Auth() {
 
-  const { user, setUser, token, setToken} = useContext(UserContext)
+  const { user, setUser, token, setToken } = useContext(UserContext)
   const [newUser, setNewUser] = useState(false)
 
   const handleNewUser = () => setNewUser(!newUser)
@@ -35,8 +36,11 @@ function Auth() {
 
   const loginSchema = object({
     loginEmail: string()
+    .email('Must provide a valid email')
+    .matches("\.(com|edu)$", 'Please include a valid domain')
     .required("Email is Required"),
     loginPassword: string()
+    .min(8, "Must be at least 8 characters")
     .required("Required")
   })
 
@@ -59,12 +63,12 @@ function Auth() {
       formData =>
 
       {
-        const userData = {
-          email:formData.email,
-          password:formData.password,
-          first_name:formData.firstName,
-          last_name:formData.lastName
-        }
+        // const userData = {
+        //   email:formData.email,
+        //   password:formData.password,
+        //   first_name:formData.firstName,
+        //   last_name:formData.lastName
+        // }
 
         // fetch(`/api/user/create/`,{
         //   method: 'POST',
@@ -102,30 +106,22 @@ function Auth() {
           password: formData.loginPassword
         }
 
-        fetch(`/api/user/login/`,{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(loginData),
-        })
+        axios.post('/api/user/login/', loginData, {withCredentials: true})
         .then(resp => {
-          if(resp.ok){
-            return resp.json().then(data => {
+          if(resp.status == 200){
+            const data = resp.data
 
-              Cookie.set('refreshToken', data.refresh, { expires: 7, secure: true });
-              toast.success('Login Successful')
-            })}
+            Cookie.set('refreshToken', data.refresh, { expires: 7, secure: true });
+            toast.success('Login Successful');
+          }
           else {
             toast.error("Invalid Login")
           }
         })
-        .then(() => {
-
-        })
         .catch(err => {
           toast.error('Unable to Login')
         })
+
       },
   });
 
