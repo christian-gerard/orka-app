@@ -124,11 +124,11 @@ function Budgets(){
                     </div>
 
                     <div className=' h-[50%] w-full flex flex-col justify-center items-center'>
-                    <div className='w-full h-[95%] flex flex-col items-center'>
 
-                            <p className='w-full h-full flex justify-center items-center text-white text-4xl bg-red'>" WIP "</p>
+                        <div className='w-full h-[95%] flex flex-col items-center'>
 
                         </div>
+
                     </div>
 
                 </div>

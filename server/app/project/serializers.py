@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 from core.models import Task, Expense, Project, Budget, Expense
 
+
 class ExpenseSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
 
@@ -65,9 +66,18 @@ class ProjectSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
 
+
 class ProjectDetailSerializer(ProjectSerializer):
     """Serializes Account Detail Data"""
+
     tasks = TaskSerializer(many=True)
+
+    def __init__(self, *args, **kwargs):
+        # Import UserSerializer lazily to avoid circular import
+        from user.serializers import UserSerializer
+        self.fields['users'] = UserSerializer(many=True)
+        super().__init__(*args, **kwargs)
+
 
     class Meta(ProjectSerializer.Meta):
         fields = ProjectSerializer.Meta.fields + ['users', 'tasks']

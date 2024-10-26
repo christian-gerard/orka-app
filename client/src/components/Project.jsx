@@ -39,8 +39,8 @@ function Project({id, name, deadline, description, project_type}) {
             }
         })
         .then(resp => {
-            if(resp.status == 200){
-                setProject(resp.data)
+            if(resp.status == 204){
+                toast.success("Project Deleted")
             } else if(resp.status == 401){
                 toast.error('Unauthorized')
             }
@@ -141,6 +141,7 @@ function Project({id, name, deadline, description, project_type}) {
 
     }, [route.id])
 
+    console.log(project)
 
     return(
         <>
