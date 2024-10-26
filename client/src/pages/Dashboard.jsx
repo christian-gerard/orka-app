@@ -1,30 +1,61 @@
 import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
+import { toast } from 'react-hot-toast'
 import Task from '../components/Task'
-import Client from '../components/Client'
 import Project from '../components/Project'
+import axios from 'axios'
 
-
+const API_URL = import.meta.env.VITE_API_URL
 
 function Dashboard() {
-    const { } = useContext(UserContext)
+    const {accessToken} = useContext(UserContext)
 
     const [outstandingTasks, setOutstandingTasks] = useState(null)
     const [myProjects, setMyProjects] = useState(null)
 
     const renderOutstandingTasks = () => {
 
+        const token = accessToken
+        let tasks = null
+
+
+        axios.get(`${API_URL}/api/tasks/`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+            if(resp.status == 200){
+                tasks = resp.data
+            } else if (resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+
+
+
+
+        if(tasks && tasks.length !== 0) {
+            setOutstandingTasks(
+                tasks
+                .filter(task => task.status !== 'Complete')
+                .sort((a, b) => a.status.localeCompare(b.status))
+                .map(task => <Task key={task.id} {...task} />)
+            )
+
+        } else {
+            setOutstandingTasks(<p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Tasks</p>)
+        }
 
     }
 
     const renderMyProjects = () => {
-
-
+        axios.get(`${API_URL}/api/projects/`)
     }
 
 
     useEffect(() => {
-
+        renderOutstandingTasks()
     }, [])
 
     return (
@@ -40,18 +71,8 @@ function Dashboard() {
                 <p className='h-[10%] text-2xl flex items-center bg-ocean text-white'>Outstanding Tasks</p>
                 <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                     <div className='h-full w-full'>
-
                         {
-                            outstandingTasks && outstandingTasks.length !== 0 ?
-
                             outstandingTasks
-                            .filter(task => task.status !== 'Complete')
-                            .sort((a, b) => a.status.localeCompare(b.status))
-                            .map(task => <Task key={task.id} {...task} />)
-
-                            :
-
-                            <p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Tasks</p>
                         }
 
                     </div>
