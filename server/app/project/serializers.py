@@ -68,5 +68,6 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectDetailSerializer(ProjectSerializer):
     """Serializes Account Detail Data"""
     tasks = TaskSerializer(many=True)
+
     class Meta(ProjectSerializer.Meta):
         fields = ProjectSerializer.Meta.fields + ['users', 'tasks']
