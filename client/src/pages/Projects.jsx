@@ -14,6 +14,7 @@ function Projects() {
     const { accessToken } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
     const [projects, setProjects] = useState(null)
+    const token = accessToken
 
     const renderProjects = () => {
 
@@ -51,14 +52,12 @@ function Projects() {
 
     const projectSchema = object({
         name: string()
-        .required('Please provide a project name'),
+        .required('Please provide a name'),
         description: string(),
-        deadline: string(),
-        // .required(),
-        projectType: string(),
-        // .required('Please provide the project type'),
-        budget: number(),
-        // .required('Please provide a project budget')
+        deadline: string()
+        .required("Please provide a deadline"),
+        projectType: string()
+        .required('Please provide the project type')
       });
 
     const initialValues = {
@@ -83,25 +82,17 @@ function Projects() {
             client: formData.client
         }
 
-        console.log(csrftoken)
 
-        fetch('/api/account/projects/', {
-            method: "POST",
-            body: JSON.stringify(requestData),
+        axios.post(`${API_URL}/api/projects/`, requestData, {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            credentials: 'include',
+                'Authorization': `Bearer ${token}`
+            }
         })
         .then(resp => {
-            if(resp.ok){
-                return resp.json().then(data => {
-                    setProjects([data, ...projects])
-                    handleNewProject()
-                    toast.success('New Project Added')
-
-                })
+            if(resp.status == 201){
+                setProjects([resp.data, ...projects])
+                handleNewProject()
+                toast.success('New Project Added')
             } else {
                 toast.error('Error while saving project')
             }
@@ -161,6 +152,7 @@ function Projects() {
                                         name='name'
                                         value={formik.values.name}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         type='text'
                                         placeholder='Name'
                                         className='border m-2 p-2'
@@ -175,6 +167,7 @@ function Projects() {
                                         name='description'
                                         value={formik.values.description}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         as='textarea'
                                         placeholder='Description'
                                         className='border m-2 p-2 min-h-[100px] lg:h-[200px]'
@@ -192,6 +185,7 @@ function Projects() {
                                         max="2025-12-31"
                                         value={formik.values.deadline}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         placeholder='Deadline'
                                         className='border m-2 p-2'
                                     />
@@ -205,6 +199,7 @@ function Projects() {
                                         as='select'
                                         value={formik.values.projectType}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         type='text'
                                         placeholder='Status'
                                         className='border m-2 p-2'
@@ -228,6 +223,7 @@ function Projects() {
                                         as='select'
                                         value={formik.values.client}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         className='border m-2 p-2'
                                     >
                                         <option value=''>Select Client</option>
