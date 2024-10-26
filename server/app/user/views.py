@@ -2,15 +2,34 @@
 Views for the user api
 """
 
-from rest_framework import generics, authentication, permissions, status
+from rest_framework import generics, authentication, permissions, status, viewsets
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from core.models import User
 from user.serializers import (
     RefreshSerializer,
     AuthSerializer,
+    UserSerializer,
+    UserDetailSerializer
 )
 
+class UserViewSet(viewsets.ModelViewSet):
+    """Manager User Methods"""
+    serializer_class = UserDetailSerializer
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        """Retrieves Accounts for Authenticated User"""
+        return self.queryset.all().order_by('id')
+
+    def get_serializer_class(self):
+        """Return the serializer per request"""
+        if self.action == 'list':
+            return UserSerializer
+        return self.serializer_class
+
+    def get_object(self):
+        return self.request.user
 
 class ManageUserView(TokenRefreshView):
     """Manage the authenticated user"""

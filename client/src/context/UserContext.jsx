@@ -11,16 +11,18 @@ export const UserContext = createContext()
 const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
-    const [account, setAccount] =  useState(null)
     const [accessToken, setAccessToken] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
     const logout = () => {
-      console.log('MAKE THIS CLEAR ALL COOKIES')
+      Cookies.remove('refreshToken', {secure: true})
+      setAccessToken(null)
 
     }
 
     const refreshToken = () => {
+
+      setIsLoading(true)
 
       const refreshData = {
         refresh: Cookies.get('refreshToken')
@@ -31,7 +33,9 @@ const UserProvider = ({children}) => {
         axios.post('/api/user/me/', refreshData)
         .then(resp => {
           if(resp.status == 200){
-            console.log(resp.data)
+            setAccessToken(resp.data['access'])
+
+
           } else if(resp.status == 401) {
             toast.error('Timed Out: Please Login')
           } else {
@@ -39,11 +43,14 @@ const UserProvider = ({children}) => {
           }
         })
         .catch(err => {
+          setIsLoading(false)
           console.error("Error:", err); // Log the error for debugging
           throw err
         })
 
       }
+
+      setIsLoading(false)
 
     }
 
@@ -60,10 +67,9 @@ const UserProvider = ({children}) => {
       value={{
         user,
         setUser,
-        account,
-        setAccount,
         accessToken,
         setAccessToken,
+        isLoading,
         logout
         }} >
         {children}

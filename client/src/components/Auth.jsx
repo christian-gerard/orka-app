@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import { object, string} from 'yup'
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import Cookie from 'js-cookie'
+import Cookies from 'js-cookie'
 
 function Auth() {
 
@@ -111,7 +111,7 @@ function Auth() {
           if(resp.status == 200){
             const data = resp.data
 
-            Cookie.set('refreshToken', data.refresh, { expires: 7, secure: true });
+            Cookies.set('refreshToken', data.refresh, { expires: 7, secure: true });
             toast.success('Login Successful');
           }
           else {

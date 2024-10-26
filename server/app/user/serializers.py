@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
-from rest_framework.authtoken.models import Token
+from account.serializers import AccountSerializer
 from django.utils.translation import gettext as _
 
 
@@ -15,8 +15,18 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'email', 'password', 'first_name', 'last_name', 'account']
-        extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
+        fields = ['id', 'email', 'first_name', 'last_name']
+
+
+
+class UserDetailSerializer(UserSerializer):
+    """Serializes Account Detail Data"""
+    account = AccountSerializer()
+
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + ['account']
+
+
 
     # SAVING FOR POST MVP
 
