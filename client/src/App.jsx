@@ -5,16 +5,7 @@ import {UserContext} from './context/UserContext'
 import { Toaster } from 'react-hot-toast'
 import Auth from './components/Auth'
 import Nav from './components/Nav'
-import Stack from '@mui/material/Stack';
-import CircularProgress from '@mui/material/CircularProgress';
 
-function CircularSize() {
-  return (
-    <Stack spacing={2} direction="row" alignItems="center">
-      <CircularProgress size="150px" />
-    </Stack>
-  );
-}
 
 
 
@@ -29,17 +20,6 @@ function App() {
       <div className='h-screen w-screen select-none font-montserrat'>
 
         <Toaster />
-
-          { isLoading ? (
-
-            <div className='fixed inset-0 bg-white z-50 flex items-center justify-center flex gap-10'>
-              <CircularSize />
-              <p className='text-6xl'>Loading...</p>
-            </div>
-
-          )
-          :
-          <></>}
 
 
 

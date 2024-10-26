@@ -12,15 +12,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import axios from 'axios'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 function Project({id, name, deadline, description, project_type}) {
 
-    const { token, tasks, projects, setProjects} = useContext(UserContext)
+    const { accessToken, tasks, projects, setProjects} = useContext(UserContext)
     const nav = useNavigate()
     const route = useParams()
     const path = useLocation()
-    const [currentProject, setCurrentProject] = useState(null)
+    const [project, setProject] = useState(null)
     const [editProject, setEditProject] = useState(false)
+    const token = accessToken
 
     const handleEditProject = () => {
         setEditProject(!editProject)
@@ -29,27 +33,22 @@ function Project({id, name, deadline, description, project_type}) {
     }
 
     const handleDeleteProject = () => {
-
-
-        fetch(`/api/account/projects/${route.id}`, {
-            method: "DELETE",
+        axios.delete(`${API_URL}/api/projects/${route.id}`, {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            credentials: 'include',
-        })
-        .then(resp => {
-            if(resp.status === 204){
-                // const updatedProj = projects.filter(proj => proj.id !== id)
-                // setProjects(updatedProj)
-                toast.success('Project Deleted')
-                nav('/projects')
-            } else {
-                toast.error("Unable to Delete Project")
+                Authorization: `Bearer ${token}`
             }
         })
-        // .catch( err => console.log(err))
+        .then(resp => {
+            if(resp.status == 200){
+                setProject(resp.data)
+            } else if(resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
 
 
     }
@@ -67,11 +66,11 @@ function Project({id, name, deadline, description, project_type}) {
       });
 
     const initialValues = {
-        name: currentProject ? currentProject.name : '',
-        description: currentProject ? currentProject.description : '',
-        deadline: currentProject ? currentProject.deadline : '',
-        projectType: currentProject ? currentProject.projectType : '',
-        budget: currentProject ? currentProject.budget : ''
+        name: project ? project.name : '',
+        description: project ? project.description : '',
+        deadline: project ? project.deadline : '',
+        projectType: project ? project.projectType : '',
+        budget: project ? project.budget : ''
     }
 
     const formik = useFormik({
@@ -88,26 +87,26 @@ function Project({id, name, deadline, description, project_type}) {
             client: formData.client
         }
 
-        fetch(`/api/account/projects/${route.id}`, {
-            method: "PATCH",
-            body: JSON.stringify(requestData),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            credentials: 'include',
-        })
-        .then(resp => {
-            if(resp.ok){
-                return resp.json().then(data => {
+        // fetch(`/api/account/projects/${route.id}`, {
+        //     method: "PATCH",
+        //     body: JSON.stringify(requestData),
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': `Token ${token}`
+        //     },
+        //     credentials: 'include',
+        // })
+        // .then(resp => {
+        //     if(resp.ok){
+        //         return resp.json().then(data => {
 
-                    setCurrentProject(data)
-                    handleEditProject()
+        //             setProject(data)
+        //             handleEditProject()
 
-                })
-            }
-        })
-        .catch( err => console.log(err))
+        //         })
+        //     }
+        // })
+        // .catch( err => console.log(err))
 
 
 
@@ -119,24 +118,22 @@ function Project({id, name, deadline, description, project_type}) {
 
         if(route.id !== undefined && path.pathname.includes('projects')) {
 
-            fetch(`/api/account/projects/${route.id}`, {
-                method: "GET",
+            axios.get(`${API_URL}/api/projects/${route.id}`, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Token ${token}`
-                },
-                credentials: 'include',
-            })
-            .then(resp => {
-                if(resp.ok){
-                    return resp.json().then( data => {
-                        setCurrentProject(data)
-                    })
-                } else {
-                    toast.error('Unable to Refresh')
+                    Authorization: `Bearer ${token}`
                 }
             })
-            .catch( err => console.log(err))
+            .then(resp => {
+                if(resp.status == 200){
+                    setProject(resp.data)
+                } else if(resp.status == 401){
+                    toast.error('Unauthorized')
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                throw err
+            })
 
         }
 
@@ -144,7 +141,6 @@ function Project({id, name, deadline, description, project_type}) {
 
     }, [route.id])
 
-        console.log(path)
 
     return(
         <>
@@ -182,33 +178,33 @@ function Project({id, name, deadline, description, project_type}) {
 
                 </div>
 
-                { currentProject ?
+                { project ?
 
 
                     <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
                         <div className='h-[10%] flex flex-row justify-between px-6'>
 
-                            <p className='text-5xl flex items-center'>{currentProject.name ? currentProject.name : "name not known"}</p>
-                            <p className='text-3xl flex items-center'>{currentProject.deadline ? currentProject.deadline.slice(5,12): "No Deadline"}</p>
+                            <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
+                            <p className='text-3xl flex items-center'>{project.deadline ? project.deadline.slice(5,12): "No Deadline"}</p>
 
                         </div>
 
                         <div className='bg-white h-[90%] w-full px-6'>
 
                             <div className='h-[5%]'>
-                                {currentProject.project_type ? currentProject.project_type : "Description Not Listed"}
+                                {project.project_type ? project.project_type : "Description Not Listed"}
                             </div>
 
                             <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[10%]'>
-                                {currentProject.description ? currentProject.description : "Description Not Listed"}
+                                {project.description ? project.description : "Description Not Listed"}
                             </div>
 
                             <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
                                 <p>Assigned Users</p>
-                                {currentProject.users ?
+                                {project.users ?
 
-                                    currentProject.users.map(user =>
+                                    project.users.map(user =>
                                         <div key={user.id} className='flex flex-row border items-center justify-between'>
                                             <div className='px-2 text-md sm:text-xl bold flex flex-nowrap flex-row'>
                                                 <p>{user.first_name} {user.last_name}</p>
@@ -233,9 +229,9 @@ function Project({id, name, deadline, description, project_type}) {
                                 <div className=' h-full w-[60%]'>
                                     <h1>Tasks</h1>
                                     {
-                                        currentProject.tasks.length !== 0 ?
+                                        project.tasks && project.tasks.length !== 0 ?
 
-                                        currentProject.tasks.map(task => <Task key={task.id} {...task} />)
+                                        project.tasks.map(task => <Task key={task.id} {...task} />)
 
                                         :
 
@@ -245,10 +241,9 @@ function Project({id, name, deadline, description, project_type}) {
                                 </div>
 
                                 <div className='border-l h-full w-[40%]'>
-                                    <h1 className='w-full h-[5%]'>Budget</h1>
+                                    <h1 className='w-full h-[5%]'>Budgets</h1>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
-                                        <p className='w-full h-full flex justify-center items-center text-white text-6xl bg-red'>" WIP "</p>
 
                                     </div>
                                 </div>
