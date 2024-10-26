@@ -12,7 +12,7 @@ const API_URL = import.meta.env.VITE_API_URL
 
 function Tasks(){
 
-    const {  } = useContext(UserContext)
+    const { accessToken } = useContext(UserContext)
     const [newTask, setNewTask] = useState(false)
     const [tasks, setTasks] = useState(null)
 
@@ -34,6 +34,39 @@ function Tasks(){
         category:  '',
         status: '',
         project: ''
+    }
+
+    const renderTasks = () => {
+
+        const token = accessToken
+        let taskData = null
+
+
+        axios.get(`${API_URL}/api/tasks/`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+            if(resp.status == 200){
+                taskData = resp.data
+                if(taskData && taskData.length !== 0) {
+                    setTasks(
+                        taskData
+                        .filter(task => task.status !== 'Complete')
+                        .sort((a, b) => a.status.localeCompare(b.status))
+                        .map(task => <Task key={task.id} {...task} />)
+                    )
+
+                } else {
+                    setTasks(<p className='text-3xl w-full h-full flex justify-center items-center'>No Current Tasks</p>)
+                }
+            } else if (resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+
+
     }
 
     const formik = useFormik({
@@ -68,6 +101,7 @@ function Tasks(){
     })
 
     useEffect(() => {
+        renderTasks()
 
     },[])
 
@@ -85,17 +119,14 @@ function Tasks(){
             {/* main body */}
             <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar-thin scrollbar-thumb-ocean overflow-scroll'>
 
-                <div>
+                <div className='w-full h-full'>
+                    {
+                        newTask ?
 
-                    <div>
-
-                        {
-                            newTask ?
-
-                        <Formik
-                        onSubmit={formik.handleSubmit}
-                        initialValues={initialValues}
-                        >
+                    <Formik
+                    onSubmit={formik.handleSubmit}
+                    initialValues={initialValues}
+                    >
                         <Form
                         className='flex h-full lg:justify-center w-full border'
                         onSubmit={formik.handleSubmit}
@@ -150,7 +181,7 @@ function Tasks(){
                                             placeholder='Status'
                                             className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                                         >
-                                             <option value=''>Select Status</option>
+                                            <option value=''>Select Status</option>
                                             <option value='Not Started'>Not Started</option>
                                             <option value='Doing'>Doing</option>
                                             <option value='Blocked'>Blocked</option>
@@ -218,34 +249,18 @@ function Tasks(){
 
 
                         </Form>
-
                     </Formik>
-                            :
-                            <>
-                            </>
-                        }
+                        :
+                        <>
+                        </>
+                    }
 
-                        {
-                            tasks ?
 
-                            <div>
 
-                                {tasks
-                                .filter(task => task.status !== 'Complete')
-                                .sort((a, b) => a.status.localeCompare(b.status))
-                                .map(task => <Task key={task.id} {...task} />)}
+                    {
+                        tasks
+                    }
 
-                            </div>
-
-                            :
-
-                            <div>
-                                <h1>Tasks</h1>
-                            </div>
-
-                        }
-
-                    </div>
                 </div>
 
 
