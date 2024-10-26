@@ -87,7 +87,6 @@ function Dashboard() {
             {/* Page Header 10%*/}
             <div className='h-[5%] w-full text-3xl flex items-center justify-between'>
                 <p className=''>Dashboard</p>
-                <div>Refresh</div>
             </div>
 
             {/* Top Half :: 45%*/}
