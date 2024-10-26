@@ -11,13 +11,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import Project from '../components/Project'
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import axios from 'axios'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 function Client({ id, name}) {
     const route = useParams()
     const nav = useNavigate()
-    const { clients, setClients, token, projects } = useContext(UserContext)
-    const [currentClient, setCurrentClient] = useState(null)
+    const {  accessToken } = useContext(UserContext)
+    const [client, setClient] = useState(null)
     const [editClient, setEditClient] = useState(false)
+
+    const token = accessToken
 
     const handleEditClient = () => {
         setEditClient(!editClient)
@@ -25,20 +30,16 @@ function Client({ id, name}) {
     }
 
     const handleDeleteClient = () => {
-        fetch(`/api/account/clients/${route.id}`, {
-            method: "DELETE",
+        axios.delete(`${API_URL}/api/clients/${route.id}`, {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            credentials: 'include',
+                'Authorization': `Bearer ${token}`
+            }
         })
         .then(resp => {
             if(resp.status === 204){
 
                 toast.success('Client Deleted')
                 nav('/clients')
-
 
 
             }
@@ -58,16 +59,16 @@ function Client({ id, name}) {
     });
 
     const initialValues = {
-        name: currentClient ? currentClient.name : '',
-        description: currentClient ? currentClient.description : '',
-        industry: currentClient ? currentClient.industry : '',
-        ein: currentClient ? currentClient.ein : '',
-        address_one: currentClient ? currentClient.address_one : '',
-        address_two: currentClient ? currentClient.address_two : '',
-        city: currentClient ? currentClient.city : '',
-        state: currentClient ? currentClient.state : '',
-        zip_code: currentClient ? currentClient.zip_code : '',
-        account: currentClient ? currentClient.account : null,
+        name: client ? client.name : '',
+        description: client ? client.description : '',
+        industry: client ? client.industry : '',
+        ein: client ? client.ein : '',
+        address_one: client ? client.address_one : '',
+        address_two: client ? client.address_two : '',
+        city: client ? client.city : '',
+        state: client ? client.state : '',
+        zip_code: client ? client.zip_code : '',
+        account: client ? client.account : null,
     }
 
     const formik = useFormik({
@@ -76,24 +77,17 @@ function Client({ id, name}) {
         onSubmit: (formData) => {
 
 
-            fetch(`/api/account/clients/${route.id}`, {
-                method: "PATCH",
-                body: JSON.stringify(formData),
+            axios.patch(`${API_URL}/api/clients/${route.id}`, formData, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Token ${token}`
-                },
-                credentials: 'include',
+                    'Authorization': `Bearer ${token}`
+                }
             })
             .then(resp => {
-                if(resp.ok){
-                    return resp.json().then(data => {
-                        setCurrentClient(data)
-                        handleEditClient()
-                        toast.success('Client Updated')
-                    })
+                if(resp.status == 200){
 
-
+                    setClient(resp.data)
+                    handleEditClient()
+                    toast.success('Client Updated')
                 }
             })
 
@@ -106,19 +100,14 @@ function Client({ id, name}) {
 
         if(route.id !== undefined){
 
-            fetch(`/api/account/clients/${route.id}`, {
-                method: "GET",
+            axios.get(`${API_URL}/api/clients/${route.id}`, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Token ${token}`
-                },
-                credentials: 'include',
+                    'Authorization': `Bearer ${token}`
+                }
             })
             .then(resp => {
-                if(resp.ok){
-                    return resp.json().then( data => {
-                        setCurrentClient(data)
-                    })
+                if(resp.status == 200){
+                    setClient(resp.data)
                 }
             })
 
@@ -165,25 +154,25 @@ function Client({ id, name}) {
                 </div>
 
                 {
-                    currentClient ?
+                    client ?
 
                         <div className='w-full h-[95%] px-6 flex flex-col'>
 
                             <div className='flex flex-row justify-between h-[10%]'>
 
-                                <p className='text-4xl'>{currentClient.name ? currentClient.name : 'No Name'}</p>
+                                <p className='text-4xl'>{client.name ? client.name : 'No Name'}</p>
 
-                                <p className='text-2xl'>{currentClient.industry ? currentClient.industry : 'Industry Not Listed'}</p>
+                                <p className='text-2xl'>{client.industry ? client.industry : 'Industry Not Listed'}</p>
 
                             </div>
 
                             <p className='text-xl'>Client Projects</p>
                             <div className='w-full h-[50%] border scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
-                                {
+                                {/* {
                                     projects ?
 
                                     projects
-                                    .filter(project => project.client === currentClient.id)
+                                    .filter(project => project.client === client.id)
                                     .map(project => <Project key={project.id} {...project} />)
 
                                     :
@@ -191,16 +180,16 @@ function Client({ id, name}) {
                                     <p className='text-xl w-full flex justify-center items-center'>No Projects</p>
 
 
-                                }
+                                } */}
                             </div>
 
 
 
                             <p className='text-xl'>Assigned Users</p>
                             <div className='h-[15%]  border'>
-                                {currentClient.users ?
+                                {client.users ?
 
-                                    currentClient.users.map(user =>
+                                    client.users.map(user =>
                                         <div className='flex flex-row border'>
                                             <div className='px-2'>
                                                 <p>{user.first_name} {user.last_name}</p>
@@ -217,7 +206,6 @@ function Client({ id, name}) {
 
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
-                                        <p className='w-full h-full flex justify-center items-center text-white text-4xl bg-red'>" WIP "</p>
 
                                     </div>
 
@@ -226,9 +214,9 @@ function Client({ id, name}) {
 
                             <p className='text-xl'>Contacts</p>
                             <div className=' scrollbar-thumb-ocean h-[25%] w-full  scrollbar-thumb-ocean border'>
-                                {currentClient.contacts ?
+                                {client.contacts ?
 
-                                    currentClient.contacts.map(contact =>
+                                    client.contacts.map(contact =>
                                         <div className='flex flex-row border'>
                                             <div className='px-2'>
                                                 <p>{contact ? contact.first_name: "NONE"}</p>
@@ -245,7 +233,7 @@ function Client({ id, name}) {
 
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
-                                        <p className='w-full h-full flex justify-center items-center text-white text-4xl bg-red'>" WIP "</p>
+
 
                                     </div>
 

@@ -6,6 +6,9 @@ import { object, string, array, number, bool } from "yup";
 import { useFormik, Formik, Form, Field } from 'formik'
 import { toast } from 'react-hot-toast'
 import Task from '../components/Task'
+import axios from 'axios'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 function Tasks(){
 
@@ -46,22 +49,16 @@ function Tasks(){
             project: formData.project
         }
 
-        fetch(`/api/project/tasks/`, {
-            method: "POST",
-            body: JSON.stringify(requestData),
+        axios.post(`${API_URL}/api/tasks/`, requestData, {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            credentials: 'include',
+                'Authorization': `Bearer ${token}`
+            }
         })
         .then(resp => {
-            if(resp.ok){
-                return resp.json().then(data => {
-                    formik.resetForm()
-                    setTasks([data, ...tasks])
-                    toast.success('Task Added')
-                })
+            if(resp.status == 200){
+                formik.resetForm()
+                setTasks([data, ...tasks])
+                toast.success('Task Added')
             }
         })
 
@@ -191,14 +188,14 @@ function Tasks(){
                                         >
                                             <option value=''>Select Project</option>
                                             {
-                                                projects ?
+                                                // projects ?
 
-                                                projects.map(project =>
-                                                    <option value={project.id}>{project.name}</option>
-                                                )
-                                                :
+                                                // projects.map(project =>
+                                                //     <option value={project.id}>{project.name}</option>
+                                                // )
+                                                // :
 
-                                                <></>
+                                                // <></>
                                             }
 
                                         </Field>

@@ -5,14 +5,44 @@ import Project from '../components/Project'
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
+import axios from 'axios'
 
 
+const API_URL = import.meta.env.VITE_API_URL
 
 function Projects() {
-
-    const { } = useContext(UserContext)
+    const { accessToken } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
+    const [projects, setProjects] = useState(null)
 
+    const renderProjects = () => {
+
+        const token = accessToken
+        let projectData = null
+
+
+        axios.get(`${API_URL}/api/projects/`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+
+            if(resp.status == 200){
+                projectData = resp.data
+                if(projectData && projectData.length !== 0) {
+                    setProjects(
+                        projectData
+                        .map(proj => <Project key={proj.id} {...proj} />)
+                    )
+                } else {
+                    setProjects(<p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Projects</p>)
+                }
+            } else if (resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+    }
 
     const handleNewProject = () => {
         setNewProject(!newProject)
@@ -83,7 +113,7 @@ function Projects() {
     })
 
     useEffect(() => {
-
+        renderProjects()
     }, [])
 
     return (
@@ -102,17 +132,9 @@ function Projects() {
 
             {/* Projects */}
             <div className='h-[95%] w-full flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll'>
-                {/* {
-                    projects && projects.length !== 0 ?
-
-                    projects.map(proj => <Project key={proj.id} {...proj} />)
-
-                    :
-
-                    <div className='w-full h-full text-4xl flex justify-center items-center'>
-                        <h1>No Current Projects</h1>
-                    </div>
-                } */}
+                {
+                    projects
+                }
             </div>
 
             {

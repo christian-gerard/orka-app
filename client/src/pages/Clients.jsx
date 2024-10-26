@@ -4,19 +4,19 @@ import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
 import CloseIcon from '@mui/icons-material/Close';
 import Client from '../components/Client'
+import axios from 'axios'
 
+const API_URL = import.meta.env.VITE_API_URL
 
 function Clients() {
 
-    const { } = useContext(UserContext)
+    const { accessToken } = useContext(UserContext)
     const [clients, setClients] = useState(null)
     const [newClient, setNewClient] = useState(false)
 
     const handleNewClient = () => {
         formik.resetForm()
-
         setNewClient(!newClient)
-
     }
 
     const clientSchema = object({
@@ -93,8 +93,37 @@ function Clients() {
         }
     })
 
-    useEffect(() => {
+    const renderClients = () => {
 
+        const token = accessToken
+        let clientData = null
+
+
+        axios.get(`${API_URL}/api/clients/`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+
+            if(resp.status == 200){
+                clientData = resp.data
+                if(clientData && clientData.length !== 0) {
+                    setClients(
+                        clientData
+                        .map(client => <Client key={client.id} {...client} />)
+                    )
+                } else {
+                    setClients(<p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Clients</p>)
+                }
+            } else if (resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+    }
+
+    useEffect(() => {
+        renderClients()
 
 
     },[])
@@ -115,14 +144,7 @@ function Clients() {
                 <div className='flex flex-row flex-wrap flex gap-4'>
 
                     {
-                        clients ?
-
-                        clients.map(client => <Client key={client.id} {...client} />)
-
-                        :
-
-                        <>
-                        </>
+                        clients
                     }
 
                 </div>
