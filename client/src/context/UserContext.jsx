@@ -2,6 +2,8 @@
 import { createContext, useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import Cookies from 'js-cookie'
 
 
 export const UserContext = createContext()
@@ -9,12 +11,12 @@ export const UserContext = createContext()
 const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
-    const [accounts, setAccounts] =  useState(null)
+    const [account, setAccount] =  useState(null)
     const [projects, setProjects] = useState(null)
     const [clients, setClients] = useState(null)
     const [expenses, setExpenses] = useState(null)
     const [tasks, setTasks] =  useState(null)
-    const [token, setToken] = useState(null)
+    const [accessToken, setAccessToken] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
 
@@ -123,8 +125,35 @@ const UserProvider = ({children}) => {
 
     }
 
-    useEffect(() => {
+    const refreshToken = () => {
 
+      const refreshData = {
+        refresh: Cookies.get('refreshToken')
+      }
+
+      if(refreshData["refresh"]) {
+
+        axios.post('/api/user/me/', refreshData)
+        .then(resp => {
+          if(resp.status == 200){
+            console.log(resp.data)
+          } else if(resp.status == 401) {
+            toast.error('Timed Out: Please Login')
+          } else {
+            toast.error('Error: Please Login')
+          }
+        })
+        .catch(err => {
+          console.error("Error:", err); // Log the error for debugging
+          throw err
+        })
+
+      }
+
+    }
+
+    useEffect(() => {
+      refreshToken()
 
     }, [])
 
@@ -136,18 +165,16 @@ const UserProvider = ({children}) => {
       value={{
         user,
         setUser,
-        accounts,
-        setAccounts,
+        account,
+        setAccount,
         updateAccounts,
         isLoading,
         projects,
         setProjects,
         clients,
         setClients,
-        token,
-        setToken,
-        setCookie,
-        getCookie,
+        accessToken,
+        setAccessToken,
         tasks,
         setTasks,
         updateProjects,
