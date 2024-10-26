@@ -12,6 +12,16 @@ function Dashboard() {
     const [outstandingTasks, setOutstandingTasks] = useState(null)
     const [myProjects, setMyProjects] = useState(null)
 
+    const renderOutstandingTasks = () => {
+
+
+    }
+
+    const renderMyProjects = () => {
+
+
+    }
+
 
     useEffect(() => {
 
