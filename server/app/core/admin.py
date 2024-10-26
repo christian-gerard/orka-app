@@ -8,6 +8,8 @@ from django.utils.translation import gettext_lazy as _
 
 from core import models
 
+admin.site.site_title = "Orka"
+admin.site.site_header = "Orka Admin"
 
 class UserAdmin(BaseUserAdmin):
     """Define the admin pages for users"""
