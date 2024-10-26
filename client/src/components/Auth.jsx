@@ -104,14 +104,14 @@ function Auth() {
           password: formData.loginPassword
         }
 
-        axios.post('/api/user/login/', loginData, {withCredentials: true})
+        axios.post(`${API_URL}/api/user/login/`, loginData, {withCredentials: true})
         .then(resp => {
           if(resp.status == 200){
             const data = resp.data
 
             Cookies.set('refreshToken', data.refresh, { expires: 7, secure: true });
 
-            axios.get('/api/user/', {
+            axios.get(`${API_URL}/api/user/`, {
               headers: {
                 Authorization: `Bearer ${data.access}`
               }

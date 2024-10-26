@@ -30,13 +30,13 @@ const UserProvider = ({children}) => {
 
       if(refreshData["refresh"]) {
 
-        axios.post('/api/user/refresh/', refreshData)
+        axios.post(`${API_URL}/api/user/refresh/`, refreshData)
         .then(resp => {
           if(resp.status == 200){
 
             const access = resp.data.access
 
-            axios.get('/api/user/', {
+            axios.get(`${API_URL}/api/user/`, {
               headers: {
                 Authorization: `Bearer ${access}`
               }
