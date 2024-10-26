@@ -53,7 +53,7 @@ const dummyData = [
 
 
 function Budgets(){
-    const { projects, updateProjects } = useContext(UserContext)
+    const { } = useContext(UserContext)
     const chartRef = useRef(null)
     const chartInstanceRef = useRef(null);
     const [budgetChartData, setBudgetChartData] = useState({
@@ -102,7 +102,7 @@ function Budgets(){
             }
         };
 
-        updateProjects()
+
 
     }, [budgetChartData]);
 
@@ -137,7 +137,7 @@ function Budgets(){
                     <div className='border-l h-full overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                     <p className='h-[5%] text-2xl flex items-center bg-ocean text-white'>Project Budgets</p>
                         <div className='h-[95%]'>
-                            {
+                            {/* {
 
                                 projects ?
 
@@ -148,7 +148,7 @@ function Budgets(){
                                 <>
                                 </>
 
-                            }
+                            } */}
                         </div>
                     </div>
 

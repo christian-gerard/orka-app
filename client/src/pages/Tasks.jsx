@@ -9,8 +9,9 @@ import Task from '../components/Task'
 
 function Tasks(){
 
-    const { token, tasks, setTasks, updateTasks, projects, updateProjects } = useContext(UserContext)
+    const {  } = useContext(UserContext)
     const [newTask, setNewTask] = useState(false)
+    const [tasks, setTasks] = useState(null)
 
     const handleNewTask = () => {
         formik.resetForm()
@@ -70,9 +71,7 @@ function Tasks(){
     })
 
     useEffect(() => {
-        updateTasks()
 
-        updateProjects()
     },[])
 
     return(
