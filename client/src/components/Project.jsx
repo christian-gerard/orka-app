@@ -229,7 +229,7 @@ function Project({id, name, deadline, description, project_type}) {
                                 <div className=' h-full w-[60%]'>
                                     <h1>Tasks</h1>
                                     {
-                                        project.tasks.length !== 0 ?
+                                        project.tasks && project.tasks.length !== 0 ?
 
                                         project.tasks.map(task => <Task key={task.id} {...task} />)
 
@@ -241,10 +241,9 @@ function Project({id, name, deadline, description, project_type}) {
                                 </div>
 
                                 <div className='border-l h-full w-[40%]'>
-                                    <h1 className='w-full h-[5%]'>Budget</h1>
+                                    <h1 className='w-full h-[5%]'>Budgets</h1>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
-                                        <p className='w-full h-full flex justify-center items-center text-white text-6xl bg-red'>" WIP "</p>
 
                                     </div>
                                 </div>
