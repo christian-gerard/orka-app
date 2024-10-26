@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
+const API_URL = import.meta.env.API_URL
 
 export const UserContext = createContext()
 

@@ -8,6 +8,8 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import Cookies from 'js-cookie'
 
+const API_URL = import.meta.env.API_URL
+
 function Auth() {
 
   const { user, setUser, accessToken, setAccessToken } = useContext(UserContext)
