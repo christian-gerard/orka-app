@@ -12,19 +12,19 @@ from django.utils.translation import gettext as _
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializes User Data"""
+    account = AccountSerializer()
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'email', 'first_name', 'last_name']
-
+        fields = ['id', 'email', 'first_name', 'last_name' , 'account']
 
 
 class UserDetailSerializer(UserSerializer):
     """Serializes Account Detail Data"""
-    account = AccountSerializer()
+
 
     class Meta(UserSerializer.Meta):
-        fields = UserSerializer.Meta.fields + ['account']
+        fields = UserSerializer.Meta.fields
 
 
 

@@ -13,13 +13,12 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ['id', 'name', 'type', 'users']
+        fields = ['id', 'name', 'type', 'clients', 'users']
         read_only_fields = ["id"]
 
 
 class AccountDetailSerializer(AccountSerializer):
     """Serializes Account Detail Data"""
-    clients = ClientSerializer(many=True)
 
     class Meta(AccountSerializer.Meta):
-        fields = AccountSerializer.Meta.fields + ['clients', 'users']
+        fields = AccountSerializer.Meta.fields

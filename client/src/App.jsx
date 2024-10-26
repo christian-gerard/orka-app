@@ -21,7 +21,7 @@ function CircularSize() {
 
 
 function App() {
-  const { accessToken, isLoading } = useContext(UserContext)
+  const { user, accessToken, isLoading } = useContext(UserContext)
 
 
 
@@ -30,18 +30,20 @@ function App() {
 
         <Toaster />
 
-          { isLoading && (
+          { isLoading ? (
 
             <div className='fixed inset-0 bg-white z-50 flex items-center justify-center flex gap-10'>
               <CircularSize />
               <p className='text-6xl'>Loading...</p>
             </div>
 
-          )}
+          )
+          :
+          <></>}
 
 
 
-        { accessToken ?
+        { accessToken && user ?
 
           <div className='h-full w-full flex flex-col sm:flex-row'>
               <Nav />
