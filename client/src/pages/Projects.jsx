@@ -50,8 +50,8 @@ function Projects() {
     }
 
     const projectSchema = object({
-        name: string(),
-        // .required('Please provide a project name'),
+        name: string()
+        .required('Please provide a project name'),
         description: string(),
         deadline: string(),
         // .required(),
@@ -66,7 +66,6 @@ function Projects() {
         description: '',
         deadline: '',
         projectType: '',
-        budget: 1000.00,
         client: null
     }
 
@@ -200,7 +199,7 @@ function Projects() {
                                     {formik.errors.deadline && formik.touched.deadline && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.deadline.toUpperCase()}</div>
                                     )}
-                                    <label className='ml-2'> Type </label>
+                                    <label className='ml-2'> Project Type </label>
                                     <Field
                                         name='projectType'
                                         as='select'
@@ -218,28 +217,6 @@ function Projects() {
 
                                     </Field>
 
-                                    {formik.errors.projectType && formik.touched.projectType && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.projectType}</div>
-                                    )}
-
-                                    <label className='ml-2'> Budget </label>
-                                    <div className='ml-2 flex flex-row flex-nowrap items-center'>
-                                        <span className='text-xl w-[5%] flex justify-center'>$</span>
-
-                                        <Field
-                                            name='budget'
-                                            type='number'
-                                            value={formik.values.budget}
-                                            onChange={formik.handleChange}
-                                            placeholder='Budget'
-                                            className='border m-2 p-2 w-[95%]'
-                                            step='1000'
-                                            min="1000"
-                                            max="100000000"
-                                        >
-
-                                        </Field>
-                                    </div>
 
                                     {formik.errors.budget && formik.touched.budget && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.budget.toUpperCase()}</div>
