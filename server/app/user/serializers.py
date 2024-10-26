@@ -5,9 +5,10 @@ from django.contrib.auth import get_user_model
 
 
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework.authtoken.models import Token
 from django.utils.translation import gettext as _
+
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializes User Data"""
@@ -35,6 +36,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     #     return user
 
+class RefreshSerializer(TokenRefreshSerializer):
+    """Getting Access Token after Refresh"""
+
 
 class AuthSerializer(TokenObtainPairSerializer):
     """Serializer for JWT Auth Token"""
@@ -42,6 +46,5 @@ class AuthSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         """Validate and Authenticate the User"""
         data = super().validate(attrs)
-        data['email'] = self.user.email
         return data
 

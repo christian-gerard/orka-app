@@ -5,10 +5,11 @@ import { useFormik } from "formik";
 import * as Yup from 'yup'
 import { object, string} from 'yup'
 import toast from 'react-hot-toast'
+import Cookie from 'js-cookie'
 
 function Auth() {
 
-  const { user, setUser, token, setToken, setCookie } = useContext(UserContext)
+  const { user, setUser, token, setToken} = useContext(UserContext)
   const [newUser, setNewUser] = useState(false)
 
   const handleNewUser = () => setNewUser(!newUser)
@@ -65,27 +66,27 @@ function Auth() {
           last_name:formData.lastName
         }
 
-        fetch(`/api/user/create/`,{
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userData),
-        })
-        .then(resp => {
-          if(resp.ok){
-            return resp.json().then(data => {
-              setNewUser(false)
-              toast.success(`Account created for ${data.firstName}`)
+        // fetch(`/api/user/create/`,{
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(userData),
+        // })
+        // .then(resp => {
+        //   if(resp.ok){
+        //     return resp.json().then(data => {
+        //       setNewUser(false)
+        //       toast.success(`Account created for ${data.firstName}`)
 
-            })}
-        })
-        .then(() => {
+        //     })}
+        // })
+        // .then(() => {
 
-        })
-        .catch(err => {
-          toast.error('Unable to Login')
-        })
+        // })
+        // .catch(err => {
+        //   toast.error('Unable to Login')
+        // })
 
 
       }
@@ -95,14 +96,13 @@ function Auth() {
       formData =>
 
       {
-        console.log(formData)
 
         const loginData = {
           email: formData.loginEmail,
           password: formData.loginPassword
         }
 
-        fetch(`/api/user/session/`,{
+        fetch(`/api/user/login/`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -112,13 +112,11 @@ function Auth() {
         .then(resp => {
           if(resp.ok){
             return resp.json().then(data => {
-              setUser(data)
-              setToken(data['token'])
-              setCookie('token', data['token'])
-              console.log(data)
+
+              Cookie.set('refreshToken', data.refresh, { expires: 7, secure: true });
               toast.success('Login Successful')
             })}
-          else if(resp.status === 404) {
+          else {
             toast.error("Invalid Login")
           }
         })
@@ -250,7 +248,6 @@ function Auth() {
                 )}
                 <button type="submit" className='mt-4 bg-white text-black'>Log In</button>
             </form>
-            <button type='button' className='mt-2 border border-white p-1 text-md w-full underline' onClick={handleNewUser}>Create New User</button>
         </div>
       }
       </>
