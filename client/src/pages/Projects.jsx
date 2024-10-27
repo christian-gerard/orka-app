@@ -14,6 +14,7 @@ function Projects() {
     const { accessToken } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
     const [projects, setProjects] = useState(null)
+    const token = accessToken
 
     const renderProjects = () => {
 
@@ -50,15 +51,13 @@ function Projects() {
     }
 
     const projectSchema = object({
-        name: string(),
-        // .required('Please provide a project name'),
+        name: string()
+        .required('Please provide a name'),
         description: string(),
-        deadline: string(),
-        // .required(),
-        projectType: string(),
-        // .required('Please provide the project type'),
-        budget: number(),
-        // .required('Please provide a project budget')
+        deadline: string()
+        .required("Please provide a deadline"),
+        projectType: string()
+        .required('Please provide the project type')
       });
 
     const initialValues = {
@@ -66,7 +65,6 @@ function Projects() {
         description: '',
         deadline: '',
         projectType: '',
-        budget: 1000.00,
         client: null
     }
 
@@ -84,25 +82,17 @@ function Projects() {
             client: formData.client
         }
 
-        console.log(csrftoken)
 
-        fetch('/api/account/projects/', {
-            method: "POST",
-            body: JSON.stringify(requestData),
+        axios.post(`${API_URL}/api/projects/`, requestData, {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Token ${token}`
-            },
-            credentials: 'include',
+                'Authorization': `Bearer ${token}`
+            }
         })
         .then(resp => {
-            if(resp.ok){
-                return resp.json().then(data => {
-                    setProjects([data, ...projects])
-                    handleNewProject()
-                    toast.success('New Project Added')
-
-                })
+            if(resp.status == 201){
+                setProjects([resp.data, ...projects])
+                handleNewProject()
+                toast.success('New Project Added')
             } else {
                 toast.error('Error while saving project')
             }
@@ -162,6 +152,7 @@ function Projects() {
                                         name='name'
                                         value={formik.values.name}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         type='text'
                                         placeholder='Name'
                                         className='border m-2 p-2'
@@ -176,6 +167,7 @@ function Projects() {
                                         name='description'
                                         value={formik.values.description}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         as='textarea'
                                         placeholder='Description'
                                         className='border m-2 p-2 min-h-[100px] lg:h-[200px]'
@@ -193,6 +185,7 @@ function Projects() {
                                         max="2025-12-31"
                                         value={formik.values.deadline}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         placeholder='Deadline'
                                         className='border m-2 p-2'
                                     />
@@ -200,12 +193,13 @@ function Projects() {
                                     {formik.errors.deadline && formik.touched.deadline && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.deadline.toUpperCase()}</div>
                                     )}
-                                    <label className='ml-2'> Type </label>
+                                    <label className='ml-2'> Project Type </label>
                                     <Field
                                         name='projectType'
                                         as='select'
                                         value={formik.values.projectType}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         type='text'
                                         placeholder='Status'
                                         className='border m-2 p-2'
@@ -218,28 +212,6 @@ function Projects() {
 
                                     </Field>
 
-                                    {formik.errors.projectType && formik.touched.projectType && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.projectType}</div>
-                                    )}
-
-                                    <label className='ml-2'> Budget </label>
-                                    <div className='ml-2 flex flex-row flex-nowrap items-center'>
-                                        <span className='text-xl w-[5%] flex justify-center'>$</span>
-
-                                        <Field
-                                            name='budget'
-                                            type='number'
-                                            value={formik.values.budget}
-                                            onChange={formik.handleChange}
-                                            placeholder='Budget'
-                                            className='border m-2 p-2 w-[95%]'
-                                            step='1000'
-                                            min="1000"
-                                            max="100000000"
-                                        >
-
-                                        </Field>
-                                    </div>
 
                                     {formik.errors.budget && formik.touched.budget && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.budget.toUpperCase()}</div>
@@ -251,6 +223,7 @@ function Projects() {
                                         as='select'
                                         value={formik.values.client}
                                         onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
                                         className='border m-2 p-2'
                                     >
                                         <option value=''>Select Client</option>
