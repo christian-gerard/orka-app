@@ -120,8 +120,6 @@ function Projects() {
         users: {}
     }
 
-    console.log(projects)
-
     const formik = useFormik({
         initialValues,
         validationSchema: projectSchema,
@@ -150,7 +148,10 @@ function Projects() {
                 setProjects([<Project key={resp.data.id} {...resp.data} />, ...projects])
                 handleNewProject()
                 toast.success('New Project Added')
-            } else {
+            } else if (resp.status == 401) {
+                toast.error('Token Invalid, please refresh')
+            }
+            else {
                 toast.error('Error while saving project')
             }
         })
