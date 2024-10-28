@@ -1,23 +1,19 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 
-
-// Set environment variables or flags as needed for production proxy
-const productionProxyTarget = 'https://api.orka-app.com'
-const developmentProxyTarget = 'http://0.0.0.0:8000/'
-
-export default defineConfig(({ command }) => {
-  // Use proxy for both development and production
-  const proxyConfig = {
-    '/api': {
-      target: command === 'serve' ? developmentProxyTarget : productionProxyTarget,
-      changeOrigin: true
-    },
-  }
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
 
   return {
     server: {
-      proxy: proxyConfig,
+      proxy: {
+        '/api': {
+          target: env.VITE_API_URL,
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
     },
     build: {
       outDir: 'dist',
