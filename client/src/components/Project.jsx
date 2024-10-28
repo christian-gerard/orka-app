@@ -195,41 +195,50 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                         {/* Project Body */}
                         <div className='bg-white h-[90%] w-full'>
-                            {/* Project Type */}
-                            <div className='h-[5%]'>
-                                {project.project_type ? project.project_type : "Description Not Listed"}
+                            {/* Upper Half */}
+                            <div>
+                                {/* Left */}
+                                <div>
+                                    {/* Project Type */}
+                                    <div className='h-[5%]'>
+                                        {project.project_type ? project.project_type : "Description Not Listed"}
+                                    </div>
+                                    {/* Project Budget */}
+                                    <p className='text-3xl flex items-center'>{project.project_budget ? project.project_budget: "No Deadline"}</p>
+                                    {/* Project Description */}
+                                    <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[10%]'>
+                                        {project.description ? project.description : "Description Not Listed"}
+                                    </div>
+                                </div>
+                                {/* right */}
+                                <div>
+                                    {/* Project Users */}
+                                    <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                                    <p className='w-full h-[5%] bg-black text-white'>Assigned Users</p>
+                                        {project.users ?
+
+                                            project.users.map(user =>
+                                                <div key={user.id} className='flex flex-row border items-center justify-between'>
+                                                    <div className='px-2 text-md sm:text-xl bold flex flex-nowrap flex-row'>
+                                                        <p>{user.first_name} {user.last_name}</p>
+                                                    </div>
+
+                                                    <div className='px-2 underline bg-ocean text-white text-md sm:text-lg'>
+                                                        <p>{user.email}</p>
+                                                    </div>
+
+                                                </div>
+                                            )
+
+                                            :
+
+                                            <p className='text-xl w-full h-full flex justify-center items-center'>No Current Users</p>
+
+                                        }
+                                    </div>
+                                </div>
                             </div>
-                            {/* Project Budget */}
-                            <p className='text-3xl flex items-center'>{project.project_budget ? project.project_budget: "No Deadline"}</p>
-                            {/* Project Description */}
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[10%]'>
-                                {project.description ? project.description : "Description Not Listed"}
-                            </div>
 
-                            {/* Project Users */}
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
-                            <p className='w-full h-[5%] bg-black text-white'>Assigned Users</p>
-                                {project.users ?
-
-                                    project.users.map(user =>
-                                        <div key={user.id} className='flex flex-row border items-center justify-between'>
-                                            <div className='px-2 text-md sm:text-xl bold flex flex-nowrap flex-row'>
-                                                <p>{user.first_name} {user.last_name}</p>
-                                            </div>
-
-                                            <div className='px-2 underline bg-ocean text-white text-md sm:text-lg'>
-                                                <p>{user.email}</p>
-                                            </div>
-
-                                        </div>
-                                    )
-
-                                    :
-
-                                    <p className='text-xl w-full h-full flex justify-center items-center'>No Current Users</p>
-
-                                }
-                            </div>
 
                             <div className='border-x h-[60%] flex flex-row'>
 
