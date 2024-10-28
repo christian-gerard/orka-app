@@ -7,9 +7,6 @@ import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
 import axios from 'axios'
 
-
-const API_URL = import.meta.env.VITE_API_URL
-
 function Projects() {
     const { accessToken } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
@@ -161,8 +158,10 @@ function Projects() {
     })
 
     useEffect(() => {
-        renderClients()
-        renderProjects()
+        if(projects.length === 0) {
+            renderClients()
+            renderProjects()
+        }
     }, [])
 
     return (

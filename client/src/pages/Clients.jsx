@@ -6,7 +6,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import Client from '../components/Client'
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL
 
 function Clients() {
 

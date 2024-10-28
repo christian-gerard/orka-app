@@ -14,9 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL
-
-function Project({id, name, deadline, description, project_type}) {
+function Project({id, name, deadline, description, project_type, project_budget}) {
 
     const { accessToken, tasks, projects, setProjects} = useContext(UserContext)
     const nav = useNavigate()
@@ -41,6 +39,7 @@ function Project({id, name, deadline, description, project_type}) {
         .then(resp => {
             if(resp.status == 204){
                 toast.success("Project Deleted")
+                nav('/projects')
             } else if(resp.status == 401){
                 toast.error('Unauthorized')
             }
@@ -151,7 +150,7 @@ function Project({id, name, deadline, description, project_type}) {
 
             <div className='h-full w-full border'>
 
-                <div className='h-[5%] flex flex-row justify-between'>
+                <div className='h-[5%] flex flex-row justify-between p-2 bg-black text-white items-center'>
 
                     <div>
 
@@ -184,14 +183,14 @@ function Project({id, name, deadline, description, project_type}) {
 
                     <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
-                        <div className='h-[10%] flex flex-row justify-between px-6'>
+                        <div className='h-[5%] flex flex-row justify-between items-end p-2 bg-black text-white'>
 
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
                             <p className='text-3xl flex items-center'>{project.deadline ? project.deadline.slice(5,12): "No Deadline"}</p>
 
                         </div>
 
-                        <div className='bg-white h-[90%] w-full px-6'>
+                        <div className='bg-white h-[90%] w-full'>
 
                             <div className='h-[5%]'>
                                 {project.project_type ? project.project_type : "Description Not Listed"}
@@ -202,7 +201,7 @@ function Project({id, name, deadline, description, project_type}) {
                             </div>
 
                             <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
-                                <p>Assigned Users</p>
+                            <p className='w-full h-[5%] bg-black text-white'>Assigned Users</p>
                                 {project.users ?
 
                                     project.users.map(user =>
@@ -228,7 +227,7 @@ function Project({id, name, deadline, description, project_type}) {
                             <div className='border-x h-[60%] flex flex-row'>
 
                                 <div className=' h-full w-[60%]'>
-                                    <h1>Tasks</h1>
+                                <p className='w-full h-[5%] bg-black text-white'>Tasks</p>
                                     {
                                         project.tasks && project.tasks.length !== 0 ?
 
@@ -242,7 +241,7 @@ function Project({id, name, deadline, description, project_type}) {
                                 </div>
 
                                 <div className='border-l h-full w-[40%]'>
-                                    <h1 className='w-full h-[5%]'>Budgets</h1>
+                                    <p className='w-full h-[5%] bg-black text-white'>Budgets</p>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
 
