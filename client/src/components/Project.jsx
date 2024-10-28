@@ -185,7 +185,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                     <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
                         {/* Project Title and Deadline */}
-                        <div className='h-[7%] flex flex-row justify-between items-end p-2 bg-black text-white'>
+                        <div className='h-[6%] flex flex-row justify-between items-end p-2 bg-black text-white'>
 
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
                             <p className='text-3xl flex items-center'>{project.deadline ? project.deadline.slice(5,12): "No Deadline"}</p>
@@ -194,11 +194,11 @@ function Project({id, name, deadline, description, project_type, project_budget}
                         </div>
 
                         {/* Project Body */}
-                        <div className='bg-white h-[90%] w-full'>
+                        <div className='h-[94%] w-full'>
                             {/* Upper Half */}
-                            <div>
+                            <div className='h-[40%] flex flex-col sm:flex-row'>
                                 {/* Left */}
-                                <div>
+                                <div className='w-[60%] h-full'>
                                     {/* Project Type */}
                                     <div className='h-[5%]'>
                                         {project.project_type ? project.project_type : "Description Not Listed"}
@@ -206,14 +206,14 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                     {/* Project Budget */}
                                     <p className='text-3xl flex items-center'>{project.project_budget ? project.project_budget: "No Deadline"}</p>
                                     {/* Project Description */}
-                                    <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[10%]'>
+                                    <div className=''>
                                         {project.description ? project.description : "Description Not Listed"}
                                     </div>
                                 </div>
                                 {/* Right */}
-                                <div>
+                                <div className='w-[40%] h-full'>
                                     {/* Project Users */}
-                                    <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
+                                    <div className='overflow-scroll scrollbar scrollbar-thumb-ocean sm:h-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
                                     <p className='w-full h-[5%] bg-black text-white'>Assigned Users</p>
                                         {project.users ?
 
@@ -238,10 +238,8 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                     </div>
                                 </div>
                             </div>
-
-
-                            <div className='border-x h-[60%] flex flex-row'>
-
+                            {/* Bottom Half */}
+                            <div className='h-[60%] border-x flex flex-row'>
                                 {/* Tasks */}
                                 <div className=' h-full w-[60%]'>
                                 <p className='w-full h-[5%] bg-black text-white'>Tasks</p>
@@ -256,7 +254,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                                     }
                                 </div>
-
                                 {/* Budgets */}
                                 <div className='border-l h-full w-[40%]'>
                                     <p className='w-full h-[5%] bg-black text-white'>Budgets</p>
@@ -265,12 +262,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                                     </div>
                                 </div>
-
                             </div>
-
-
-
-
                         </div>
 
                     </div>
