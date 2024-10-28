@@ -188,7 +188,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
                         <div className='h-[6%] flex flex-row justify-between items-end p-2 bg-black text-white'>
 
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
-                            <p className='text-3xl flex items-center'>{project.deadline ? project.deadline.slice(5,12): "No Deadline"}</p>
 
 
                         </div>
@@ -213,8 +212,10 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                 {/* Right */}
                                 <div className='w-[40%] h-full'>
                                     {/* Project Users */}
-                                    <div className='overflow-scroll scrollbar scrollbar-thumb-ocean sm:h-full overflow-scroll scrollbar scrollbar-thumb-ocean border'>
-                                    <p className='w-full h-[5%] bg-black text-white'>Assigned Users</p>
+                                    <div className='sm:h-full'>
+                                    <p className='w-full h-[10%] bg-ocean flex items-center text-white border-l border-b border-black  p-1'>Assigned Users</p>
+                                        <div className='h-full overflow-scroll scrollbar scrollbar-thumb-ocean border-l border-black p-1 flex flex-col gap-1'>
+
                                         {project.users ?
 
                                             project.users.map(user =>
@@ -233,16 +234,17 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                             :
 
                                             <p className='text-xl w-full h-full flex justify-center items-center'>No Current Users</p>
-
                                         }
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             {/* Bottom Half */}
-                            <div className='h-[60%] border-x flex flex-row'>
+                            <div className='h-[60%] flex flex-row'>
                                 {/* Tasks */}
                                 <div className=' h-full w-[60%]'>
-                                <p className='w-full h-[5%] bg-black text-white'>Tasks</p>
+                                <p className='w-full h-[10%] bg-ocean flex items-center border-y border-black text-white p-1'>Tasks</p>
                                     {
                                         project.tasks && project.tasks.length !== 0 ?
 
@@ -256,7 +258,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                 </div>
                                 {/* Budgets */}
                                 <div className='border-l h-full w-[40%]'>
-                                    <p className='w-full h-[5%] bg-black text-white'>Budgets</p>
+                                <p className='w-full h-[10%] bg-ocean flex items-center text-white border-y border-black p-1'>Budgets</p>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
 
