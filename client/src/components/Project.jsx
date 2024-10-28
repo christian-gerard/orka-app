@@ -150,6 +150,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
             <div className='h-full w-full border'>
 
+                {/* Project Back + Edit + Delete */}
                 <div className='h-[5%] flex flex-row justify-between p-2 bg-black text-white items-center'>
 
                     <div>
@@ -183,6 +184,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                     <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
+                        {/* Project Title and Deadline */}
                         <div className='h-[7%] flex flex-row justify-between items-end p-2 bg-black text-white'>
 
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
@@ -191,6 +193,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                         </div>
 
+                        {/* Project Body */}
                         <div className='bg-white h-[90%] w-full'>
 
                             <div className='h-[5%]'>
@@ -264,6 +267,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                     :
 
+                    // Project  Loading
                     <div className='w-full h-full flex justify-center items-center'>
                         <Box sx={{ display: 'flex' }}>
                             <CircularProgress size="125px" color='ocean' />
@@ -278,6 +282,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
             :
 
+            // Project Card
             <NavLink to={`/projects/${id}`}>
                 <div className='w-full h-[175px] p-2 border'>
 
@@ -304,7 +309,10 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
         }
 
-{
+
+        {/* Edit Project Modal */}
+
+            {
                 editProject ?
 
                     <Formik
@@ -419,8 +427,8 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                 :
 
-                <>
-                </>
+                    <>
+                    </>
 
             }
         </>
