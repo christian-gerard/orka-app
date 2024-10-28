@@ -158,10 +158,12 @@ function Projects() {
     })
 
     useEffect(() => {
+
         if(projects.length === 0) {
             renderClients()
             renderProjects()
         }
+
     }, [])
 
     return (
@@ -179,7 +181,7 @@ function Projects() {
 
 
             {/* Projects */}
-            <div className='h-[95%] w-full flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll'>
+            <div className='h-[95%] w-full flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll p-2'>
                 {
                     projects
                 }
@@ -332,12 +334,6 @@ function Projects() {
                                     {formik.errors.description && formik.touched.description && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
                                     )}
-
-
-
-
-
-
 
                                 </div>
 

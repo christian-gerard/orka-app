@@ -213,8 +213,13 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                 <div className='w-[40%] h-full'>
                                     {/* Project Users */}
                                     <div className='sm:h-full'>
-                                    <p className='w-full h-[10%] bg-ocean flex items-center text-white border-l border-b border-black  p-1'>Assigned Users</p>
-                                        <div className='h-full overflow-scroll scrollbar scrollbar-thumb-ocean border-l border-black p-1 flex flex-col gap-1'>
+                                    <div className='w-full h-[10%] bg-ocean flex items-center text-white border-l border-b border-black  p-1'>
+                                        <p>Assigned Users</p>
+                                        <div>
+                                            - +
+                                        </div>
+                                    </div>
+                                        <div className='h-full overflow-scroll scrollbar scrollbar-thumb-ocean border-l border-black p-1 flex flex-col gap-1 p-2'>
 
                                         {project.users ?
 
