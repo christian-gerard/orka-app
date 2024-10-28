@@ -195,17 +195,18 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                         {/* Project Body */}
                         <div className='bg-white h-[90%] w-full'>
-
+                            {/* Project Type */}
                             <div className='h-[5%]'>
                                 {project.project_type ? project.project_type : "Description Not Listed"}
                             </div>
-
+                            {/* Project Budget */}
                             <p className='text-3xl flex items-center'>{project.project_budget ? project.project_budget: "No Deadline"}</p>
-
+                            {/* Project Description */}
                             <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[10%]'>
                                 {project.description ? project.description : "Description Not Listed"}
                             </div>
 
+                            {/* Project Users */}
                             <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
                             <p className='w-full h-[5%] bg-black text-white'>Assigned Users</p>
                                 {project.users ?
@@ -232,6 +233,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                             <div className='border-x h-[60%] flex flex-row'>
 
+                                {/* Tasks */}
                                 <div className=' h-full w-[60%]'>
                                 <p className='w-full h-[5%] bg-black text-white'>Tasks</p>
                                     {
@@ -246,6 +248,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                     }
                                 </div>
 
+                                {/* Budgets */}
                                 <div className='border-l h-full w-[40%]'>
                                     <p className='w-full h-[5%] bg-black text-white'>Budgets</p>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
