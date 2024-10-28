@@ -85,13 +85,13 @@ function Dashboard() {
     return (
         <div className='h-full w-full'>
             {/* Page Header 10%*/}
-            <div className='h-[5%] w-full text-3xl flex items-center justify-between'>
+            <div className='h-[5%] w-full text-3xl flex items-center justify-between '>
                 <p className=''>Dashboard</p>
             </div>
 
             {/* Top Half :: 45%*/}
             <div className='h-[45%] w-full border'>
-                <p className='h-[10%] text-2xl flex items-center bg-ocean text-white'>Outstanding Tasks</p>
+                <p className='h-[10%] text-2xl flex items-center bg-black text-white'>Outstanding Tasks</p>
                 <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                     <div className='h-full w-full'>
                         {
@@ -109,7 +109,7 @@ function Dashboard() {
             <div className='h-[50%] w-full flex flex-row'>
                 {/* Projects */}
                 <div className='w-full h-full border'>
-                    <p className='h-[10%] text-2xl flex items-center bg-ocean text-white'>Projects</p>
+                    <p className='h-[10%] text-2xl flex items-center bg-black text-white'>Projects</p>
                     <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                         <div className='h-full w-full'>
                             {

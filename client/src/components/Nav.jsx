@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 import { toast } from 'react-hot-toast'
 import TsunamiIcon from '@mui/icons-material/Tsunami';
@@ -18,6 +18,7 @@ import Account from '../components/Account'
 function Nav() {
 
     const { logout, accounts, updateAccounts } = useContext(UserContext)
+    const loc = useLocation()
     const [navOpen, setNavOpen] = useState(false)
     const [acctMenuOpen, setAcctMenuOpen] = useState(false)
     const handleNav = () => setNavOpen(!navOpen)
@@ -25,7 +26,6 @@ function Nav() {
         updateAccounts()
         setAcctMenuOpen(!acctMenuOpen)
     }
-
 
     return(
         <div className='bg-black text-white'>
@@ -109,7 +109,7 @@ function Nav() {
 
                     <div className='flex flex-col pt-10 bg-black'>
 
-                        <NavLink to='/' className='hover:text-ocean'>
+                        <NavLink to='/' className={ loc.pathname === '/' ? 'hover:text-white text-ocean' : 'hover:text-ocean text-white'}>
                             <TsunamiIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
@@ -117,19 +117,19 @@ function Nav() {
 
                     <div className='flex flex-col pt-10 bg-black gap-6'>
 
-                        <NavLink to='/projects' className='hover:text-ocean'>
+                        <NavLink to='/projects' className={ loc.pathname === '/projects' ? 'hover:text-white text-ocean' : 'hover:text-ocean text-white'}>
                             <DetailsIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
-                        <NavLink to='/clients' className='hover:text-ocean'>
+                        <NavLink to='/clients' className={ loc.pathname === '/clients' ? 'hover:text-white text-ocean' : 'hover:text-ocean text-white'}>
                             <GroupIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
-                        <NavLink to='/tasks' className='hover:text-ocean'>
+                        <NavLink to='/tasks' className={ loc.pathname === '/tasks' ? 'hover:text-white text-ocean' : 'hover:text-ocean text-white'}>
                             <TaskAltIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
-                        <NavLink to='/budgets' className='hover:text-ocean'>
+                        <NavLink to='/budgets' className={ loc.pathname === '/budgets' ? 'hover:text-white text-ocean' : 'hover:text-ocean text-white'}>
                             <AttachMoneyIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
@@ -141,7 +141,7 @@ function Nav() {
                             <div className='h-[45px] w-[45px] rounded-[100%] border flex items-center justify-center text-[1em]'> J&M </div>
                         </div>
 
-                        <NavLink to='/settings' className='hover:text-ocean'>
+                        <NavLink to='/settings' className={ loc.pathname === '/settings' ? 'hover:text-white text-ocean' : 'hover:text-ocean text-white'}>
                             <SettingsIcon style={{width: '45px', height: '45px'}} />
                         </NavLink>
 

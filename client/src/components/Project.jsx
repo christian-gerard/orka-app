@@ -155,7 +155,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                     <div>
 
                     <NavLink to='/projects'>
-                        <ArrowBackIcon style={{ width: '45px', height: '45px' }}/>
+                        <ArrowBackIcon style={{ width: '40px', height: '40px' }}/>
                     </NavLink>
 
 
@@ -165,12 +165,12 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
 
                         <NavLink onClick={handleDeleteProject}>
-                            <DeleteIcon style={{ width: '45px', height: '45px' }}/>
+                            <DeleteIcon style={{ width: '40px', height: '40px' }}/>
                         </NavLink>
 
 
                         <NavLink onClick={handleEditProject}>
-                            <EditIcon style={{ width: '45px', height: '45px' }}/>
+                            <EditIcon style={{ width: '40px', height: '40px' }}/>
                         </NavLink>
 
                     </div>
@@ -183,10 +183,11 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                     <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
-                        <div className='h-[5%] flex flex-row justify-between items-end p-2 bg-black text-white'>
+                        <div className='h-[7%] flex flex-row justify-between items-end p-2 bg-black text-white'>
 
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
                             <p className='text-3xl flex items-center'>{project.deadline ? project.deadline.slice(5,12): "No Deadline"}</p>
+
 
                         </div>
 
@@ -195,6 +196,8 @@ function Project({id, name, deadline, description, project_type, project_budget}
                             <div className='h-[5%]'>
                                 {project.project_type ? project.project_type : "Description Not Listed"}
                             </div>
+
+                            <p className='text-3xl flex items-center'>{project.project_budget ? project.project_budget: "No Deadline"}</p>
 
                             <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[10%]'>
                                 {project.description ? project.description : "Description Not Listed"}
