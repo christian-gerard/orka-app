@@ -9,9 +9,76 @@ from django.contrib.auth.models import (
     PermissionsMixin
 )
 
+from django.core.validators import RegexValidator
+
 from datetime import date
 
+task_status = {
+    ('planning', 'Planning'),
+    ('not started', 'Not Started'),
+    ('doing', 'Doing'),
+    ('blocked', 'Blocked'),
+    ('done', 'Done'),
+}
 
+expense_status = {
+    ('planned', 'Planned'),
+    ('pending', 'Pending'),
+    ('complete', 'Complete'),
+}
+
+states = {
+    'AL': 'Alabama',
+    'AK': 'Alaska',
+    'AZ': 'Arizona',
+    'AR': 'Arkansas',
+    'CA': 'California',
+    'CO': 'Colorado',
+    'CT': 'Connecticut',
+    'DE': 'Delaware',
+    'FL': 'Florida',
+    'GA': 'Georgia',
+    'HI': 'Hawaii',
+    'ID': 'Idaho',
+    'IL': 'Illinois',
+    'IN': 'Indiana',
+    'IA': 'Iowa',
+    'KS': 'Kansas',
+    'KY': 'Kentucky',
+    'LA': 'Louisiana',
+    'ME': 'Maine',
+    'MD': 'Maryland',
+    'MA': 'Massachusetts',
+    'MI': 'Michigan',
+    'MN': 'Minnesota',
+    'MS': 'Mississippi',
+    'MO': 'Missouri',
+    'MT': 'Montana',
+    'NE': 'Nebraska',
+    'NV': 'Nevada',
+    'NH': 'New Hampshire',
+    'NJ': 'New Jersey',
+    'NM': 'New Mexico',
+    'NY': 'New York',
+    'NC': 'North Carolina',
+    'ND': 'North Dakota',
+    'OH': 'Ohio',
+    'OK': 'Oklahoma',
+    'OR': 'Oregon',
+    'PA': 'Pennsylvania',
+    'RI': 'Rhode Island',
+    'SC': 'South Carolina',
+    'SD': 'South Dakota',
+    'TN': 'Tennessee',
+    'TX': 'Texas',
+    'UT': 'Utah',
+    'VT': 'Vermont',
+    'VA': 'Virginia',
+    'WA': 'Washington',
+    'WV': 'West Virginia',
+    'WI': 'Wisconsin',
+    'WY': 'Wyoming'
+}
 class UserManager(BaseUserManager):
     """Manager for Users"""
 
@@ -134,7 +201,7 @@ class Account(models.Model):
     """Account Objects"""
 
     name = models.CharField(max_length=255)
-    type = models.CharField(max_length=255)
+    type = models.CharField(max_length=255, blank=True, null=True)
 
     objects = AccountManager()
 
@@ -146,8 +213,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     """User in the system"""
 
     email = models.EmailField(max_length=250, unique=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255, blank=True, null=True)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     account = models.ForeignKey(
@@ -168,15 +235,37 @@ class Client(models.Model):
     """Client Model"""
 
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    client_type = models.CharField(max_length=255)
-    ein = models.CharField(max_length=10)
-    address_one = models.CharField(max_length=300)
-    address_two = models.CharField(max_length=300, default=None)
-    city = models.CharField(max_length=300)
-    state = models.CharField(max_length=300)
-    zip_code = models.CharField(max_length=300)
-    country = models.CharField(max_length=300, default="USA")
+    description = models.TextField(blank=True, null=True)
+    client_type = models.CharField(max_length=255, blank=True, null=True)
+    address_one = models.CharField(max_length=300, blank=True, null=True)
+    address_two = models.CharField(max_length=300, blank=True, null=True)
+    city = models.CharField(max_length=300, blank=True, null=True)
+    state = models.CharField(max_length=35, blank=True, null=True, choices=[(abbr, name) for abbr, name in states.items()])
+    zip_code = models.CharField(
+        max_length=10,
+        blank=True,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{5}(-\d{4})?$',
+                message="Enter a valid zip code in the format '12345' or '12345-6789'."
+            )
+        ],
+        help_text="Enter zip code in the format '12345' or '12345-6789'."
+    )
+    country = models.CharField(max_length=300, blank=True, null=True, default="USA")
+    ein = models.CharField(
+        max_length=10,
+        blank=True,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{2}-\d{7}$',
+                message="Enter a valid EIN in the format '12-3456789'."
+            )
+        ],
+        help_text="Enter EIN in the format '12-3456789'."
+    )
 
     account = models.ForeignKey(
         Account,
@@ -194,10 +283,10 @@ class Project(models.Model):
     """Project Model"""
 
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     deadline = models.DateField()
-    project_type = models.CharField(max_length=255)
-
+    project_type = models.CharField(max_length=255, blank=True, null=True)
+    project_budget = models.DecimalField(max_digits=10, decimal_places=2)
     users = models.ManyToManyField(User, related_name='projects')
     client = models.ForeignKey(
         Client,
@@ -214,10 +303,21 @@ class Project(models.Model):
 class Contact(models.Model):
     """Contact Model"""
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=255)
-    role = models.CharField(max_length=255)
-    description = models.TextField()
+    last_name = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(
+        max_length=14,
+        blank=True,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\(\d{3}\) \d{3}-\d{4}$',
+                message="Enter a valid phone number in the format '(123) 456-7890'."
+            )
+        ],
+        help_text="Enter phone number in the format '(123) 456-7890'."
+    )
+    role = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
     client = models.ForeignKey(
         Client,
@@ -233,9 +333,9 @@ class Contact(models.Model):
 
 class Budget(models.Model):
     """Budget Model"""
-    description = models.CharField(max_length=255)
-    category = models.CharField(max_length=255)
-    amount = models.CharField(max_length=255)
+    budget_name = models.CharField(max_length=255)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
 
     project = models.ForeignKey(
         Project,
@@ -252,18 +352,16 @@ class Budget(models.Model):
 class Expense(models.Model):
     """Expense Model"""
     date = models.DateField(default=date.today)
-    description = models.CharField(max_length=255)
+    expense_description = models.CharField(max_length=255)
     amount = models.DecimalField(
         decimal_places=2,
-        max_digits=200
+        max_digits=10
     )
-    category = models.CharField(max_length=255)
-    status = models.CharField(max_length=300)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    status = models.CharField(max_length=300, choices=expense_status, default='planned')
 
     project = models.ForeignKey(
         Project,
-        null=True,
-        blank=True,
         related_name='expenses',
         on_delete=models.CASCADE,
     )
@@ -281,10 +379,11 @@ class Expense(models.Model):
 
 class Task(models.Model):
     """Task Model"""
+    task_name = models.CharField(max_length=255)
     deadline = models.DateField(default=date.today)
-    description = models.CharField(max_length=255)
-    category = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    status = models.CharField(max_length=255, choices=task_status, default='not started')
     project = models.ForeignKey(
         Project,
         related_name='tasks',
@@ -292,6 +391,8 @@ class Task(models.Model):
     )
     users = models.ForeignKey(
         User,
+        blank=True,
+        null=True,
         related_name='tasks',
         on_delete=models.CASCADE,
     )

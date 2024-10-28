@@ -7,6 +7,8 @@ import { object, string, array, number, bool } from "yup";
 import { useFormik, Formik, Form, Field } from 'formik'
 import { toast } from 'react-hot-toast'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
@@ -14,9 +16,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL
-
-function Project({id, name, deadline, description, project_type}) {
+function Project({id, name, deadline, description, project_type, project_budget}) {
 
     const { accessToken, tasks, projects, setProjects} = useContext(UserContext)
     const nav = useNavigate()
@@ -33,7 +33,7 @@ function Project({id, name, deadline, description, project_type}) {
     }
 
     const handleDeleteProject = () => {
-        axios.delete(`${API_URL}/api/projects/${route.id}`, {
+        axios.delete(`/api/projects/${route.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -41,6 +41,7 @@ function Project({id, name, deadline, description, project_type}) {
         .then(resp => {
             if(resp.status == 204){
                 toast.success("Project Deleted")
+                nav('/projects')
             } else if(resp.status == 401){
                 toast.error('Unauthorized')
             }
@@ -118,7 +119,7 @@ function Project({id, name, deadline, description, project_type}) {
 
         if(route.id !== undefined && path.pathname.includes('projects')) {
 
-            axios.get(`${API_URL}/api/projects/${route.id}`, {
+            axios.get(`/api/projects/${route.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -151,12 +152,13 @@ function Project({id, name, deadline, description, project_type}) {
 
             <div className='h-full w-full border'>
 
-                <div className='h-[5%] flex flex-row justify-between'>
+                {/* Project Back + Edit + Delete */}
+                <div className='h-[5%] flex flex-row justify-between p-2 bg-black text-white items-center'>
 
                     <div>
 
                     <NavLink to='/projects'>
-                        <ArrowBackIcon style={{ width: '45px', height: '45px' }}/>
+                        <ArrowBackIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
                     </NavLink>
 
 
@@ -166,12 +168,12 @@ function Project({id, name, deadline, description, project_type}) {
 
 
                         <NavLink onClick={handleDeleteProject}>
-                            <DeleteIcon style={{ width: '45px', height: '45px' }}/>
+                            <DeleteIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
                         </NavLink>
 
 
                         <NavLink onClick={handleEditProject}>
-                            <EditIcon style={{ width: '45px', height: '45px' }}/>
+                            <EditIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
                         </NavLink>
 
                     </div>
@@ -184,51 +186,78 @@ function Project({id, name, deadline, description, project_type}) {
 
                     <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
-                        <div className='h-[10%] flex flex-row justify-between px-6'>
+                        {/* Project Title and Deadline */}
+                        <div className='h-[6%] flex flex-row justify-between items-end p-2 bg-black text-white'>
 
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
-                            <p className='text-3xl flex items-center'>{project.deadline ? project.deadline.slice(5,12): "No Deadline"}</p>
+
 
                         </div>
 
-                        <div className='bg-white h-[90%] w-full px-6'>
+                        {/* Project Body */}
+                        <div className='h-[94%] w-full'>
+                            {/* Upper Half */}
+                            <div className='h-[40%] flex flex-col sm:flex-row'>
+                                {/* Left */}
+                                <div className='w-[60%] h-full'>
+                                    {/* Project Details */}
+                                    <div className='h-[20%]'>
+                                        {/* Project Client */}
+                                        <div className=''>{project.client ? project.client : "Description Not Listed"}</div>
 
-                            <div className='h-[5%]'>
-                                {project.project_type ? project.project_type : "Description Not Listed"}
-                            </div>
+                                        {/* Project Type */}
+                                        <div className=''>{project.project_type ? project.project_type : "Description Not Listed"}</div>
 
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[10%]'>
-                                {project.description ? project.description : "Description Not Listed"}
-                            </div>
-
-                            <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
-                                <p>Assigned Users</p>
-                                {project.users ?
-
-                                    project.users.map(user =>
-                                        <div key={user.id} className='flex flex-row border items-center justify-between'>
-                                            <div className='px-2 text-md sm:text-xl bold flex flex-nowrap flex-row'>
-                                                <p>{user.first_name} {user.last_name}</p>
+                                    </div>
+                                    {/* Project Description */}
+                                    <div className='h-[80%] border-t text-black'>
+                                        {project.description ? project.description : "Description Not Listed"}
+                                    </div>
+                                </div>
+                                {/* Right */}
+                                <div className='w-[40%] h-full'>
+                                    {/* Project Users */}
+                                    <div className='sm:h-full w-full'>
+                                        <div className='w-full h-[10%] bg-ocean flex items-center justify-between text-white border-l border-b border-black  p-1'>
+                                            <p>Assigned Users</p>
+                                            <div>
+                                                <RemoveIcon className='hover:bg-white hover:text-ocean'/>
+                                                <AddIcon className='hover:bg-white hover:text-ocean'/>
                                             </div>
+                                        </div>
+                                        <div className='h-full overflow-scroll scrollbar scrollbar-track-border-r scrollbar-thumb-ocean border-l border-black p-1 flex flex-col gap-1 p-2'>
 
-                                            <div className='px-2 underline bg-ocean text-white text-md sm:text-lg'>
-                                                <p>{user.email}</p>
-                                            </div>
+                                        {project.users ?
+
+                                            project.users.map(user =>
+                                                <div key={user.id} className='flex flex-row border items-center justify-between'>
+
+
+                                                    <div className='w-[50%] px-2 text-md sm:text-xl bold flex flex-nowrap flex-row'>
+                                                        <p>{user.first_name} {user.last_name}</p>
+                                                    </div>
+                                                    <div className='w-[50%] px-2 bg-black text-white text-md sm:text-lg'>
+                                                        <p>{user.email}</p>
+                                                    </div>
+
+
+                                                </div>
+                                            )
+
+                                            :
+
+                                            <p className='text-xl w-full h-full flex justify-center items-center'>No Current Users</p>
+                                        }
 
                                         </div>
-                                    )
-
-                                    :
-
-                                    <p className='text-xl w-full h-full flex justify-center items-center'>No Current Users</p>
-
-                                }
+                                    </div>
+                                </div>
                             </div>
-
-                            <div className='border-x h-[60%] flex flex-row'>
-
+                            {/* Bottom Half */}
+                            <div className='h-[60%] flex flex-row'>
+                                {/* Tasks */}
                                 <div className=' h-full w-[60%]'>
-                                    <h1>Tasks</h1>
+                                <p className='w-full h-[10%] bg-ocean flex items-center border-y border-black text-white p-1'>Tasks</p>
                                     {
                                         project.tasks && project.tasks.length !== 0 ?
 
@@ -240,20 +269,15 @@ function Project({id, name, deadline, description, project_type}) {
 
                                     }
                                 </div>
-
+                                {/* Budgets */}
                                 <div className='border-l h-full w-[40%]'>
-                                    <h1 className='w-full h-[5%]'>Budgets</h1>
+                                <p className='w-full h-[10%] bg-ocean flex items-center text-white border-y border-black p-1'>Budgets</p>
                                     <div className='w-full h-[95%] flex flex-col items-center'>
 
 
                                     </div>
                                 </div>
-
                             </div>
-
-
-
-
                         </div>
 
                     </div>
@@ -262,6 +286,7 @@ function Project({id, name, deadline, description, project_type}) {
 
                     :
 
+                    // Project  Loading
                     <div className='w-full h-full flex justify-center items-center'>
                         <Box sx={{ display: 'flex' }}>
                             <CircularProgress size="125px" color='ocean' />
@@ -276,11 +301,12 @@ function Project({id, name, deadline, description, project_type}) {
 
             :
 
-            <NavLink to={`/projects/${id}`}>
+            // Project Card
+            <NavLink to={`/projects/${id}`} className='' >
                 <div className='w-full h-[175px] p-2 border'>
 
                     {/* Project Box Header */}
-                    <div className='flex flex-row justify-between h-[20%] border-b text-white bg-ocean p-1'>
+                    <div className='flex flex-row justify-between h-[20%] border-b text-white bg-black p-1'>
                         <p className='text-[0.8em] sm:text-xl'>{name ? name.slice(0,30) : 'Untitled'}</p>
                         <p className='text-[0.8em] sm:text-lg'>{deadline ? deadline.slice(5,12) : 'No Deadline'}</p>
                     </div>
@@ -302,7 +328,10 @@ function Project({id, name, deadline, description, project_type}) {
 
         }
 
-{
+
+        {/* Edit Project Modal */}
+
+            {
                 editProject ?
 
                     <Formik
@@ -417,8 +446,8 @@ function Project({id, name, deadline, description, project_type}) {
 
                 :
 
-                <>
-                </>
+                    <>
+                    </>
 
             }
         </>

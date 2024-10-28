@@ -93,9 +93,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
             return ProjectSerializer
         return self.serializer_class
 
-    def perform_create(self, serializer):
-        """Override the create method to add the authenticated user"""
-        serializer.save(users=[self.request.user])
+    # def perform_create(self, serializer):
+    #     """Override the create method to add the authenticated user"""
+    #     serializer.save(users=[self.request.user])
 
     @action(detail=True, methods=['post'], url_path='add-user', url_name='add_user')
     def add_user(self, request, pk=None):

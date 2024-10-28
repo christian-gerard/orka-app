@@ -62,7 +62,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['id', 'name', 'deadline', 'description', 'project_type', 'client']
+        fields = ['id', 'name', 'deadline', 'description', 'project_budget', 'project_type', 'client']
         read_only_fields = ["id"]
 
 
@@ -70,14 +70,15 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectDetailSerializer(ProjectSerializer):
     """Serializes Account Detail Data"""
 
-    tasks = TaskSerializer(many=True)
+    tasks = TaskSerializer(many=True, read_only=True)
 
     def __init__(self, *args, **kwargs):
         # Import UserSerializer lazily to avoid circular import
         from user.serializers import UserSerializer
-        self.fields['users'] = UserSerializer(many=True)
+        self.fields['users'] = UserSerializer(many=True, read_only=True)
         super().__init__(*args, **kwargs)
 
 
     class Meta(ProjectSerializer.Meta):
         fields = ProjectSerializer.Meta.fields + ['users', 'tasks']
+        read_only_fields = ["users", "tasks"]
