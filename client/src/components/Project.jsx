@@ -210,7 +210,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                         {project.description ? project.description : "Description Not Listed"}
                                     </div>
                                 </div>
-                                {/* right */}
+                                {/* Right */}
                                 <div>
                                     {/* Project Users */}
                                     <div className='overflow-scroll scrollbar scrollbar-thumb-ocean h-[25%] overflow-scroll scrollbar scrollbar-thumb-ocean border'>
