@@ -22,7 +22,7 @@ function Projects() {
         let projectData = null
 
 
-        axios.get(`${API_URL}/api/projects/`, {
+        axios.get('/api/projects/', {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -83,7 +83,7 @@ function Projects() {
         }
 
 
-        axios.post(`${API_URL}/api/projects/`, requestData, {
+        axios.post('/api/projects/', requestData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

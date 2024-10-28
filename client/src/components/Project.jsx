@@ -33,7 +33,7 @@ function Project({id, name, deadline, description, project_type}) {
     }
 
     const handleDeleteProject = () => {
-        axios.delete(`${API_URL}/api/projects/${route.id}`, {
+        axios.delete(`/api/projects/${route.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -118,7 +118,7 @@ function Project({id, name, deadline, description, project_type}) {
 
         if(route.id !== undefined && path.pathname.includes('projects')) {
 
-            axios.get(`${API_URL}/api/projects/${route.id}`, {
+            axios.get(`/api/projects/${route.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
