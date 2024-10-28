@@ -14,6 +14,7 @@ function Projects() {
     const { accessToken } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
     const [projects, setProjects] = useState(null)
+    const [clients, setClients] = useState(null)
     const token = accessToken
 
     const renderProjects = () => {
@@ -38,6 +39,33 @@ function Projects() {
                     )
                 } else {
                     setProjects(<p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Projects</p>)
+                }
+            } else if (resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+    }
+
+    const renderClients = () => {
+
+        const token = accessToken
+        let clientData = null
+
+
+        axios.get('/api/clients/', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+
+            if(resp.status == 200){
+                clientData = resp.data
+                if(clientData && clientData.length !== 0) {
+                    setClients(
+                        clientData
+                        .map(client => <option value={client.id}>{client.name}</option> )
+                    )
                 }
             } else if (resp.status == 401){
                 toast.error('Unauthorized')
@@ -103,6 +131,7 @@ function Projects() {
     })
 
     useEffect(() => {
+        renderClients()
         renderProjects()
     }, [])
 
@@ -162,20 +191,7 @@ function Projects() {
                                         <div className="text-sm text-red ml-2"> **{formik.errors.name}</div>
                                     )}
 
-                                    <label className='ml-2'> Description </label>
-                                    <Field
-                                        name='description'
-                                        value={formik.values.description}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                        as='textarea'
-                                        placeholder='Description'
-                                        className='border m-2 p-2 min-h-[100px] lg:h-[200px]'
-                                    />
 
-                                    {formik.errors.description && formik.touched.description && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
-                                    )}
 
                                     <label className='ml-2'> Deadline </label>
                                     <Field
@@ -193,7 +209,30 @@ function Projects() {
                                     {formik.errors.deadline && formik.touched.deadline && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.deadline.toUpperCase()}</div>
                                     )}
-                                    <label className='ml-2'> Project Type </label>
+
+                                    <label className='ml-2'> Budget </label>
+                                    <div className='flex flex-row items-center'>
+                                        <p className='text-xl w-[5%] text-right'>$</p>
+
+                                        <Field
+                                            name='project_budget'
+                                            value={formik.values.project_budget}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            type='number'
+                                            placeholder='0.00'
+                                            step='1000.00'
+                                            min='0.00'
+                                            className='border m-2 p-2 w-[90%]'
+                                        />
+                                    </div>
+
+                                    {formik.errors.project_budget && formik.touched.project_budget && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.project_budget}</div>
+                                    )}
+
+
+                                    <label className='ml-2'> Type </label>
                                     <Field
                                         name='projectType'
                                         as='select'
@@ -227,20 +266,37 @@ function Projects() {
                                         className='border m-2 p-2'
                                     >
                                         <option value=''>Select Client</option>
-                                        {/* {
-                                            clients ?
-
-                                            clients.map(client => <option value={client.id}>{client.name}</option>)
-                                            :
-                                            <></>
-
-                                        } */}
+                                        {
+                                            clients
+                                        }
 
                                     </Field>
 
                                     {formik.errors.budget && formik.touched.budget && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.budget.toUpperCase()}</div>
                                     )}
+
+                                    <label className='ml-2'> Description </label>
+                                    <Field
+                                        name='description'
+                                        value={formik.values.description}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        as='textarea'
+                                        placeholder='Description'
+                                        className='border m-2 p-2 min-h-[100px] lg:h-[200px]'
+                                    />
+
+                                    {formik.errors.description && formik.touched.description && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
+                                    )}
+
+
+
+
+
+
+
                                 </div>
 
 

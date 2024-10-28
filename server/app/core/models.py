@@ -9,6 +9,8 @@ from django.contrib.auth.models import (
     PermissionsMixin
 )
 
+from django.core.validators import RegexValidator
+
 from datetime import date
 
 task_status = {
@@ -199,7 +201,7 @@ class Account(models.Model):
     """Account Objects"""
 
     name = models.CharField(max_length=255)
-    type = models.CharField(max_length=255)
+    type = models.CharField(max_length=255, blank=True, null=True)
 
     objects = AccountManager()
 
@@ -211,8 +213,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     """User in the system"""
 
     email = models.EmailField(max_length=250, unique=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255, blank=True, null=True)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     account = models.ForeignKey(
@@ -235,13 +237,35 @@ class Client(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     client_type = models.CharField(max_length=255, blank=True, null=True)
-    ein = models.CharField(max_length=10)
-    address_one = models.CharField(max_length=300)
+    address_one = models.CharField(max_length=300, blank=True, null=True)
     address_two = models.CharField(max_length=300, blank=True, null=True)
-    city = models.CharField(max_length=300)
-    state = models.CharField(max_length=300, choices=[(abbr, name) for abbr, name in states.items()])
-    zip_code = models.CharField(max_length=300)
-    country = models.CharField(max_length=300, default="USA")
+    city = models.CharField(max_length=300, blank=True, null=True)
+    state = models.CharField(max_length=35, blank=True, null=True, choices=[(abbr, name) for abbr, name in states.items()])
+    zip_code = models.CharField(
+        max_length=10,
+        blank=True,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{5}(-\d{4})?$',
+                message="Enter a valid zip code in the format '12345' or '12345-6789'."
+            )
+        ],
+        help_text="Enter zip code in the format '12345' or '12345-6789'."
+    )
+    country = models.CharField(max_length=300, blank=True, null=True, default="USA")
+    ein = models.CharField(
+        max_length=10,
+        blank=True,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{2}-\d{7}$',
+                message="Enter a valid EIN in the format '12-3456789'."
+            )
+        ],
+        help_text="Enter EIN in the format '12-3456789'."
+    )
 
     account = models.ForeignKey(
         Account,
@@ -261,7 +285,7 @@ class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     deadline = models.DateField()
-    project_type = models.CharField(max_length=255)
+    project_type = models.CharField(max_length=255, blank=True, null=True)
     project_budget = models.DecimalField(max_digits=10, decimal_places=2)
     users = models.ManyToManyField(User, related_name='projects')
     client = models.ForeignKey(
@@ -279,9 +303,20 @@ class Project(models.Model):
 class Contact(models.Model):
     """Contact Model"""
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=255)
-    role = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(
+        max_length=14,
+        blank=True,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\(\d{3}\) \d{3}-\d{4}$',
+                message="Enter a valid phone number in the format '(123) 456-7890'."
+            )
+        ],
+        help_text="Enter phone number in the format '(123) 456-7890'."
+    )
+    role = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
     client = models.ForeignKey(
@@ -356,6 +391,8 @@ class Task(models.Model):
     )
     users = models.ForeignKey(
         User,
+        blank=True,
+        null=True,
         related_name='tasks',
         on_delete=models.CASCADE,
     )

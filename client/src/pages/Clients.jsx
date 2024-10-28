@@ -99,7 +99,7 @@ function Clients() {
         let clientData = null
 
 
-        axios.get(`${API_URL}/api/clients/`, {
+        axios.get('/api/clients/', {
             headers: {
               Authorization: `Bearer ${token}`
             }
