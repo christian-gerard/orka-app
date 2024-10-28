@@ -7,6 +7,8 @@ import { object, string, array, number, bool } from "yup";
 import { useFormik, Formik, Form, Field } from 'formik'
 import { toast } from 'react-hot-toast'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
@@ -156,7 +158,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                     <div>
 
                     <NavLink to='/projects'>
-                        <ArrowBackIcon style={{ width: '40px', height: '40px' }}/>
+                        <ArrowBackIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
                     </NavLink>
 
 
@@ -166,12 +168,12 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
 
                         <NavLink onClick={handleDeleteProject}>
-                            <DeleteIcon style={{ width: '40px', height: '40px' }}/>
+                            <DeleteIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
                         </NavLink>
 
 
                         <NavLink onClick={handleEditProject}>
-                            <EditIcon style={{ width: '40px', height: '40px' }}/>
+                            <EditIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
                         </NavLink>
 
                     </div>
@@ -198,40 +200,46 @@ function Project({id, name, deadline, description, project_type, project_budget}
                             <div className='h-[40%] flex flex-col sm:flex-row'>
                                 {/* Left */}
                                 <div className='w-[60%] h-full'>
-                                    {/* Project Type */}
-                                    <div className='h-[5%]'>
-                                        {project.project_type ? project.project_type : "Description Not Listed"}
+                                    {/* Project Details */}
+                                    <div className='h-[20%]'>
+                                        {/* Project Client */}
+                                        <div className=''>{project.client ? project.client : "Description Not Listed"}</div>
+
+                                        {/* Project Type */}
+                                        <div className=''>{project.project_type ? project.project_type : "Description Not Listed"}</div>
+
                                     </div>
-                                    {/* Project Budget */}
-                                    <p className='text-3xl flex items-center'>{project.project_budget ? project.project_budget: "No Deadline"}</p>
                                     {/* Project Description */}
-                                    <div className=''>
+                                    <div className='h-[80%] border-t text-black'>
                                         {project.description ? project.description : "Description Not Listed"}
                                     </div>
                                 </div>
                                 {/* Right */}
                                 <div className='w-[40%] h-full'>
                                     {/* Project Users */}
-                                    <div className='sm:h-full'>
-                                    <div className='w-full h-[10%] bg-ocean flex items-center text-white border-l border-b border-black  p-1'>
-                                        <p>Assigned Users</p>
-                                        <div>
-                                            - +
+                                    <div className='sm:h-full w-full'>
+                                        <div className='w-full h-[10%] bg-ocean flex items-center justify-between text-white border-l border-b border-black  p-1'>
+                                            <p>Assigned Users</p>
+                                            <div>
+                                                <RemoveIcon className='hover:bg-white hover:text-ocean'/>
+                                                <AddIcon className='hover:bg-white hover:text-ocean'/>
+                                            </div>
                                         </div>
-                                    </div>
-                                        <div className='h-full overflow-scroll scrollbar scrollbar-thumb-ocean border-l border-black p-1 flex flex-col gap-1 p-2'>
+                                        <div className='h-full overflow-scroll scrollbar scrollbar-track-border-r scrollbar-thumb-ocean border-l border-black p-1 flex flex-col gap-1 p-2'>
 
                                         {project.users ?
 
                                             project.users.map(user =>
                                                 <div key={user.id} className='flex flex-row border items-center justify-between'>
-                                                    <div className='px-2 text-md sm:text-xl bold flex flex-nowrap flex-row'>
+
+
+                                                    <div className='w-[50%] px-2 text-md sm:text-xl bold flex flex-nowrap flex-row'>
                                                         <p>{user.first_name} {user.last_name}</p>
                                                     </div>
-
-                                                    <div className='px-2 underline bg-ocean text-white text-md sm:text-lg'>
+                                                    <div className='w-[50%] px-2 bg-black text-white text-md sm:text-lg'>
                                                         <p>{user.email}</p>
                                                     </div>
+
 
                                                 </div>
                                             )
@@ -294,11 +302,11 @@ function Project({id, name, deadline, description, project_type, project_budget}
             :
 
             // Project Card
-            <NavLink to={`/projects/${id}`}>
+            <NavLink to={`/projects/${id}`} className='' >
                 <div className='w-full h-[175px] p-2 border'>
 
                     {/* Project Box Header */}
-                    <div className='flex flex-row justify-between h-[20%] border-b text-white bg-ocean p-1'>
+                    <div className='flex flex-row justify-between h-[20%] border-b text-white bg-black p-1'>
                         <p className='text-[0.8em] sm:text-xl'>{name ? name.slice(0,30) : 'Untitled'}</p>
                         <p className='text-[0.8em] sm:text-lg'>{deadline ? deadline.slice(5,12) : 'No Deadline'}</p>
                     </div>
