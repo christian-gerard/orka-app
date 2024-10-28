@@ -19,7 +19,7 @@ function Dashboard() {
         let tasks = null
 
 
-        axios.get(`${API_URL}/api/tasks/`, {
+        axios.get('/api/tasks/', {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -52,7 +52,7 @@ function Dashboard() {
         let projects = null
 
 
-        axios.get(`${API_URL}/api/projects/`, {
+        axios.get('/api/projects/', {
             headers: {
               Authorization: `Bearer ${token}`
             }

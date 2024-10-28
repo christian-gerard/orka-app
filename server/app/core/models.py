@@ -11,7 +11,72 @@ from django.contrib.auth.models import (
 
 from datetime import date
 
+task_status = {
+    ('planning', 'Planning'),
+    ('not started', 'Not Started'),
+    ('doing', 'Doing'),
+    ('blocked', 'Blocked'),
+    ('done', 'Done'),
+}
 
+expense_status = {
+    ('planned', 'Planned'),
+    ('pending', 'Pending'),
+    ('complete', 'Complete'),
+}
+
+states = {
+    'AL': 'Alabama',
+    'AK': 'Alaska',
+    'AZ': 'Arizona',
+    'AR': 'Arkansas',
+    'CA': 'California',
+    'CO': 'Colorado',
+    'CT': 'Connecticut',
+    'DE': 'Delaware',
+    'FL': 'Florida',
+    'GA': 'Georgia',
+    'HI': 'Hawaii',
+    'ID': 'Idaho',
+    'IL': 'Illinois',
+    'IN': 'Indiana',
+    'IA': 'Iowa',
+    'KS': 'Kansas',
+    'KY': 'Kentucky',
+    'LA': 'Louisiana',
+    'ME': 'Maine',
+    'MD': 'Maryland',
+    'MA': 'Massachusetts',
+    'MI': 'Michigan',
+    'MN': 'Minnesota',
+    'MS': 'Mississippi',
+    'MO': 'Missouri',
+    'MT': 'Montana',
+    'NE': 'Nebraska',
+    'NV': 'Nevada',
+    'NH': 'New Hampshire',
+    'NJ': 'New Jersey',
+    'NM': 'New Mexico',
+    'NY': 'New York',
+    'NC': 'North Carolina',
+    'ND': 'North Dakota',
+    'OH': 'Ohio',
+    'OK': 'Oklahoma',
+    'OR': 'Oregon',
+    'PA': 'Pennsylvania',
+    'RI': 'Rhode Island',
+    'SC': 'South Carolina',
+    'SD': 'South Dakota',
+    'TN': 'Tennessee',
+    'TX': 'Texas',
+    'UT': 'Utah',
+    'VT': 'Vermont',
+    'VA': 'Virginia',
+    'WA': 'Washington',
+    'WV': 'West Virginia',
+    'WI': 'Wisconsin',
+    'WY': 'Wyoming'
+}
 class UserManager(BaseUserManager):
     """Manager for Users"""
 
@@ -168,13 +233,13 @@ class Client(models.Model):
     """Client Model"""
 
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    client_type = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    client_type = models.CharField(max_length=255, blank=True, null=True)
     ein = models.CharField(max_length=10)
     address_one = models.CharField(max_length=300)
-    address_two = models.CharField(max_length=300, default=None)
+    address_two = models.CharField(max_length=300, blank=True, null=True)
     city = models.CharField(max_length=300)
-    state = models.CharField(max_length=300)
+    state = models.CharField(max_length=300, choices=[(abbr, name) for abbr, name in states.items()])
     zip_code = models.CharField(max_length=300)
     country = models.CharField(max_length=300, default="USA")
 
@@ -194,10 +259,10 @@ class Project(models.Model):
     """Project Model"""
 
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     deadline = models.DateField()
     project_type = models.CharField(max_length=255)
-
+    project_budget = models.DecimalField(max_digits=10, decimal_places=2)
     users = models.ManyToManyField(User, related_name='projects')
     client = models.ForeignKey(
         Client,
@@ -217,7 +282,7 @@ class Contact(models.Model):
     last_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=255)
     role = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
 
     client = models.ForeignKey(
         Client,
@@ -233,9 +298,9 @@ class Contact(models.Model):
 
 class Budget(models.Model):
     """Budget Model"""
-    description = models.CharField(max_length=255)
-    category = models.CharField(max_length=255)
-    amount = models.CharField(max_length=255)
+    budget_name = models.CharField(max_length=255)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
 
     project = models.ForeignKey(
         Project,
@@ -252,18 +317,16 @@ class Budget(models.Model):
 class Expense(models.Model):
     """Expense Model"""
     date = models.DateField(default=date.today)
-    description = models.CharField(max_length=255)
+    expense_description = models.CharField(max_length=255)
     amount = models.DecimalField(
         decimal_places=2,
-        max_digits=200
+        max_digits=10
     )
-    category = models.CharField(max_length=255)
-    status = models.CharField(max_length=300)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    status = models.CharField(max_length=300, choices=expense_status, default='planned')
 
     project = models.ForeignKey(
         Project,
-        null=True,
-        blank=True,
         related_name='expenses',
         on_delete=models.CASCADE,
     )
@@ -281,10 +344,11 @@ class Expense(models.Model):
 
 class Task(models.Model):
     """Task Model"""
+    task_name = models.CharField(max_length=255)
     deadline = models.DateField(default=date.today)
-    description = models.CharField(max_length=255)
-    category = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    status = models.CharField(max_length=255, choices=task_status, default='not started')
     project = models.ForeignKey(
         Project,
         related_name='tasks',
