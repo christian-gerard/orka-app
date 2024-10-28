@@ -13,8 +13,8 @@ const API_URL = import.meta.env.VITE_API_URL
 function Projects() {
     const { accessToken } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
-    const [projects, setProjects] = useState(null)
-    const [clients, setClients] = useState(null)
+    const [projects, setProjects] = useState([])
+    const [clients, setClients] = useState([])
     const token = accessToken
 
     const renderProjects = () => {
@@ -78,14 +78,35 @@ function Projects() {
         formik.resetForm()
     }
 
+    const today = new Date().toISOString().split('T')[0];
+
     const projectSchema = object({
         name: string()
         .required('Please provide a name'),
         description: string(),
         deadline: string()
-        .required("Please provide a deadline"),
+        .required("Please provide a deadline")
+        .matches(
+            /^\d{4}-\d{2}-\d{2}$/,
+            "Date must be in the format YYYY-MM-DD"
+        )
+        .test(
+            'is-today-or-later',
+            "The deadline cannot be before today",
+            (value) => {
+                // Only validate if value is in the correct format
+                if (!value) return false;
+                return value >= today;
+            }
+        ),
         projectType: string()
-        .required('Please provide the project type')
+        .required('Please provide the project type'),
+        projectBudget: string()
+        .required("Please provide the project's budget")
+        .matches(
+            /^\d+(\.\d{1,2})?$/,
+            "Please enter a valid budget with up to two decimal places (e.g., 12345.67)"
+        ),
       });
 
     const initialValues = {
@@ -93,8 +114,13 @@ function Projects() {
         description: '',
         deadline: '',
         projectType: '',
-        client: null
+        projectBudget: '',
+        client: null,
+        tasks: {},
+        users: {}
     }
+
+    console.log(projects)
 
     const formik = useFormik({
         initialValues,
@@ -107,7 +133,10 @@ function Projects() {
             deadline: formData.deadline,
             budget:formData.budget,
             project_type: formData.projectType,
-            client: formData.client
+            project_budget: formData.projectBudget,
+            client: formData.client,
+            tasks: [],
+            users: []
         }
 
 
@@ -118,7 +147,7 @@ function Projects() {
         })
         .then(resp => {
             if(resp.status == 201){
-                setProjects([resp.data, ...projects])
+                setProjects([<Project key={resp.data.id} {...resp.data} />, ...projects])
                 handleNewProject()
                 toast.success('New Project Added')
             } else {
@@ -215,20 +244,33 @@ function Projects() {
                                         <p className='text-xl w-[5%] text-right'>$</p>
 
                                         <Field
-                                            name='project_budget'
-                                            value={formik.values.project_budget}
+                                            name='projectBudget'
+                                            value={formik.values.projectBudget}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
-                                            type='number'
+                                            onKeyDown={(e) => {
+                                                // Allow only numbers, period, backspace, and delete keys
+                                                if (
+                                                    !(
+                                                        (e.key >= '0' && e.key <= '9') || // Numbers
+                                                        e.key === '.' || // Decimal point
+                                                        e.key === 'Backspace' || // Backspace
+                                                        e.key === 'Delete' || // Delete
+                                                        e.key === 'ArrowLeft' || // Left arrow key
+                                                        e.key === 'ArrowRight' // Right arrow key
+                                                    )
+                                                ) {
+                                                    e.preventDefault();
+                                                }
+                                            }}
+                                            type='text'
                                             placeholder='0.00'
-                                            step='1000.00'
-                                            min='0.00'
                                             className='border m-2 p-2 w-[90%]'
                                         />
                                     </div>
 
-                                    {formik.errors.project_budget && formik.touched.project_budget && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.project_budget}</div>
+                                    {formik.errors.projectBudget && formik.touched.projectBudget && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.projectBudget}</div>
                                     )}
 
 
