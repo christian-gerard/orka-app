@@ -26,8 +26,9 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['id', 'name', 'client_type']
+        fields = ['id', 'name', 'client_type', 'client_img']
         read_only_fields = ["id"]
+
 
 class ClientDetailSerializer(serializers.ModelSerializer):
     """Serializes Client Data"""
@@ -37,3 +38,10 @@ class ClientDetailSerializer(serializers.ModelSerializer):
         fields = ClientSerializer.Meta.fields + ["description", "address_one", "address_two", "city", "zip_code", "country", "ein", "account", "contacts"]
 
 
+class ClientImageSerializer(serializers.ModelSerializer):
+    """Serializer for Uploading Images to Clients"""
+
+    class Meta:
+        model = Client
+        fields = ['id', 'client_img']
+        extra_kwargs = {'client_img': {'required': 'True'}}

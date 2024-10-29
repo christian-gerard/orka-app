@@ -13,9 +13,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL
-
-function Client({ id, name}) {
+function Client({ id, name, client_img}) {
     const route = useParams()
     const nav = useNavigate()
     const {  accessToken } = useContext(UserContext)
@@ -127,47 +125,63 @@ function Client({ id, name}) {
 
             <div className='border w-full h-full'>
 
-                <div className='h-[5%] flex flex-row justify-between'>
+                {/* Client Back + Edit + Delete */}
+                <div className='h-[5%] flex flex-row justify-between p-2 bg-black text-white items-center'>
 
-                <div>
+                    <div>
 
-                    <NavLink to='/clients'>
-                        <ArrowBackIcon style={{ width: '45px', height: '45px' }}/>
-                    </NavLink>
-
-                </div>
-
-                <div className='flex gap-2'>
-
-
-                    <NavLink onClick={handleDeleteClient}>
-                        <DeleteIcon style={{ width: '45px', height: '45px' }}/>
+                    <NavLink to='/projects'>
+                        <ArrowBackIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
                     </NavLink>
 
 
-                    <NavLink onClick={handleEditClient}>
-                        <EditIcon style={{ width: '45px', height: '45px' }}/>
-                    </NavLink>
+                    </div>
+
+                    <div className='flex gap-2'>
+
+
+                        <NavLink onClick={handleDeleteClient}>
+                            <DeleteIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black' />
+                        </NavLink>
+
+
+                        <NavLink onClick={handleEditClient}>
+                            <EditIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
+                        </NavLink>
+
+                    </div>
+
 
                 </div>
 
 
-                </div>
 
                 {
                     client ?
 
                         <div className='w-full h-[95%] flex flex-col'>
+                            {/* Client Info + Img */}
+                            <div className='flex flex-row items-end justify-between h-[10%] p-2 bg-black text-white'>
 
-                            <div className='flex flex-row justify-between h-[10%]'>
+                                <div className='flex flex-row items-end gap-2'>
+                                    <img
+                                        src={client ? client.client_img : ' '  }
+                                        className='rounded-[100%] border size-[100px] sm:size-[80px] bg-ocean object-cover'
+                                        alt='client'
+                                    />
 
-                                <p className='text-4xl'>{client.name ? client.name : 'No Name'}</p>
+                                    <p className='text-5xl'>{client.name ? client.name : 'No Name'}</p>
+                                </div>
 
-                                <p className='text-2xl'>{client.industry ? client.industry : 'Industry Not Listed'}</p>
+                                <div>
+                                    <p className='text-2xl'>{client.industry ? client.industry : 'Industry Not Listed'}</p>
+                                </div>
+
+
 
                             </div>
-
-                            <div className=' scrollbar-thumb-ocean border-t h-[45%] w-full  scrollbar-thumb-ocean'>
+                            {/* Client Contacts */}
+                            <div className='scrollbar-thumb-ocean border-t h-[45%] w-full  scrollbar-thumb-ocean'>
                                 <div className=' flex flex-row gap-4 items-center bg-ocean text-white p-1'>
                                     <p>Contacts</p>
                                     <p className='bg-white text-black '></p>
@@ -197,7 +211,7 @@ function Client({ id, name}) {
 
                                 }
                             </div>
-
+                            {/* Client Projects */}
                             <div className='w-full h-[45%] border-t scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
                                 <div className=' flex flex-row gap-4 items-center bg-ocean text-white p-1'>
                                     <p>Client Projects</p>
@@ -217,10 +231,6 @@ function Client({ id, name}) {
 
                                 }
                             </div>
-
-
-
-
                         </div>
 
                     :
@@ -237,9 +247,13 @@ function Client({ id, name}) {
             :
 
             <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center size-[200px] sm:w-[175px] sm:h-[225px] lg:w-[250px] lg:h-[275px] '>
-                <div className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean'>
-                </div>
-                <p className='text-md sm:text-2xl'>{name ? name : 'UNNAMED'}</p>
+                <img
+                src={client_img ? client_img : ' '  }
+                className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean object-cover'
+                alt='client'
+                />
+
+                <p className='text-md sm:text-2xl truncate'>{name ? name : 'UNNAMED'}</p>
                 {/* <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p> */}
             </NavLink>
 

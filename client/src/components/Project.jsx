@@ -336,7 +336,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
                             <p className='text-2xl flex items-center'>{project.project_type ? project.project_type : "name not known"}</p>
 
-
                         </div>
 
                         {/* Project Body */}
