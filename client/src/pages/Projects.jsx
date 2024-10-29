@@ -112,7 +112,7 @@ function Projects() {
         deadline: '',
         projectType: '',
         projectBudget: '',
-        client: null,
+        client: '',
         tasks: {},
         users: {}
     }
