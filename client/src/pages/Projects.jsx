@@ -61,7 +61,7 @@ function Projects() {
                 if(clientData && clientData.length !== 0) {
                     setClients(
                         clientData
-                        .map(client => <option value={client.id}>{client.name}</option> )
+                        .map(client => <option value={client}>{client.name}</option> )
                     )
                 }
             } else if (resp.status == 401){
@@ -104,7 +104,7 @@ function Projects() {
             /^\d+(\.\d{1,2})?$/,
             "Please enter a valid budget with up to two decimal places (e.g., 12345.67)"
         ),
-      });
+    });
 
     const initialValues = {
         name: '',
