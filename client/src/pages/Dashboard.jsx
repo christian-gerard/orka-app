@@ -91,9 +91,9 @@ function Dashboard() {
 
             {/* Top Half :: 45%*/}
             <div className='h-[45%] w-full border'>
-                <p className='h-[10%] text-2xl flex items-center bg-black text-white'>Outstanding Tasks</p>
+                <p className='h-[10%] text-2xl flex items-center bg-ocean text-white border-b border-black'>Outstanding Tasks</p>
                 <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
-                    <div className='h-full w-full'>
+                    <div className='h-full w-full flex flex-col gap-2 p-2'>
                         {
                             outstandingTasks
                         }
@@ -108,10 +108,10 @@ function Dashboard() {
             {/* Bottom Half 50% */}
             <div className='h-[50%] w-full flex flex-row'>
                 {/* Projects */}
-                <div className='w-full h-full border'>
-                    <p className='h-[10%] text-2xl flex items-center bg-black text-white'>Projects</p>
+                <div className='w-full h-full border-x border-b'>
+                    <p className='h-[10%] text-2xl flex items-center bg-ocean text-white border-b border-black'>Projects</p>
                     <div className='h-[90%] overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
-                        <div className='h-full w-full'>
+                        <div className='h-full w-full flex flex-col p-4 gap-4'>
                             {
                                 myProjects
                             }

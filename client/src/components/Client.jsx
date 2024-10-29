@@ -143,7 +143,7 @@ function Client({ id, name, client_img}) {
             <div className='border w-full h-full'>
 
                 {/* Client Back + Edit + Delete */}
-                <div className='h-[5%] flex flex-row justify-between p-2 bg-black text-white items-center'>
+                <div className='w-full h-[5%] flex flex-row justify-between p-2 bg-black text-white items-center'>
 
                     <div>
 
@@ -202,16 +202,18 @@ function Client({ id, name, client_img}) {
                                     <p>Contacts</p>
                                     <p className='bg-white text-black '></p>
                                 </div>
-                                <div className='h-[90%] w-full scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
-                                {client.contacts.length !== 0 ?
+                                <div className='h-[90%] w-full scrollbar overflow-y-scroll scrollbar-thumb-ocean p-4'>
+                                <div className='flex flex-wrap gap-4'>
+                                    {client.contacts.length !== 0 ?
 
-                                    client.contacts.map(contact => <Contact key={contact.id} {...contact} />)
+                                        client.contacts.map(contact => <Contact key={contact.id} {...contact} />)
 
-                                    :
+                                        :
 
-                                    <p className='text-xl w-full h-[90%] flex justify-center items-center'>No Client Contacts</p>
+                                        <p className='text-xl w-full h-[90%] flex justify-center items-center'>No Client Contacts</p>
+                                    }
+                                </div>
 
-                                }
                                 </div>
                             </div>
                             {/* Client Projects */}
@@ -220,20 +222,22 @@ function Client({ id, name, client_img}) {
                                     <p>Client Projects</p>
                                     <p className='bg-white text-black '></p>
                                 </div>
-                                <div className='h-[90%] w-full scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
+                                <div className='w-full h-[90%] scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
+                                    <div className='flex flex-col flex-wrap gap-4 p-4'>
 
-                                {
-                                    client.projects.length !== 0 ?
+                                        {
+                                            client.projects.length !== 0 ?
 
-                                    client.projects
-                                    .map(project => <Project key={project.id} {...project} />)
+                                            client.projects
+                                            .map(project => <Project key={project.id} {...project} />)
 
-                                    :
+                                            :
 
-                                    <p className='text-xl w-full h-[90%] flex justify-center items-center'>No Current Projects</p>
+                                            <p className='text-xl w-full h-[90%] flex justify-center items-center'>No Current Projects</p>
 
 
-                                }
+                                        }
+                                    </div>
 
                                 </div>
                             </div>
