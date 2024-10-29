@@ -105,8 +105,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         users = request.data.get('user', [])
         res = []
         try:
-            users_to_remove = project.users.filter(id__in=users)
-            project.users.remove(*users_to_remove)
+            project.users.clear()
             for user_id in users:
                 user = get_user_model().objects.get(id=user_id)
                 user_data = UserSerializer(user).data

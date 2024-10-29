@@ -275,8 +275,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
     }, [route.id])
 
-    console.log(userFormik.values.users)
-
     return(
         <>
 
@@ -367,7 +365,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                                             {project.users ?
 
-                                                project.users.map(user => <User key={user.id} {...user} />)
+                                                project.users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <User key={user.id} {...user} />)
 
                                                 :
 
@@ -427,7 +425,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                                                     className='border h-full'
                                                                 >
                                                                     {
-                                                                        users && users.map(user => <option value={user.id}>{user.email}</option>)
+                                                                        users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option value={user.id}>{user.email}</option>)
 
                                                                     }
 
