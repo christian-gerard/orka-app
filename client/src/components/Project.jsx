@@ -29,9 +29,34 @@ function Project({id, name, deadline, description, project_type, project_budget}
     const [clients, setClients] = useState(null)
     const [users, setUsers] = useState(null)
     const [editProject, setEditProject] = useState(false)
+    const [deleteProject, setDeleteProject] = useState(false)
     const [editProjectUsers, setEditProjectUsers] = useState(false)
     const [isAddUser, setIsAddUser] = useState(null)
     const token = accessToken
+
+    const executeDeleteProject = () => {
+
+        axios.delete(`/api/projects/${route.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+            if(resp.status == 204){
+                toast.success("Project Deleted")
+                nav('/projects')
+                handleDeleteProject()
+
+            } else if(resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
+
+    }
 
     const renderClients = () => {
 
@@ -97,23 +122,10 @@ function Project({id, name, deadline, description, project_type, project_budget}
     }
 
     const handleDeleteProject = () => {
-        // axios.delete(`/api/projects/${route.id}`, {
-        //     headers: {
-        //         Authorization: `Bearer ${token}`
-        //     }
-        // })
-        // .then(resp => {
-        //     if(resp.status == 204){
-        //         toast.success("Project Deleted")
-        //         nav('/projects')
-        //     } else if(resp.status == 401){
-        //         toast.error('Unauthorized')
-        //     }
-        // })
-        // .catch(err => {
-        //     console.error(err)
-        //     throw err
-        // })
+
+        setDeleteProject(!deleteProject)
+
+
 
 
     }
@@ -314,7 +326,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
 
                         <NavLink onClick={handleDeleteProject}>
-                            <DeleteIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
+                            <DeleteIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black' onClick={handleDeleteProject}/>
                         </NavLink>
 
 
@@ -350,7 +362,9 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                     {/* Project Details */}
                                     <div className='h-[20%] flex flex-row'>
                                         {/* Project Client */}
-                                        <div className='w-[50%] bg-red text-white flex justify-center items-center text-3xl'>{project.client ? project.client.name: "Description Not Listed"}</div>
+                                        <NavLink to={`/clients/${project.client.id}`} className='w-[50%] bg-red text-white hover:bg-ocean flex justify-center items-center text-3xl'>
+                                            {project.client ? project.client.name: "Description Not Listed"}
+                                        </NavLink>
 
                                         {/* Project Deadline*/}
                                         <div className='w-[50%] bg-done flex justify-center items-center text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
@@ -549,6 +563,34 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
         }
 
+        {/* Delete Projct  Modal */}
+        {
+            deleteProject &&
+
+            <div className=' fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur-sm '>
+                <div className='bg-white size-[50%] border text-2xl flex flex-col justify-center gap-4'>
+                    <div>
+
+                        <p className='text-center text-2xl'> Are you sure you want to delete the project {project && project.name}?</p>
+                        <p className='text-center text-lg'>**All related tasks, budgets, and expenses will also be deleted</p>
+
+                    </div>
+
+                    <div className='flex flex-row justify-center items-center gap-6'>
+                        <div className='bg-ocean hover:bg-black text-white px-4 py-2' onClick={handleDeleteProject}>
+                            NO
+                        </div>
+
+                        <div className='bg-blocked hover:bg-black text-white px-4 py-2' onClick={executeDeleteProject}>
+                            YES
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        }
 
         {/* Edit Project Modal */}
 
