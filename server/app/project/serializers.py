@@ -4,7 +4,7 @@ Serializers for the Account API
 from rest_framework import serializers
 from client.serializers import ClientSerializer
 
-from core.models import Task, Expense, Project, Budget, Expense
+from core.models import Task, Expense, Project, Budget, Expense, Client
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
@@ -60,11 +60,17 @@ class TaskDetailSerializer(TaskSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
-    client = ClientSerializer(read_only=True)
+
+    client_id = serializers.PrimaryKeyRelatedField(
+        queryset=Client.objects.all(),
+        source='client',
+        write_only=True
+    )
+
 
     class Meta:
         model = Project
-        fields = ['id', 'name', 'deadline', 'description', 'project_budget', 'project_type', 'client']
+        fields = ['id', 'name', 'deadline', 'description', 'project_budget', 'project_type', 'client_id']
         read_only_fields = ["id"]
 
 
@@ -73,6 +79,7 @@ class ProjectDetailSerializer(ProjectSerializer):
     """Serializes Account Detail Data"""
 
     tasks = TaskSerializer(many=True, read_only=True)
+    client = ClientSerializer(read_only=True)
 
     def __init__(self, *args, **kwargs):
         # Import UserSerializer lazily to avoid circular import
@@ -81,6 +88,7 @@ class ProjectDetailSerializer(ProjectSerializer):
         super().__init__(*args, **kwargs)
 
 
+
     class Meta(ProjectSerializer.Meta):
-        fields = ProjectSerializer.Meta.fields + ['users', 'tasks']
+        fields = ProjectSerializer.Meta.fields + ['users', 'tasks', 'client']
         read_only_fields = ["users", "tasks"]

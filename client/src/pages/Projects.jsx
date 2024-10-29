@@ -130,13 +130,11 @@ function Projects() {
             deadline: formData.deadline,
             budget:formData.budget,
             project_type: formData.projectType,
-            budget: formData.projectBudget,
-            client: formData.client,
+            project_budget: formData.projectBudget,
+            client_id: parseInt(formData.client),
             tasks: [],
             users: []
         }
-
-        debugger
 
         axios.post('/api/projects/', requestData, {
             headers: {
@@ -184,10 +182,12 @@ function Projects() {
 
 
             {/* Projects */}
-            <div className='h-[95%] w-full flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll p-2'>
+            <div className='w-full h-[95%] flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll p-2 sm:grid sm:grid-cols-2 gap-4'>
+                <div>
                 {
                     projects
                 }
+                </div>
             </div>
 
             {
