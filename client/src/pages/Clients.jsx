@@ -67,27 +67,35 @@ function Clients() {
             }
 
 
-            fetch('/api/account/clients/', {
-                method: "POST",
-                body: JSON.stringify(requestData),
+            axios.post('/api/account/clients/',requestData, {
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Token ${token}`
-                },
-                credentials: 'include',
+                }
             })
             .then(resp => {
-                if(resp.ok){
+                if(resp.status == 201){
+                    if(files[0]) {
+                        const image_data = {
+                            "client_img": files[0]
+                        }
+                        axios.post(`/api/clients/${resp.data.id}/upload-image/`, image_data, {
+                            headers: {
+                                'Authorization': `Token ${token}`
+                            }
+                        })
+                        .then(resp => {
+                            if(resp.status == 201) {
 
-                    return resp.json().then(data => {
-                        setClients([data, ...clients])
-                        handleNewClient()
-                        toast.success('Client Added')
 
-                    })
+                            }
+                        })
 
 
-
+                    }
+                    handleNewClient()
+                    toast.success('Client Added')
+                } else {
+                    toast.error('Error Occured During Upload')
                 }
             })
             .catch(err => console.log(err))
