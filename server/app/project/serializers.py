@@ -2,6 +2,7 @@
 Serializers for the Account API
 """
 from rest_framework import serializers
+from client.serializers import ClientSerializer
 
 from core.models import Task, Expense, Project, Budget, Expense
 
@@ -59,6 +60,7 @@ class TaskDetailSerializer(TaskSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
+    client = ClientSerializer(read_only=True)
 
     class Meta:
         model = Project

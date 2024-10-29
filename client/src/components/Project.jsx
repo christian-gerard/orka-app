@@ -118,6 +118,20 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
     }
 
+    const findClientName = () => {
+
+        axios.get(`/api/clients/${project.client}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+              }
+        })
+        .then(resp => {
+            if(resp.status == 200){
+                return resp.data.name
+            }
+        })
+    }
+
     const today = new Date().toISOString().split('T')[0];
 
     const projectSchema = object({
@@ -268,6 +282,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
             renderUsers()
 
+
         }
 
 
@@ -332,12 +347,12 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                 {/* Left */}
                                 <div className='w-[60%] h-full'>
                                     {/* Project Details */}
-                                    <div className='h-[20%]'>
+                                    <div className='h-[20%] flex flex-row'>
                                         {/* Project Client */}
-                                        <div className=''>{project.client ? project.client : "Description Not Listed"}</div>
+                                        <div className='w-[50%] bg-red text-white flex justify-center items-center text-3xl'>{project.client ? project.client.name: "Description Not Listed"}</div>
 
-                                        {/* Project Type */}
-                                        <div className=''>{project.project_type ? project.project_type : "Description Not Listed"}</div>
+                                        {/* Project Deadline*/}
+                                        <div className='w-[50%] bg-done flex justify-center items-center text-3xl'>{project.deadline ? project.deadline : "Description Not Listed"}</div>
 
                                     </div>
                                     {/* Project Description */}
