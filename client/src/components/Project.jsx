@@ -345,14 +345,21 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                 {/* Left */}
                                 <div className='w-[60%] h-full'>
                                     {/* Project Details */}
-                                    <div className='h-[20%] flex flex-row'>
+                                    <div className='h-[20%] flex flex-row gap-4 px-4'>
                                         {/* Project Client */}
-                                        <NavLink to={`/clients/${project.client.id}`} className='w-[50%] bg-red text-white hover:bg-ocean flex justify-center items-center text-3xl'>
+                                        <NavLink to={`/clients/${project.client.id}`} className='hover:bg-ocean flex items-end gap-2 p-1 text-3xl'>
+                                            {project.client.client_img &&
+                                                <img
+                                                src={project.client.client_img}
+                                                className='rounded-[100%] bg-white border border-black size-[60px] object-cover'
+                                                alt='client'
+                                                />
+                                            }
                                             {project.client ? project.client.name: "Description Not Listed"}
                                         </NavLink>
 
                                         {/* Project Deadline*/}
-                                        <div className='w-[50%] bg-done flex justify-center items-center text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
+                                        <div className='flex justify-center items-end text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
 
                                     </div>
                                     {/* Project Description */}
