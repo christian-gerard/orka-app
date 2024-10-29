@@ -182,7 +182,7 @@ function Projects() {
 
 
             {/* Projects */}
-            <div className='w-full h-[95%] flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll p-2 sm:grid sm:grid-cols-2 gap-4'>
+            <div className='w-full h-[95%] flex flex-col p-2 sm:grid sm:grid-cols-2 gap-4 border scrollbar scrollbar-thumb-ocean overflow-scroll '>
                 <div>
                 {
                     projects
