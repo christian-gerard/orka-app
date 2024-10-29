@@ -29,18 +29,15 @@ function Client({ id, name, client_img}) {
     }
 
     const handleDeleteClient = () => {
-        axios.delete(`${API_URL}/api/clients/${route.id}`, {
+        axios.delete(`/api/clients/${route.id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
         .then(resp => {
             if(resp.status === 204){
-
                 toast.success('Client Deleted')
                 nav('/clients')
-
-
             }
         })
     }
@@ -98,7 +95,6 @@ function Client({ id, name, client_img}) {
     useEffect(() => {
 
         if(route.id !== undefined){
-
             axios.get(`/api/clients/${route.id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -109,8 +105,6 @@ function Client({ id, name, client_img}) {
                     setClient(resp.data)
                 }
             })
-
-
         }
 
 
@@ -165,7 +159,7 @@ function Client({ id, name, client_img}) {
                                 <div className='flex flex-row items-end gap-2'>
                                     <img
                                         src={client ? client.client_img : ' '  }
-                                        className='rounded-[100%] border size-[100px] sm:size-[80px] bg-ocean object-cover'
+                                        className='rounded-[100%] bg-white border size-[100px] sm:size-[80px] object-cover'
                                         alt='client'
                                     />
 
@@ -239,7 +233,7 @@ function Client({ id, name, client_img}) {
                 {client_img ?
                     <img
                     src={client_img}
-                    className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean object-cover'
+                    className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] object-cover'
                     alt='client'
                     />
 

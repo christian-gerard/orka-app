@@ -67,7 +67,6 @@ function Clients() {
             for(let key in formData) { fd.set(key, formData[key])}
 
 
-
             axios.post('/api/clients/',fd, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -75,6 +74,8 @@ function Clients() {
             })
             .then(resp => {
                 if(resp.status == 201){
+                    let newClient = resp.data
+
                     if(files[0] !== '') {
                         const image_data = {
                             "client_img": files[0]
@@ -86,7 +87,7 @@ function Clients() {
                         })
                         .then(resp => {
                             if(resp.status == 201) {
-                                toast.success('Image Upload Successful')
+                                newClient['client_img'] = resp.data.client_img
 
                             } else {
                                 toast.error('Image Upload Failed')
@@ -94,6 +95,8 @@ function Clients() {
                         })
 
                     }
+                    setClients([newClient, ...clients])
+
                     handleNewClient()
                     toast.success('Client Added')
                 } else {
