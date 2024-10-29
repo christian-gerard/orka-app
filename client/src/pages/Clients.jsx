@@ -25,7 +25,8 @@ function Clients() {
     }
 
     const clientSchema = object({
-        name: string(),
+        name: string()
+        .required(),
         description: string(),
         client_type: string(),
         ein: string(),
@@ -154,7 +155,9 @@ function Clients() {
                     {
                         clients ?
 
-                        clients.map(client => <Client key={client.id} {...client} />)
+                        clients
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map(client => <Client key={client.id} {...client} />)
 
                         :
 

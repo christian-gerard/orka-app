@@ -162,7 +162,6 @@ function Client({ id, name, client_img}) {
                                         className='rounded-[100%] bg-white border size-[100px] sm:size-[80px] object-cover'
                                         alt='client'
                                     />
-
                                     <p className='text-5xl'>{client.name ? client.name : 'No Name'}</p>
                                 </div>
 
@@ -240,11 +239,8 @@ function Client({ id, name, client_img}) {
                     :
                     <div className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] flex justify-center items-center'>
                         <img src='/orka.png' className='size-[100px] object-cover' />
-
                     </div>
-
                 }
-
                 <p className='text-md sm:text-2xl truncate'>{name ? name : 'UNNAMED'}</p>
                 {/* <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p> */}
             </NavLink>
