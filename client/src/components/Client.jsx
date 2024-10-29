@@ -100,7 +100,7 @@ function Client({ id, name}) {
 
         if(route.id !== undefined){
 
-            axios.get(`${API_URL}/api/clients/${route.id}`, {
+            axios.get(`/api/clients/${route.id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -117,6 +117,7 @@ function Client({ id, name}) {
 
     },[route.id])
 
+    console.log(client)
 
     return(
         <>
@@ -156,7 +157,7 @@ function Client({ id, name}) {
                 {
                     client ?
 
-                        <div className='w-full h-[95%] px-6 flex flex-col'>
+                        <div className='w-full h-[95%] flex flex-col'>
 
                             <div className='flex flex-row justify-between h-[10%]'>
 
@@ -166,54 +167,11 @@ function Client({ id, name}) {
 
                             </div>
 
-                            <p className='text-xl'>Client Projects</p>
-                            <div className='w-full h-[50%] border scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
-                                {/* {
-                                    projects ?
-
-                                    projects
-                                    .filter(project => project.client === client.id)
-                                    .map(project => <Project key={project.id} {...project} />)
-
-                                    :
-
-                                    <p className='text-xl w-full flex justify-center items-center'>No Projects</p>
-
-
-                                } */}
-                            </div>
-
-
-
-                            <p className='text-xl'>Assigned Users</p>
-                            <div className='h-[15%]  border'>
-                                {client.users ?
-
-                                    client.users.map(user =>
-                                        <div className='flex flex-row border'>
-                                            <div className='px-2'>
-                                                <p>{user.first_name} {user.last_name}</p>
-                                            </div>
-
-                                            <div className='px-2'>
-                                                <p>{user.email}</p>
-                                            </div>
-
-                                        </div>
-                                    )
-
-                                    :
-
-                                    <div className='w-full h-[95%] flex flex-col items-center'>
-
-
-                                    </div>
-
-                                }
-                            </div>
-
-                            <p className='text-xl'>Contacts</p>
-                            <div className=' scrollbar-thumb-ocean h-[25%] w-full  scrollbar-thumb-ocean border'>
+                            <div className=' scrollbar-thumb-ocean border-t h-[45%] w-full  scrollbar-thumb-ocean'>
+                                <div className=' flex flex-row gap-4 items-center bg-ocean text-white p-1'>
+                                    <p>Contacts</p>
+                                    <p className='bg-white text-black '></p>
+                                </div>
                                 {client.contacts ?
 
                                     client.contacts.map(contact =>
@@ -239,6 +197,29 @@ function Client({ id, name}) {
 
                                 }
                             </div>
+
+                            <div className='w-full h-[45%] border-t scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
+                                <div className=' flex flex-row gap-4 items-center bg-ocean text-white p-1'>
+                                    <p>Client Projects</p>
+                                    <p className='bg-white text-black '></p>
+                                </div>
+                                {
+                                    client.projects ?
+
+                                    client.projects
+                                    .filter(project => project.client === client.id)
+                                    .map(project => <Project key={project.id} {...project} />)
+
+                                    :
+
+                                    <p className='text-xl w-full flex justify-center items-center'>No Projects</p>
+
+
+                                }
+                            </div>
+
+
+
 
                         </div>
 

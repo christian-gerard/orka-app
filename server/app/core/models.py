@@ -1,6 +1,8 @@
 """
 Database Models
 """
+import uuid
+import os
 
 from django.db import models
 from django.contrib.auth.models import (
@@ -79,6 +81,14 @@ states = {
     'WI': 'Wisconsin',
     'WY': 'Wyoming'
 }
+
+def recipe_image_file_path(instance, filename):
+    """Generate File Path for New Recipe"""
+    ext = os.path.splitext(filename)[1]
+    filename = f'{uuid.uuid4()}{ext}'
+    return os.path.join('uploads', 'recipe', filename)
+
+
 class UserManager(BaseUserManager):
     """Manager for Users"""
 
@@ -266,6 +276,7 @@ class Client(models.Model):
         ],
         help_text="Enter EIN in the format '12-3456789'."
     )
+    client_img = models.ImageField(null=True, upload_to=recipe_image_file_path)
 
     account = models.ForeignKey(
         Account,
