@@ -61,7 +61,7 @@ function Projects() {
                 if(clientData && clientData.length !== 0) {
                     setClients(
                         clientData
-                        .map(client => <option value={client}>{client.name}</option> )
+                        .map(client => <option value={client.id}>{client.name}</option> )
                     )
                 }
             } else if (resp.status == 401){
@@ -104,6 +104,8 @@ function Projects() {
             /^\d+(\.\d{1,2})?$/,
             "Please enter a valid budget with up to two decimal places (e.g., 12345.67)"
         ),
+        client: string()
+        .required('Please provide a valid client')
     });
 
     const initialValues = {
@@ -128,12 +130,13 @@ function Projects() {
             deadline: formData.deadline,
             budget:formData.budget,
             project_type: formData.projectType,
-            project_budget: formData.projectBudget,
+            budget: formData.projectBudget,
             client: formData.client,
             tasks: [],
             users: []
         }
 
+        debugger
 
         axios.post('/api/projects/', requestData, {
             headers: {
@@ -316,8 +319,8 @@ function Projects() {
 
                                     </Field>
 
-                                    {formik.errors.budget && formik.touched.budget && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.budget.toUpperCase()}</div>
+                                    {formik.errors.client && formik.touched.client && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.client}</div>
                                     )}
 
                                     <label className='ml-2'> Description </label>
