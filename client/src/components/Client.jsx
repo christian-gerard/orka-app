@@ -187,6 +187,7 @@ function Client({ id, name, client_img}) {
                                     <p>Contacts</p>
                                     <p className='bg-white text-black '></p>
                                 </div>
+                                <div className='h-[90%] w-full scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
                                 {client.contacts.length !== 0 ?
 
                                     client.contacts.map(contact => <Contact key={contact.id} {...contact} />)
@@ -196,6 +197,7 @@ function Client({ id, name, client_img}) {
                                     <p className='text-xl w-full h-[90%] flex justify-center items-center'>No Client Contacts</p>
 
                                 }
+                                </div>
                             </div>
                             {/* Client Projects */}
                             <div className='w-full h-[45%] border-t '>
@@ -203,8 +205,8 @@ function Client({ id, name, client_img}) {
                                     <p>Client Projects</p>
                                     <p className='bg-white text-black '></p>
                                 </div>
-                                <div className='scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
-                                    <div>
+                                <div className='h-[90%] w-full scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
+
                                 {
                                     client.projects ?
 
@@ -217,7 +219,7 @@ function Client({ id, name, client_img}) {
 
 
                                 }
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
