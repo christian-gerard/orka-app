@@ -85,11 +85,12 @@ function Clients() {
                         })
                         .then(resp => {
                             if(resp.status == 201) {
+                                toast.success('Image Upload Successful')
 
-
+                            } else {
+                                toast.error('Image Upload Failed')
                             }
                         })
-
 
                     }
                     handleNewClient()
