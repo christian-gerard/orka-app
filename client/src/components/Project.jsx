@@ -332,10 +332,11 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                     <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
-                        {/* Project Title and Deadline */}
+                        {/* Project Title and Type */}
                         <div className='h-[6%] flex flex-row justify-between items-end p-2 bg-black text-white'>
 
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
+                            <p className='text-2xl flex items-center'>{project.project_type ? project.project_type : "name not known"}</p>
 
 
                         </div>
@@ -352,7 +353,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                         <div className='w-[50%] bg-red text-white flex justify-center items-center text-3xl'>{project.client ? project.client.name: "Description Not Listed"}</div>
 
                                         {/* Project Deadline*/}
-                                        <div className='w-[50%] bg-done flex justify-center items-center text-3xl'>{project.deadline ? project.deadline : "Description Not Listed"}</div>
+                                        <div className='w-[50%] bg-done flex justify-center items-center text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
 
                                     </div>
                                     {/* Project Description */}
