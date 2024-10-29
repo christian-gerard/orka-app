@@ -25,6 +25,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
     const path = useLocation()
     const [project, setProject] = useState(null)
     const [clients, setClients] = useState(null)
+    const [users, setUsers] = useState(null)
     const [editProject, setEditProject] = useState(false)
     const [editProjectUsers, setEditProjectUsers] = useState(false)
     const token = accessToken
@@ -56,6 +57,33 @@ function Project({id, name, deadline, description, project_type, project_budget}
         })
     }
 
+    const renderUsers = () => {
+        const token = accessToken
+        let userData = null
+
+
+        axios.get('/api/user/', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+
+            if(resp.status == 200){
+                userData = resp.data
+                if(userData && userData.length !== 0) {
+                    setUsers(
+                        userData
+                        .map(user => <option value={user.id}>{user.email}</option> )
+                    )
+                }
+            } else if (resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+
+    }
+
     const handleProjectUsers = () => {
         setEditProjectUsers(!editProjectUsers)
     }
@@ -85,23 +113,23 @@ function Project({id, name, deadline, description, project_type, project_budget}
     }
 
     const handleDeleteProject = () => {
-        axios.delete(`/api/projects/${route.id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-            if(resp.status == 204){
-                toast.success("Project Deleted")
-                nav('/projects')
-            } else if(resp.status == 401){
-                toast.error('Unauthorized')
-            }
-        })
-        .catch(err => {
-            console.error(err)
-            throw err
-        })
+        // axios.delete(`/api/projects/${route.id}`, {
+        //     headers: {
+        //         Authorization: `Bearer ${token}`
+        //     }
+        // })
+        // .then(resp => {
+        //     if(resp.status == 204){
+        //         toast.success("Project Deleted")
+        //         nav('/projects')
+        //     } else if(resp.status == 401){
+        //         toast.error('Unauthorized')
+        //     }
+        // })
+        // .catch(err => {
+        //     console.error(err)
+        //     throw err
+        // })
 
 
     }
@@ -149,7 +177,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
     }
 
     const userInit = {
-        user: ''
+        users: []
     }
 
 
@@ -198,30 +226,28 @@ function Project({id, name, deadline, description, project_type, project_budget}
         initialValues: userInit,
         onSubmit: (formData) => {
 
-        const requestData = {
+        console.log(formData)
 
-        }
-
-        axios.post(`/api/projects/${route.id}/`, requestData, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then( resp => {
-            if(resp.status == 200){
-                setProject(resp.data)
-                handleEditProject()
-                toast.success("Project Updated")
-            } else if(resp.status == 401) {
-                toast.error('Not Authorized: Please login again')
-            } else {
-                toast.error('ERROR: Please Try Again')
-            }
-        })
-        .catch(err => {
-            console.error(err)
-            toast.error('Error: Something Occured during Update')
-        })
+        // axios.post(`/api/projects/${route.id}/`, requestData, {
+        //     headers: {
+        //         Authorization: `Bearer ${token}`
+        //     }
+        // })
+        // .then( resp => {
+        //     if(resp.status == 200){
+        //         setProject(resp.data)
+        //         handleEditProject()
+        //         toast.success("Project Updated")
+        //     } else if(resp.status == 401) {
+        //         toast.error('Not Authorized: Please login again')
+        //     } else {
+        //         toast.error('ERROR: Please Try Again')
+        //     }
+        // })
+        // .catch(err => {
+        //     console.error(err)
+        //     toast.error('Error: Something Occured during Update')
+        // })
 
 
 
@@ -250,7 +276,10 @@ function Project({id, name, deadline, description, project_type, project_budget}
                 throw err
             })
 
+            renderUsers()
+
         }
+
 
 
 
@@ -373,44 +402,30 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                                                 </div>
 
                                                                 <div className=' flex flex-row'>
-                                                                    <RemoveIcon className='hover:bg-black hover:text-white'/>
+                                                                    <RemoveIcon onClick={userFormik.handleSubmit} className='hover:bg-black hover:text-white'/>
                                                                     <AddIcon className='hover:bg-black hover:text-white'/>
                                                                 </div>
 
                                                             </div>
 
                                                             {/* User List */}
-                                                            <label className='ml-2'> Users </label>
-                                                            <Field
-                                                                name='users'
-                                                                type='select'
-                                                                multiple
-                                                                value={userFormik.values.users}
-                                                                onChange={userFormik.handleChange}
-                                                                onBlur={userFormik.handleBlur}
-                                                                className='border m-2 p-2'
-                                                            >
-                                                                <option>Select User</option>
+                                                            <div className='h-[90%] flex flex-col'>
 
-                                                            </Field>
+                                                                <Field
+                                                                    name='users'
+                                                                    as='select'
+                                                                    multiple
+                                                                    // value={userFormik.values.users}
+                                                                    onChange={userFormik.handleChange}
+                                                                    onBlur={userFormik.handleBlur}
+                                                                    className='border h-full'
+                                                                >
+                                                                    {
+                                                                        users
 
-                                                            <div className='h-[90%] border overflow-y-scroll'>
-                                                                <ul>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                </ul>
+                                                                    }
+
+                                                                </Field>
 
                                                             </div>
 
