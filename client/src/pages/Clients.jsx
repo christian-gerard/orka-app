@@ -25,7 +25,7 @@ function Clients() {
     const clientSchema = object({
         name: string(),
         description: string(),
-        industry: string(),
+        client_type: string(),
         ein: string(),
         address_one: string(),
         address_two: string(),
@@ -109,7 +109,6 @@ function Clients() {
     const renderClients = () => {
 
         const token = accessToken
-        let clientData = null
 
 
         axios.get('/api/clients/', {

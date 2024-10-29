@@ -116,8 +116,6 @@ function Client({ id, name, client_img}) {
 
     },[route.id])
 
-    console.log(client)
-
     return(
         <>
 
