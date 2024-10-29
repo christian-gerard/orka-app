@@ -8,7 +8,9 @@ import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
 import { toast } from 'react-hot-toast'
 import CloseIcon from '@mui/icons-material/Close';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Project from '../components/Project'
+import Dropzone from 'react-dropzone'
 import Contact from '../components/Contact'
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -17,14 +19,16 @@ import axios from 'axios'
 function Client({ id, name, client_img}) {
     const route = useParams()
     const nav = useNavigate()
-    const {  accessToken } = useContext(UserContext)
+    const {  accessToken, user } = useContext(UserContext)
     const [client, setClient] = useState(null)
     const [deleteClient, setDeleteClient] = useState(false)
     const [editClient, setEditClient] = useState(false)
+    const [files, setFiles] = useState([''])
 
     const token = accessToken
 
     const handleEditClient = () => {
+        setFiles([''])
         setEditClient(!editClient)
         formik.setValues(initialValues)
     }
@@ -47,6 +51,7 @@ function Client({ id, name, client_img}) {
         })
     }
 
+
     const clientSchema = object({
         name: string(),
         description: string(),
@@ -59,6 +64,7 @@ function Client({ id, name, client_img}) {
         zip_code: string()
     });
 
+
     const initialValues = {
         name: client ? client.name : '',
         description: client ? client.description : '',
@@ -69,7 +75,7 @@ function Client({ id, name, client_img}) {
         city: client ? client.city : '',
         state: client ? client.state : '',
         zip_code: client ? client.zip_code : '',
-        account: client ? client.account : null,
+        account: client ? client.account : null
     }
 
     const formik = useFormik({
@@ -77,8 +83,20 @@ function Client({ id, name, client_img}) {
         validationSchema: clientSchema,
         onSubmit: (formData) => {
 
+            const token = accessToken
 
-            axios.patch(`${API_URL}/api/clients/${route.id}`, formData, {
+            const fd = new FormData()
+
+            if(files[0] !== '') {
+                fd.set("client_img", files[0])
+            }
+
+            fd.set('account', user ? user.account.id : 1)
+
+            for(let key in formData) { fd.set(key, formData[key])}
+
+
+            axios.patch(`/api/clients/${route.id}/`, fd, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -99,10 +117,11 @@ function Client({ id, name, client_img}) {
 
     useEffect(() => {
 
+
         if(route.id !== undefined){
-            axios.get(`/api/clients/${route.id}`, {
+            axios.get(`/api/clients/${route.id}/`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             })
             .then(resp => {
@@ -171,7 +190,7 @@ function Client({ id, name, client_img}) {
                                 </div>
 
                                 <div>
-                                    <p className='text-2xl'>{client.industry ? client.industry : 'Industry Not Listed'}</p>
+                                    <p className='text-2xl'>{client? client.client_type : ''}</p>
                                 </div>
 
 
@@ -268,22 +287,72 @@ function Client({ id, name, client_img}) {
                                 <div className='h-[5%] w-full flex items-center mb-2'>
                                     <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleEditClient} />
                                     <label className='ml-2 mt-1 text-2xl'> Edit Client </label>
-
                                 </div>
 
                                 <div className='h-[95%] w-full flex flex-col lg:gap-2 overflow-scroll scrollbar scrollbar-thumb-ocean'>
-                                    <label className='ml-2'> Name </label>
-                                    <Field
-                                        name='name'
-                                        value={formik.values.name}
-                                        onChange={formik.handleChange}
-                                        type='text'
-                                        placeholder='Name'
-                                        className='border m-2 p-2'
-                                    />
-                                    {formik.errors.name && formik.touched.name && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.name}</div>
-                                    )}
+                                    <div className='flex flex-row gap-2'>
+                                        <div className='w-[40%] flex justify-center items-center'>
+                                            <Dropzone onDrop={acceptedFiles => {
+                                                setFiles(acceptedFiles.map(file => Object.assign(file, {
+                                                preview: URL.createObjectURL(file)
+                                                })));}
+                                            }>
+                                                {({getRootProps, getInputProps}) => (
+                                                    <div {...getRootProps()} >
+                                                    <input {...getInputProps()} />
+                                                    <p className='p-2' >
+
+
+                                                        {
+
+
+                                                            files[0] ?
+
+                                                                <img
+                                                                    className='rounded-[100%] h-[125px] w-[125px] object-cover border'
+                                                                    src={files[0].preview}
+                                                                    alt='client'
+                                                                />
+
+                                                            :
+                                                                <div className='rounded-[100%] h-[125px] w-[125px] bg-ocean flex items-center text-white'>
+                                                                    <UploadFileIcon style={{width:'35px', height:'35px'}} />
+                                                                    <div className='flex flex-col justify-center text-xs'>
+                                                                        <p className='text-sm'>Update Img</p>
+                                                                        <p className='italic'>Drag or Click</p>
+                                                                    </div>
+                                                                </div>
+                                                        }
+
+
+
+
+
+                                                    </p>
+                                                    </div>
+
+                                                )}
+                                            </Dropzone>
+
+                                        </div>
+                                        <div className='w-[60%] flex flex-col justify-end'>
+                                            <label className='ml-2'> Name </label>
+                                            <Field
+                                                name='name'
+                                                value={formik.values.name}
+                                                onChange={formik.handleChange}
+                                                type='text'
+                                                placeholder='Name'
+                                                className='border m-2 p-2'
+                                            />
+                                            {formik.errors.name && formik.touched.name && (
+                                                <div className="text-sm text-red ml-2"> **{formik.errors.name}</div>
+                                            )}
+
+                                        </div>
+
+
+                                    </div>
                                     <label className='ml-2'> Description </label>
                                     <Field
                                         name='description'
@@ -296,17 +365,17 @@ function Client({ id, name, client_img}) {
                                     {formik.errors.description && formik.touched.description && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
                                     )}
-                                    <label className='ml-2'> Industry </label>
+                                    <label className='ml-2'> Client Type</label>
                                     <Field
-                                        name='industry'
+                                        name='client_type'
                                         type='text'
-                                        value={formik.values.industry}
+                                        value={formik.values.client_type}
                                         onChange={formik.handleChange}
-                                        placeholder='industry'
+                                        placeholder='Client Type'
                                         className='border m-2 p-2'
                                     />
-                                    {formik.errors.industry && formik.touched.industry && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.industry.toUpperCase()}</div>
+                                    {formik.errors.client_type && formik.touched.client_type && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.client_type}</div>
                                     )}
                                     <label className='ml-2'> EIN </label>
                                     <Field
@@ -314,7 +383,7 @@ function Client({ id, name, client_img}) {
                                         type='text'
                                         value={formik.values.ein}
                                         onChange={formik.handleChange}
-                                        placeholder='ein'
+                                        placeholder='Ein'
                                         className='border m-2 p-2'
                                     />
 
@@ -327,7 +396,7 @@ function Client({ id, name, client_img}) {
                                         type='text'
                                         value={formik.values.address_one}
                                         onChange={formik.handleChange}
-                                        placeholder='address'
+                                        placeholder='Address'
                                         className='border m-2 p-2'
                                     />
 
@@ -353,7 +422,7 @@ function Client({ id, name, client_img}) {
                                         type='text'
                                         value={formik.values.city}
                                         onChange={formik.handleChange}
-                                        placeholder='city'
+                                        placeholder='City'
                                         className='border m-2 p-2'
                                     />
                                     {formik.errors.city && formik.touched.city && (
@@ -365,7 +434,7 @@ function Client({ id, name, client_img}) {
                                         type='text'
                                         value={formik.values.zip_code}
                                         onChange={formik.handleChange}
-                                        placeholder='zip_code'
+                                        placeholder='Zip Code'
                                         className='border m-2 p-2'
                                     />
 
