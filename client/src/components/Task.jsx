@@ -19,13 +19,11 @@ function Task({id, deadline, description, category, status, project}) {
 
             <div className='w-[70%] flex flex-row items-center'>
                 <input type='checkbox' className='peer w-[25px] h-[25px] border-2 checked:text-white' />
-                <p className=' border border-black  text-lg p-[0.1em] mx-1 flex flex-nowrap max-h-[30px]'>
-
-                </p>
                 <p>{description ? description : "No Description"}</p>
             </div>
 
             <div className='w-[30%] flex flex-row justify-end gap-2'>
+                <p>Attached User</p>
                 <p className=''>{status ? status : "No Status"}</p>
                 <p>{deadline ? deadline.slice(5,11) : "No Deadline"}</p>
             </div>

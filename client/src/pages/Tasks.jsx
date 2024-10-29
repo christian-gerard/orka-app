@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from 'react'
 import { UserContext } from '../context/UserContext'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import { object, string, array, number, bool } from "yup";
 import { useFormik, Formik, Form, Field } from 'formik'
 import { toast } from 'react-hot-toast'
@@ -39,7 +41,6 @@ function Tasks(){
     const renderTasks = () => {
 
         const token = accessToken
-        let taskData = null
 
 
         axios.get(`${API_URL}/api/tasks/`, {
@@ -49,17 +50,13 @@ function Tasks(){
         })
         .then(resp => {
             if(resp.status == 200){
-                taskData = resp.data
+
                 if(taskData && taskData.length !== 0) {
                     setTasks(
-                        taskData
-                        .filter(task => task.status !== 'Complete')
-                        .sort((a, b) => a.status.localeCompare(b.status))
-                        .map(task => <Task key={task.id} {...task} />)
-                    )
+                        taskData(resp.data))
 
                 } else {
-                    setTasks(<p className='text-3xl w-full h-full flex justify-center items-center'>No Current Tasks</p>)
+                    setTasks([])
                 }
             } else if (resp.status == 401){
                 toast.error('Unauthorized')
@@ -119,22 +116,43 @@ function Tasks(){
             {/* main body */}
             <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar-thin scrollbar-thumb-ocean overflow-scroll'>
 
-                <div className='w-full h-full'>
+                <div className='w-full h-full flex flex-row'>
+
+                    <div className={newTask ? 'w-[60%]' : 'w-full'}>
                     {
-                        newTask ?
+                        tasks && tasks.length !== 0 ?
+
+                        tasks
+                        .filter(task => task.status !== 'Complete')
+                        .sort((a, b) => a.status.localeCompare(b.status))
+                        .map(task => <Task key={task.id} {...task} />)
+
+
+                        :
+
+                        <p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Tasks</p>
+                    }
+
+                    </div>
+
+
+                    <div className={newTask ? 'w-[40%] p-4' : 'w-none'}>
+
+                    {
+                        newTask &&
 
                             <Formik
                             onSubmit={formik.handleSubmit}
                             initialValues={initialValues}
                             >
                                 <Form
-                                className='flex h-full lg:justify-center w-full border'
+                                className='h-full w-full border p-2 '
                                 onSubmit={formik.handleSubmit}
                                 initialValues={initialValues}
                                 >
-                                    <div className='w-full'>
+                                    <div className='w-full h-full flex flex-col justify-between'>
 
-                                        <div className='flex flex-col'>
+                                        <div className='flex flex-col gap-2'>
 
                                                 <label className='ml-2'> Description </label>
                                                 <Field
@@ -250,18 +268,9 @@ function Tasks(){
 
                                 </Form>
                             </Formik>
-
-                        :
-
-                            <>
-                            </>
                     }
 
-
-
-                    {
-                        tasks
-                    }
+                    </div>
 
                 </div>
 

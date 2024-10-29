@@ -5,6 +5,8 @@ import { object, string, array, number, bool } from "yup";
 import { toast } from 'react-hot-toast'
 import CloseIcon from '@mui/icons-material/Close';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import Client from '../components/Client'
 import Dropzone from 'react-dropzone'
 import axios from 'axios'
@@ -161,7 +163,11 @@ function Clients() {
 
                         :
 
-                        <p>No Clients</p>
+                        <div className='w-full h-full flex justify-center items-center'>
+                        <Box sx={{ display: 'flex' }}>
+                            <CircularProgress size="125px" color='ocean' />
+                        </Box>
+                        </div>
                     }
 
                 </div>
