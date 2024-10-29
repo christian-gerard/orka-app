@@ -9,6 +9,7 @@ import { object, string, array, number, bool } from "yup";
 import { toast } from 'react-hot-toast'
 import CloseIcon from '@mui/icons-material/Close';
 import Project from '../components/Project'
+import Contact from '../components/Contact'
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import axios from 'axios'
@@ -188,18 +189,7 @@ function Client({ id, name, client_img}) {
                                 </div>
                                 {client.contacts.length !== 0 ?
 
-                                    client.contacts.map(contact =>
-                                        <div className='flex flex-row border'>
-                                            <div className='px-2'>
-                                                <p>{contact ? contact.first_name: "NONE"}</p>
-                                            </div>
-
-                                            <div className='px-2'>
-
-                                            </div>
-
-                                        </div>
-                                    )
+                                    client.contacts.map(contact => <Contact key={contact.id} {...contact} />)
 
                                     :
 
@@ -208,11 +198,13 @@ function Client({ id, name, client_img}) {
                                 }
                             </div>
                             {/* Client Projects */}
-                            <div className='w-full h-[45%] border-t scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
+                            <div className='w-full h-[45%] border-t '>
                                 <div className='h-[10%] flex flex-row gap-4 items-center bg-ocean text-white p-1'>
                                     <p>Client Projects</p>
                                     <p className='bg-white text-black '></p>
                                 </div>
+                                <div className='scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
+                                    <div>
                                 {
                                     client.projects ?
 
@@ -225,6 +217,8 @@ function Client({ id, name, client_img}) {
 
 
                                 }
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

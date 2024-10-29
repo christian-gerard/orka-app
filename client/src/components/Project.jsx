@@ -455,8 +455,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                                                 </Formik>
 
-
-
                                                 :
 
                                                 <>
@@ -523,7 +521,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
             // Project Card
             <NavLink to={`/projects/${id}`} className='' >
-                <div className='h-[150px] p-2 border'>
+                <div className='h-[150px] w-[700px] p-2 border'>
 
                     {/* Project Box Header */}
                     <div className='text-2xl flex flex-row justify-between items-center h-[50%] border-b text-white bg-black p-2'>
