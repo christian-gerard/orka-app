@@ -19,6 +19,7 @@ function Client({ id, name, client_img}) {
     const nav = useNavigate()
     const {  accessToken } = useContext(UserContext)
     const [client, setClient] = useState(null)
+    const [deleteClient, setDeleteClient] = useState(false)
     const [editClient, setEditClient] = useState(false)
 
     const token = accessToken
@@ -26,6 +27,10 @@ function Client({ id, name, client_img}) {
     const handleEditClient = () => {
         setEditClient(!editClient)
         formik.setValues(initialValues)
+    }
+
+    const handleDeleteClientPage = () => {
+        setDeleteClient(!deleteClient)
     }
 
     const handleDeleteClient = () => {
@@ -133,7 +138,7 @@ function Client({ id, name, client_img}) {
                     <div className='flex gap-2'>
 
 
-                        <NavLink onClick={handleDeleteClient}>
+                        <NavLink onClick={handleDeleteClientPage}>
                             <DeleteIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black' />
                         </NavLink>
 
@@ -159,7 +164,7 @@ function Client({ id, name, client_img}) {
                                 <div className='flex flex-row items-end gap-2'>
                                     <img
                                         src={client ? client.client_img : ' '  }
-                                        className='rounded-[100%] bg-white border size-[100px] sm:size-[80px] object-cover'
+                                        className='rounded-[100%] bg-white border border-black size-[100px] sm:size-[80px] object-cover'
                                         alt='client'
                                     />
                                     <p className='text-5xl'>{client.name ? client.name : 'No Name'}</p>
@@ -228,7 +233,7 @@ function Client({ id, name, client_img}) {
 
             :
 
-            <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center size-[200px] sm:w-[175px] sm:h-[225px] lg:w-[250px] lg:h-[275px] '>
+            <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center size-[200px] sm:w-[175px] sm:h-[225px] lg:w-[250px] lg:h-[275px]'>
                 {client_img ?
                     <img
                     src={client_img}
@@ -398,6 +403,35 @@ function Client({ id, name, client_img}) {
                 <>
                 </>
             }
+
+            {/* Delete Client  Modal */}
+        {
+            deleteClient &&
+
+            <div className=' fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur-sm '>
+                <div className='bg-white size-[50%] border text-2xl flex flex-col justify-center gap-4'>
+                    <div>
+
+                        <p className='text-center text-2xl'> Are you sure you want to delete the client {client && client.name}?</p>
+                        <p className='text-center text-lg'>**All related projects and contacts will also be deleted</p>
+
+                    </div>
+
+                    <div className='flex flex-row justify-center items-center gap-6'>
+                        <div className='bg-ocean hover:bg-black text-white px-4 py-2' onClick={handleDeleteClientPage}>
+                            NO
+                        </div>
+
+                        <div className='bg-blocked hover:bg-black text-white px-4 py-2' onClick={handleDeleteClient}>
+                            YES
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        }
 
 
 
