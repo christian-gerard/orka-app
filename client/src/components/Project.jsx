@@ -345,14 +345,21 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                 {/* Left */}
                                 <div className='w-[60%] h-full'>
                                     {/* Project Details */}
-                                    <div className='h-[20%] flex flex-row'>
+                                    <div className='h-[20%] flex flex-row gap-4 px-4'>
                                         {/* Project Client */}
-                                        <NavLink to={`/clients/${project.client.id}`} className='w-[50%] bg-red text-white hover:bg-ocean flex justify-center items-center text-3xl'>
+                                        <NavLink to={`/clients/${project.client.id}`} className='w-[50%] hover:bg-ocean flex items-end gap-2 p-1 text-3xl'>
+                                            {project.client.client_img &&
+                                                <img
+                                                src={project.client.client_img}
+                                                className='rounded-[100%] bg-white border border-black size-[60px] object-cover'
+                                                alt='client'
+                                                />
+                                            }
                                             {project.client ? project.client.name: "Description Not Listed"}
                                         </NavLink>
 
                                         {/* Project Deadline*/}
-                                        <div className='w-[50%] bg-done flex justify-center items-center text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
+                                        <div className='w-[50%] flex justify-end items-end text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
 
                                     </div>
                                     {/* Project Description */}
@@ -521,7 +528,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
             // Project Card
             <NavLink to={`/projects/${id}`} className='' >
-                <div className='h-[150px] w-[700px] p-2 border'>
+                <div className='h-[150px] p-2 border'>
 
                     {/* Project Box Header */}
                     <div className='text-2xl flex flex-row justify-between items-center h-[50%] border-b text-white bg-black p-2'>
@@ -531,9 +538,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                     {/* Project Details */}
                     <div className='flex flex-col justify-between h-[50%]'>
-                        <p className='scrollbar overflow-scroll text-[0.8em] sm:text-base h-[75%] truncate'>
-                            {description ? description : "No Description Available"}
-                        </p>
 
                         <div className='flex flex-row justify-between'>
                             <p className='text-[0.8em] sm:text-lg'>

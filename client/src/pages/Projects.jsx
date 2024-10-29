@@ -180,8 +180,8 @@ function Projects() {
             </div>
 
             {/* Projects */}
-            <div className='w-full h-[95%] p-2 sm:grid sm:grid-cols-2 gap-4 border scrollbar scrollbar-thumb-ocean overflow-scroll '>
-                <div>
+            <div className='w-full h-[95%] border scrollbar scrollbar-thumb-ocean overflow-scroll '>
+                <div className='flex flex-col gap-4 p-4 grid grid-cols-2'>
                 {
                     projects
                 }
