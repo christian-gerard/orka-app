@@ -12,6 +12,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import User from '../components/User'
@@ -25,9 +27,36 @@ function Project({id, name, deadline, description, project_type, project_budget}
     const path = useLocation()
     const [project, setProject] = useState(null)
     const [clients, setClients] = useState(null)
+    const [users, setUsers] = useState(null)
     const [editProject, setEditProject] = useState(false)
+    const [deleteProject, setDeleteProject] = useState(false)
     const [editProjectUsers, setEditProjectUsers] = useState(false)
+    const [isAddUser, setIsAddUser] = useState(null)
     const token = accessToken
+
+    const executeDeleteProject = () => {
+
+        axios.delete(`/api/projects/${route.id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+            if(resp.status == 204){
+                toast.success("Project Deleted")
+                nav('/projects')
+                handleDeleteProject()
+
+            } else if(resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+        .catch(err => {
+            console.error(err)
+            throw err
+        })
+
+    }
 
     const renderClients = () => {
 
@@ -56,26 +85,34 @@ function Project({id, name, deadline, description, project_type, project_budget}
         })
     }
 
-    const handleProjectUsers = () => {
-        setEditProjectUsers(!editProjectUsers)
-    }
+    const renderUsers = () => {
+        const token = accessToken
+        let userData = null
 
-    const handleDeleteUser = (userId) => {
 
-        const requestData = {
-            "users": []
-        }
-
-        axios.post(`/api/projects/${route.id}/delete-user/`, requestData, {
+        axios.get('/api/user/', {
             headers: {
-                Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${token}`
             }
         })
         .then(resp => {
-            if(resp.status == 204){
-                toast.success('User Deleted')
+
+            if(resp.status == 200){
+                userData = resp.data
+                if(userData && userData.length !== 0) {
+                    setUsers(userData)
+                }
+            } else if (resp.status == 401){
+                toast.error('Unauthorized')
             }
         })
+
+    }
+
+    const handleProjectUsers = () => {
+        const projectUsers = project.users.map(user => user.id)
+        userFormik.setFieldValue('users', projectUsers)
+        setEditProjectUsers(!editProjectUsers)
     }
 
     const handleEditProject = () => {
@@ -85,25 +122,26 @@ function Project({id, name, deadline, description, project_type, project_budget}
     }
 
     const handleDeleteProject = () => {
-        axios.delete(`/api/projects/${route.id}`, {
+
+        setDeleteProject(!deleteProject)
+
+
+
+
+    }
+
+    const findClientName = () => {
+
+        axios.get(`/api/clients/${project.client}`, {
             headers: {
                 Authorization: `Bearer ${token}`
-            }
+              }
         })
         .then(resp => {
-            if(resp.status == 204){
-                toast.success("Project Deleted")
-                nav('/projects')
-            } else if(resp.status == 401){
-                toast.error('Unauthorized')
+            if(resp.status == 200){
+                return resp.data.name
             }
         })
-        .catch(err => {
-            console.error(err)
-            throw err
-        })
-
-
     }
 
     const today = new Date().toISOString().split('T')[0];
@@ -149,7 +187,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
     }
 
     const userInit = {
-        user: ''
+        users: []
     }
 
 
@@ -198,30 +236,34 @@ function Project({id, name, deadline, description, project_type, project_budget}
         initialValues: userInit,
         onSubmit: (formData) => {
 
-        const requestData = {
+        console.log(project)
 
+        const requestData = {
+            user: formData.users
         }
 
-        axios.post(`/api/projects/${route.id}/`, requestData, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then( resp => {
-            if(resp.status == 200){
-                setProject(resp.data)
-                handleEditProject()
-                toast.success("Project Updated")
-            } else if(resp.status == 401) {
-                toast.error('Not Authorized: Please login again')
-            } else {
-                toast.error('ERROR: Please Try Again')
-            }
-        })
-        .catch(err => {
-            console.error(err)
-            toast.error('Error: Something Occured during Update')
-        })
+
+            axios.post(`/api/projects/${route.id}/update-users/`, requestData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then( resp => {
+                if(resp.status == 200){
+                    setProject({ ...project, users: [...resp.data]})
+                    handleProjectUsers()
+                    toast.success("Users Updated")
+                } else if(resp.status == 401) {
+                    toast.error('Not Authorized: Please login again')
+                } else {
+                    toast.error('ERROR: Please Try Again')
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast.error('Error: Something Occured during Update')
+            })
+
 
 
 
@@ -250,7 +292,11 @@ function Project({id, name, deadline, description, project_type, project_budget}
                 throw err
             })
 
+            renderUsers()
+
+
         }
+
 
 
 
@@ -280,7 +326,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
 
                         <NavLink onClick={handleDeleteProject}>
-                            <DeleteIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
+                            <DeleteIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black' onClick={handleDeleteProject}/>
                         </NavLink>
 
 
@@ -298,10 +344,11 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                     <div className=' h-[95%] w-full text-[0.8em] sm:text-lg'>
 
-                        {/* Project Title and Deadline */}
+                        {/* Project Title and Type */}
                         <div className='h-[6%] flex flex-row justify-between items-end p-2 bg-black text-white'>
 
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
+                            <p className='text-2xl flex items-center'>{project.project_type ? project.project_type : "name not known"}</p>
 
 
                         </div>
@@ -313,12 +360,14 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                 {/* Left */}
                                 <div className='w-[60%] h-full'>
                                     {/* Project Details */}
-                                    <div className='h-[20%]'>
+                                    <div className='h-[20%] flex flex-row'>
                                         {/* Project Client */}
-                                        <div className=''>{project.client ? project.client : "Description Not Listed"}</div>
+                                        <NavLink to={`/clients/${project.client.id}`} className='w-[50%] bg-red text-white hover:bg-ocean flex justify-center items-center text-3xl'>
+                                            {project.client ? project.client.name: "Description Not Listed"}
+                                        </NavLink>
 
-                                        {/* Project Type */}
-                                        <div className=''>{project.project_type ? project.project_type : "Description Not Listed"}</div>
+                                        {/* Project Deadline*/}
+                                        <div className='w-[50%] bg-done flex justify-center items-center text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
 
                                     </div>
                                     {/* Project Description */}
@@ -337,7 +386,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                             </div>
                                             <div className='hover:bg-white hover:text-ocean text-base' onClick={handleProjectUsers}>
 
-                                                    <RemoveIcon/> / <AddIcon />
+                                                    {editProjectUsers ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />} <EditIcon />
 
                                             </div>
                                         </div>
@@ -346,7 +395,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                                             {project.users ?
 
-                                                project.users.map(user => <User key={user.id} {...user} />)
+                                                project.users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <User key={user.id} {...user} />)
 
                                                 :
 
@@ -372,45 +421,45 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                                                     <p>Add/Remove Users</p>
                                                                 </div>
 
-                                                                <div className=' flex flex-row'>
-                                                                    <RemoveIcon className='hover:bg-black hover:text-white'/>
-                                                                    <AddIcon className='hover:bg-black hover:text-white'/>
+                                                                <div className='flex flex-row bg-black text-white hover:bg-ocean hover:text-black' onClick={userFormik.handleSubmit}>
+                                                                    <p>Update</p>
                                                                 </div>
 
                                                             </div>
 
                                                             {/* User List */}
-                                                            <label className='ml-2'> Users </label>
-                                                            <Field
-                                                                name='users'
-                                                                type='select'
-                                                                multiple
-                                                                value={userFormik.values.users}
-                                                                onChange={userFormik.handleChange}
-                                                                onBlur={userFormik.handleBlur}
-                                                                className='border m-2 p-2'
-                                                            >
-                                                                <option>Select User</option>
+                                                            <div className='h-[90%] flex flex-col'>
 
-                                                            </Field>
+                                                                <Field
+                                                                    name='users'
+                                                                    as='select'
+                                                                    multiple
+                                                                    value={userFormik.values.users}
+                                                                    onChange={(e) => {
+                                                                        const selectedUserId = parseInt(e.target.value); // Get the selected user ID
+                                                                        const currentUsers = userFormik.values.users;
 
-                                                            <div className='h-[90%] border overflow-y-scroll'>
-                                                                <ul>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                    <li>User Email</li>
-                                                                    <li>User this</li>
-                                                                </ul>
+                                                                        // Toggle the selected user ID in the users array
+                                                                        if (currentUsers.includes(selectedUserId)) {
+                                                                            // If already selected, remove it
+                                                                            userFormik.setFieldValue(
+                                                                                'users',
+                                                                                currentUsers.filter((id) => id !== selectedUserId)
+                                                                            );
+                                                                        } else {
+                                                                            // If not selected, add it
+                                                                            userFormik.setFieldValue('users', [...currentUsers, selectedUserId]);
+                                                                        }
+                                                                    }}
+                                                                    onBlur={userFormik.handleBlur}
+                                                                    className='border h-full'
+                                                                >
+                                                                    {
+                                                                        users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option value={user.id}>{user.email}</option>)
+
+                                                                    }
+
+                                                                </Field>
 
                                                             </div>
 
@@ -514,6 +563,34 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
         }
 
+        {/* Delete Projct  Modal */}
+        {
+            deleteProject &&
+
+            <div className=' fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur-sm '>
+                <div className='bg-white size-[50%] border text-2xl flex flex-col justify-center gap-4'>
+                    <div>
+
+                        <p className='text-center text-2xl'> Are you sure you want to delete the project {project && project.name}?</p>
+                        <p className='text-center text-lg'>**All related tasks, budgets, and expenses will also be deleted</p>
+
+                    </div>
+
+                    <div className='flex flex-row justify-center items-center gap-6'>
+                        <div className='bg-ocean hover:bg-black text-white px-4 py-2' onClick={handleDeleteProject}>
+                            NO
+                        </div>
+
+                        <div className='bg-blocked hover:bg-black text-white px-4 py-2' onClick={executeDeleteProject}>
+                            YES
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        }
 
         {/* Edit Project Modal */}
 
@@ -675,7 +752,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                 </Form>
 
-            </Formik>
+                </Formik>
 
                 :
 

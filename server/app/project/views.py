@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 
 from core.models import Project, Task, Budget, Expense
+from user.serializers import UserSerializer
 from project.serializers import (
     ProjectDetailSerializer,
     ProjectSerializer,
@@ -97,29 +98,20 @@ class ProjectViewSet(viewsets.ModelViewSet):
     #     """Override the create method to add the authenticated user"""
     #     serializer.save(users=[self.request.user])
 
-    @action(detail=True, methods=['post'], url_path='add-user', url_name='add_user')
-    def add_user(self, request, pk=None):
+    @action(detail=True, methods=['post'], url_path='update-users', url_name='update-users')
+    def update_users(self, request, pk=None):
         """Add a user to a project"""
         project = self.get_object()
-        user_id = request.data.get('user')
+        users = request.data.get('user', [])
+        res = []
         try:
-            user = get_user_model().objects.get(id=user_id)
-            if user in project.users.all():
-                return Response({"detail": "User already in project."}, status=status.HTTP_400_BAD_REQUEST)
-            project.users.add(user)
-            return Response({"detail": "User added to project."}, status=status.HTTP_201_CREATED)
+            project.users.clear()
+            for user_id in users:
+                user = get_user_model().objects.get(id=user_id)
+                user_data = UserSerializer(user).data
+                res.append(user_data)
+                project.users.add(user)
+            return Response(res, status=status.HTTP_200_OK)
         except get_user_model().DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    @action(detail=True, methods=['post'], url_path='delete-user', url_name='delete_user')
-    def delete_user(self, request, pk=None):
-        """Add a user to a project"""
-        project = self.get_object()
-        user_id = request.data.get('user')
-        try:
-            user = get_user_model().objects.get(id=user_id)
-            if user in project.users.all():
-                project.users.remove(user)
-                return Response({"detail": "User added to project."}, status=status.HTTP_204_NO_CONTENT)
-        except get_user_model().DoesNotExist:
-            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
