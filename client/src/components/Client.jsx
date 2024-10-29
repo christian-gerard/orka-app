@@ -236,11 +236,20 @@ function Client({ id, name, client_img}) {
             :
 
             <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center size-[200px] sm:w-[175px] sm:h-[225px] lg:w-[250px] lg:h-[275px] '>
-                <img
-                src={client_img ? client_img : ' '  }
-                className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean object-cover'
-                alt='client'
-                />
+                {client_img ?
+                    <img
+                    src={client_img}
+                    className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean object-cover'
+                    alt='client'
+                    />
+
+                    :
+                    <div className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] flex justify-center items-center'>
+                        <img src='/orka.png' className='size-[100px] object-cover' />
+
+                    </div>
+
+                }
 
                 <p className='text-md sm:text-2xl truncate'>{name ? name : 'UNNAMED'}</p>
                 {/* <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p> */}

@@ -33,23 +33,8 @@ const UserProvider = ({children}) => {
         axios.post(`/api/user/refresh/`, refreshData)
         .then(resp => {
           if(resp.status == 200){
-
-            const access = resp.data.access
-
-            axios.get(`/api/user/`, {
-              headers: {
-                Authorization: `Bearer ${access}`
-              }
-            })
-            .then(resp => {
-              if(resp.status == 200){
-                setUser(resp.data)
-                setAccessToken(access)
-              } else if(resp.status == 401) {
-                toast.error('Invalid Login')
-              }
-            })
-
+            setUser(resp.data.user)
+            setAccessToken(resp.data.access)
 
           } else if(resp.status == 401) {
             toast.error('Timed Out: Please Login')

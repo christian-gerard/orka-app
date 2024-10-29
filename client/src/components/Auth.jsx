@@ -120,7 +120,7 @@ function Auth() {
             })
             .then(resp => {
               if(resp.status == 200){
-                setUser(resp.data)
+                setUser(resp.data.filter(user => user.email === loginData.email)[0])
               } else if(resp.status == 401) {
                 toast.error('Invalid Login')
               }

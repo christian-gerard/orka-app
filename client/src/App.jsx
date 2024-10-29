@@ -14,8 +14,6 @@ import Nav from './components/Nav'
 function App() {
   const { user, accessToken, isLoading } = useContext(UserContext)
 
-
-
     return (
       <div className='h-screen w-screen select-none font-montserrat'>
 
@@ -23,7 +21,7 @@ function App() {
 
 
 
-        { accessToken && user ?
+        { accessToken  ?
 
           <div className='h-full w-full flex flex-col sm:flex-row'>
               <Nav />

@@ -35,7 +35,7 @@ class ClientViewSet(viewsets.ModelViewSet):
             return ClientImageSerializer
         return self.serializer_class
 
-    @action(methods=['POST'], detail=True, url_path='upload_image')
+    @action(methods=['POST'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
         """Upload an image to Client"""
         client = self.get_object()
