@@ -120,17 +120,9 @@ function Clients() {
         .then(resp => {
 
             if(resp.status == 200){
-                clientData = resp.data
-                if(clientData && clientData.length !== 0) {
-                    setClients(
-                        clientData
-                        .map(client => <Client key={client.id} {...client} />)
-                    )
-                } else {
-                    setClients(<p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Clients</p>)
-                }
-            } else if (resp.status == 401){
-                toast.error('Unauthorized')
+                setClients(resp.data)
+            } else {
+                toast.error('Error Occured')
             }
         })
     }
@@ -157,7 +149,13 @@ function Clients() {
                 <div className='flex flex-row flex-wrap flex gap-4'>
 
                     {
-                        clients
+                        clients ?
+
+                        clients.map(client => <Client key={client.id} {...client} />)
+
+                        :
+
+                        <p>No Clients</p>
                     }
 
                 </div>
