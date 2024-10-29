@@ -12,6 +12,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import User from '../components/User'
@@ -83,25 +85,9 @@ function Project({id, name, deadline, description, project_type, project_budget}
     }
 
     const handleProjectUsers = () => {
+        const projectUsers = project.users.map(user => user.id)
+        userFormik.setFieldValue('users', projectUsers)
         setEditProjectUsers(!editProjectUsers)
-    }
-
-    const handleDeleteUser = (userId) => {
-
-        const requestData = {
-            "users": []
-        }
-
-        axios.post(`/api/projects/${route.id}/delete-user/`, requestData, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-            if(resp.status == 204){
-                toast.success('User Deleted')
-            }
-        })
     }
 
     const handleEditProject = () => {
@@ -224,22 +210,23 @@ function Project({id, name, deadline, description, project_type, project_budget}
         initialValues: userInit,
         onSubmit: (formData) => {
 
+        console.log(project)
+
         const requestData = {
             user: formData.users
         }
 
-        {
-            isAddUser ?
 
-            axios.post(`/api/projects/${route.id}/add-user/`, requestData, {
+            axios.post(`/api/projects/${route.id}/update-users/`, requestData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             .then( resp => {
                 if(resp.status == 200){
-
-                    toast.success("Project Updated")
+                    setProject({ ...project, users: [...resp.data]})
+                    handleProjectUsers()
+                    toast.success("Users Updated")
                 } else if(resp.status == 401) {
                     toast.error('Not Authorized: Please login again')
                 } else {
@@ -252,31 +239,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
             })
 
 
-            :
-
-
-            axios.post(`/api/projects/${route.id}/delete-user/`, requestData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            .then( resp => {
-                if(resp.status == 204){
-
-                    toast.success("Users Added")
-
-                } else if(resp.status == 401) {
-                    toast.error('Not Authorized: Please login again')
-                } else {
-                    toast.error('ERROR: Please Try Again')
-                }
-            })
-            .catch(err => {
-                console.error(err)
-                toast.error('Error: Something Occured during Update')
-            })
-
-        }
 
 
         }
@@ -312,6 +274,8 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
 
     }, [route.id])
+
+    console.log(userFormik.values.users)
 
     return(
         <>
@@ -394,7 +358,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                             </div>
                                             <div className='hover:bg-white hover:text-ocean text-base' onClick={handleProjectUsers}>
 
-                                                    <RemoveIcon/> / <AddIcon />
+                                                    {editProjectUsers ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />} <EditIcon />
 
                                             </div>
                                         </div>
@@ -429,9 +393,8 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                                                     <p>Add/Remove Users</p>
                                                                 </div>
 
-                                                                <div className=' flex flex-row'>
-                                                                    <RemoveIcon onClick={userFormik.handleSubmit} className='hover:bg-black hover:text-white'/>
-                                                                    <AddIcon className='hover:bg-black hover:text-white'/>
+                                                                <div className='flex flex-row bg-black text-white hover:bg-ocean hover:text-black' onClick={userFormik.handleSubmit}>
+                                                                    <p>Update</p>
                                                                 </div>
 
                                                             </div>
@@ -733,7 +696,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                 </Form>
 
-            </Formik>
+                </Formik>
 
                 :
 
