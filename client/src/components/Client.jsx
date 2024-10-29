@@ -182,11 +182,11 @@ function Client({ id, name, client_img}) {
                             </div>
                             {/* Client Contacts */}
                             <div className='scrollbar-thumb-ocean border-t h-[45%] w-full  scrollbar-thumb-ocean'>
-                                <div className=' flex flex-row gap-4 items-center bg-ocean text-white p-1'>
+                                <div className='h-[10%] flex flex-row gap-4 items-center bg-ocean text-white p-1'>
                                     <p>Contacts</p>
                                     <p className='bg-white text-black '></p>
                                 </div>
-                                {client.contacts ?
+                                {client.contacts.length !== 0 ?
 
                                     client.contacts.map(contact =>
                                         <div className='flex flex-row border'>
@@ -203,17 +203,13 @@ function Client({ id, name, client_img}) {
 
                                     :
 
-                                    <div className='w-full h-[95%] flex flex-col items-center'>
-
-
-
-                                    </div>
+                                    <p className='text-xl w-full h-[90%] flex justify-center items-center'>No Client Contacts</p>
 
                                 }
                             </div>
                             {/* Client Projects */}
                             <div className='w-full h-[45%] border-t scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
-                                <div className=' flex flex-row gap-4 items-center bg-ocean text-white p-1'>
+                                <div className='h-[10%] flex flex-row gap-4 items-center bg-ocean text-white p-1'>
                                     <p>Client Projects</p>
                                     <p className='bg-white text-black '></p>
                                 </div>
@@ -221,12 +217,11 @@ function Client({ id, name, client_img}) {
                                     client.projects ?
 
                                     client.projects
-                                    .filter(project => project.client === client.id)
                                     .map(project => <Project key={project.id} {...project} />)
 
                                     :
 
-                                    <p className='text-xl w-full flex justify-center items-center'>No Projects</p>
+                                    <p className='text-xl w-full h-[90%] flex justify-center items-center'>No Current Projects</p>
 
 
                                 }

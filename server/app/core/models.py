@@ -327,6 +327,7 @@ class Contact(models.Model):
         ],
         help_text="Enter phone number in the format '(123) 456-7890'."
     )
+    email = models.EmailField()
     role = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 

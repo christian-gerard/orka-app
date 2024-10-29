@@ -34,6 +34,12 @@ class ClientDetailSerializer(serializers.ModelSerializer):
     """Serializes Client Data"""
     contacts = ContactSerializer(many=True, read_only=True)
 
+    def __init__(self, *args, **kwargs):
+        # Import UserSerializer lazily to avoid circular import
+        from project.serializers import ProjectSerializer
+        self.fields['projects'] = ProjectSerializer(many=True, read_only=True)
+        super().__init__(*args, **kwargs)
+
     class Meta(ClientSerializer.Meta):
         fields = ClientSerializer.Meta.fields + ["description", "address_one", "address_two", "city", "zip_code", "country", "ein", "account", "contacts"]
 
