@@ -28,6 +28,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
     const [users, setUsers] = useState(null)
     const [editProject, setEditProject] = useState(false)
     const [editProjectUsers, setEditProjectUsers] = useState(false)
+    const [isAddUser, setIsAddUser] = useState(null)
     const token = accessToken
 
     const renderClients = () => {
@@ -223,29 +224,59 @@ function Project({id, name, deadline, description, project_type, project_budget}
         initialValues: userInit,
         onSubmit: (formData) => {
 
-        console.log(formData)
+        const requestData = {
+            user: formData.users
+        }
 
-        // axios.post(`/api/projects/${route.id}/`, requestData, {
-        //     headers: {
-        //         Authorization: `Bearer ${token}`
-        //     }
-        // })
-        // .then( resp => {
-        //     if(resp.status == 200){
-        //         setProject(resp.data)
-        //         handleEditProject()
-        //         toast.success("Project Updated")
-        //     } else if(resp.status == 401) {
-        //         toast.error('Not Authorized: Please login again')
-        //     } else {
-        //         toast.error('ERROR: Please Try Again')
-        //     }
-        // })
-        // .catch(err => {
-        //     console.error(err)
-        //     toast.error('Error: Something Occured during Update')
-        // })
+        {
+            isAddUser ?
 
+            axios.post(`/api/projects/${route.id}/add-user/`, requestData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then( resp => {
+                if(resp.status == 200){
+
+                    toast.success("Project Updated")
+                } else if(resp.status == 401) {
+                    toast.error('Not Authorized: Please login again')
+                } else {
+                    toast.error('ERROR: Please Try Again')
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast.error('Error: Something Occured during Update')
+            })
+
+
+            :
+
+
+            axios.post(`/api/projects/${route.id}/delete-user/`, requestData, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then( resp => {
+                if(resp.status == 204){
+
+                    toast.success("Users Added")
+
+                } else if(resp.status == 401) {
+                    toast.error('Not Authorized: Please login again')
+                } else {
+                    toast.error('ERROR: Please Try Again')
+                }
+            })
+            .catch(err => {
+                console.error(err)
+                toast.error('Error: Something Occured during Update')
+            })
+
+        }
 
 
         }
@@ -281,9 +312,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
 
     }, [route.id])
-
-
-    console.log("Selected Users:", userFormik.values.users);
 
     return(
         <>
