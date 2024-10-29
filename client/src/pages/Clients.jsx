@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { UserContext } from '../context/UserContext'
 import { useFormik, Formik, Form, Field } from 'formik'
 import { object, string, array, number, bool } from "yup";
+import { toast } from 'react-hot-toast'
 import CloseIcon from '@mui/icons-material/Close';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Client from '../components/Client'
@@ -11,21 +12,23 @@ import axios from 'axios'
 
 function Clients() {
 
-    const { accessToken } = useContext(UserContext)
+    const { accessToken, user } = useContext(UserContext)
     const [clients, setClients] = useState(null)
     const [newClient, setNewClient] = useState(false)
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState(['']);
+
 
     const handleNewClient = () => {
-        setFiles([])
+        setFiles([''])
         formik.resetForm()
         setNewClient(!newClient)
     }
 
     const clientSchema = object({
-        name: string(),
+        name: string()
+        .required(),
         description: string(),
-        industry: string(),
+        client_type: string(),
         ein: string(),
         address_one: string(),
         address_two: string(),
@@ -49,43 +52,43 @@ function Clients() {
 
 
     const formik = useFormik({
-        initialValues,
+        initialValues: initialValues,
         validationSchema: clientSchema,
         onSubmit: (formData) => {
+            const token = accessToken
 
-            const requestData = {
-                name: formData.name,
-                description: formData.description,
-                industry: formData.industry,
-                ein: formData.ein,
-                address_one: formData.address_one,
-                address_two: formData.address_two,
-                city: formData.city,
-                state: formData.state,
-                zip_code: formData.zip_code,
-                account: accounts ? accounts[0].id : null
+            const fd = new FormData()
+
+            if(files[0] !== '') {
+                fd.set("client_img", files[0])
             }
 
+            fd.set('account', user ? user.account.id : 1)
 
-            axios.post('/api/account/clients/',requestData, {
+            for(let key in formData) { fd.set(key, formData[key])}
+
+
+            axios.post('/api/clients/',fd, {
                 headers: {
-                    'Authorization': `Token ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             })
             .then(resp => {
                 if(resp.status == 201){
-                    if(files[0]) {
+                    let newClient = resp.data
+
+                    if(files[0] !== '') {
                         const image_data = {
                             "client_img": files[0]
                         }
                         axios.post(`/api/clients/${resp.data.id}/upload-image/`, image_data, {
                             headers: {
-                                'Authorization': `Token ${token}`
+                                Authorization: `Bearer ${token}`
                             }
                         })
                         .then(resp => {
                             if(resp.status == 201) {
-                                toast.success('Image Upload Successful')
+                                newClient['client_img'] = resp.data.client_img
 
                             } else {
                                 toast.error('Image Upload Failed')
@@ -93,6 +96,8 @@ function Clients() {
                         })
 
                     }
+                    setClients([newClient, ...clients])
+
                     handleNewClient()
                     toast.success('Client Added')
                 } else {
@@ -109,7 +114,6 @@ function Clients() {
     const renderClients = () => {
 
         const token = accessToken
-        let clientData = null
 
 
         axios.get('/api/clients/', {
@@ -120,17 +124,9 @@ function Clients() {
         .then(resp => {
 
             if(resp.status == 200){
-                clientData = resp.data
-                if(clientData && clientData.length !== 0) {
-                    setClients(
-                        clientData
-                        .map(client => <Client key={client.id} {...client} />)
-                    )
-                } else {
-                    setClients(<p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Clients</p>)
-                }
-            } else if (resp.status == 401){
-                toast.error('Unauthorized')
+                setClients(resp.data)
+            } else {
+                toast.error('Error Occured')
             }
         })
     }
@@ -157,7 +153,15 @@ function Clients() {
                 <div className='flex flex-row flex-wrap flex gap-4'>
 
                     {
+                        clients ?
+
                         clients
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map(client => <Client key={client.id} {...client} />)
+
+                        :
+
+                        <p>No Clients</p>
                     }
 
                 </div>
@@ -239,7 +243,7 @@ function Clients() {
                                     </div>
                                     <label className='ml-2'> Description </label>
                                     <Field
-                                        name='client_type'
+                                        name='description'
                                         value={formik.values.description}
                                         onChange={formik.handleChange}
                                         as='textarea'

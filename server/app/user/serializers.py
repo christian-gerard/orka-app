@@ -49,6 +49,16 @@ class UserDetailSerializer(UserSerializer):
 class RefreshSerializer(TokenRefreshSerializer):
     """Getting Access Token after Refresh"""
 
+    def __init__(self, *args, **kwargs):
+    # Import UserSerializer lazily to avoid circular import
+        from user.serializers import UserSerializer
+        self.fields['user'] = UserSerializer(read_only=True)
+        super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = get_user_model()
+        fields = ['user']
+
 
 class AuthSerializer(TokenObtainPairSerializer):
     """Serializer for JWT Auth Token"""

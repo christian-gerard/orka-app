@@ -29,18 +29,15 @@ function Client({ id, name, client_img}) {
     }
 
     const handleDeleteClient = () => {
-        axios.delete(`${API_URL}/api/clients/${route.id}`, {
+        axios.delete(`/api/clients/${route.id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
         .then(resp => {
             if(resp.status === 204){
-
                 toast.success('Client Deleted')
                 nav('/clients')
-
-
             }
         })
     }
@@ -98,7 +95,6 @@ function Client({ id, name, client_img}) {
     useEffect(() => {
 
         if(route.id !== undefined){
-
             axios.get(`/api/clients/${route.id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -109,14 +105,10 @@ function Client({ id, name, client_img}) {
                     setClient(resp.data)
                 }
             })
-
-
         }
 
 
     },[route.id])
-
-    console.log(client)
 
     return(
         <>
@@ -167,10 +159,9 @@ function Client({ id, name, client_img}) {
                                 <div className='flex flex-row items-end gap-2'>
                                     <img
                                         src={client ? client.client_img : ' '  }
-                                        className='rounded-[100%] border size-[100px] sm:size-[80px] bg-ocean object-cover'
+                                        className='rounded-[100%] bg-white border size-[100px] sm:size-[80px] object-cover'
                                         alt='client'
                                     />
-
                                     <p className='text-5xl'>{client.name ? client.name : 'No Name'}</p>
                                 </div>
 
@@ -238,12 +229,18 @@ function Client({ id, name, client_img}) {
             :
 
             <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center size-[200px] sm:w-[175px] sm:h-[225px] lg:w-[250px] lg:h-[275px] '>
-                <img
-                src={client_img ? client_img : ' '  }
-                className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean object-cover'
-                alt='client'
-                />
+                {client_img ?
+                    <img
+                    src={client_img}
+                    className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] object-cover'
+                    alt='client'
+                    />
 
+                    :
+                    <div className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] flex justify-center items-center'>
+                        <img src='/orka.png' className='size-[100px] object-cover' />
+                    </div>
+                }
                 <p className='text-md sm:text-2xl truncate'>{name ? name : 'UNNAMED'}</p>
                 {/* <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p> */}
             </NavLink>
