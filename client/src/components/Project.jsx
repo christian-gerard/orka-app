@@ -63,7 +63,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
     const handleDeleteUser = (userId) => {
 
         const requestData = {
-            "user": userId
+            "users": []
         }
 
         axios.post(`/api/projects/${route.id}/delete-user/`, requestData, {
@@ -135,7 +135,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
             /^\d+(\.\d{1,2})?$/,
             "Please enter a valid budget with up to two decimal places (e.g., 12345.67)"
         ),
-      });
+    });
 
     const initialValues = {
         name: project && project.name,
@@ -146,6 +146,10 @@ function Project({id, name, deadline, description, project_type, project_budget}
         client: project && project.client,
         tasks: {},
         users: {}
+    }
+
+    const userInit = {
+        user: ''
     }
 
 
@@ -165,6 +169,40 @@ function Project({id, name, deadline, description, project_type, project_budget}
         }
 
         axios.patch(`/api/projects/${route.id}/`, requestData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then( resp => {
+            if(resp.status == 200){
+                setProject(resp.data)
+                handleEditProject()
+                toast.success("Project Updated")
+            } else if(resp.status == 401) {
+                toast.error('Not Authorized: Please login again')
+            } else {
+                toast.error('ERROR: Please Try Again')
+            }
+        })
+        .catch(err => {
+            console.error(err)
+            toast.error('Error: Something Occured during Update')
+        })
+
+
+
+        }
+    })
+
+    const userFormik = useFormik({
+        initialValues: userInit,
+        onSubmit: (formData) => {
+
+        const requestData = {
+
+        }
+
+        axios.post(`/api/projects/${route.id}/`, requestData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -318,45 +356,73 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                             {
                                                 editProjectUsers ?
 
-                                                <div className='absolute h-[90%] inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur-sm '>
-                                                    <div className='size-[80%] bg-white border p-2 flex flex-col gap-2'>
-                                                        {/* Title + Buttons */}
-                                                        <div className='h-[10%] flex flex-row justify-between items-center'>
-                                                            <div>
-                                                                <p>Add/Remove Users</p>
+                                                <Formik
+                                                    onSubmit={userFormik.handleSubmit}
+                                                    initialValues={initialValues}
+                                                >
+                                                    <Form
+                                                    className='absolute h-[90%] inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur-sm '
+                                                    onSubmit={userFormik.handleSubmit}
+                                                    initialValues={userInit}
+                                                    >
+                                                        <div className='size-[80%] bg-white border p-2 flex flex-col gap-2'>
+                                                            {/* Title + Buttons */}
+                                                            <div className='h-[10%] flex flex-row justify-between items-center'>
+                                                                <div>
+                                                                    <p>Add/Remove Users</p>
+                                                                </div>
+
+                                                                <div className=' flex flex-row'>
+                                                                    <RemoveIcon className='hover:bg-black hover:text-white'/>
+                                                                    <AddIcon className='hover:bg-black hover:text-white'/>
+                                                                </div>
+
                                                             </div>
 
-                                                            <div className=' flex flex-row'>
-                                                                <RemoveIcon className='hover:bg-black hover:text-white'/>
-                                                                <AddIcon className='hover:bg-black hover:text-white'/>
+                                                            {/* User List */}
+                                                            <label className='ml-2'> Users </label>
+                                                            <Field
+                                                                name='users'
+                                                                type='select'
+                                                                multiple
+                                                                value={userFormik.values.users}
+                                                                onChange={userFormik.handleChange}
+                                                                onBlur={userFormik.handleBlur}
+                                                                className='border m-2 p-2'
+                                                            >
+                                                                <option>Select User</option>
+
+                                                            </Field>
+
+                                                            <div className='h-[90%] border overflow-y-scroll'>
+                                                                <ul>
+                                                                    <li>User Email</li>
+                                                                    <li>User this</li>
+                                                                    <li>User Email</li>
+                                                                    <li>User this</li>
+                                                                    <li>User Email</li>
+                                                                    <li>User this</li>
+                                                                    <li>User Email</li>
+                                                                    <li>User this</li>
+                                                                    <li>User Email</li>
+                                                                    <li>User this</li>
+                                                                    <li>User Email</li>
+                                                                    <li>User this</li>
+                                                                    <li>User Email</li>
+                                                                    <li>User this</li>
+                                                                </ul>
+
                                                             </div>
+
 
                                                         </div>
 
-                                                        {/* User List */}
-                                                        <div className='h-[90%] border overflow-y-scroll'>
-                                                            <ul>
-                                                                <li>User Email</li>
-                                                                <li>User this</li>
-                                                                <li>User Email</li>
-                                                                <li>User this</li>
-                                                                <li>User Email</li>
-                                                                <li>User this</li>
-                                                                <li>User Email</li>
-                                                                <li>User this</li>
-                                                                <li>User Email</li>
-                                                                <li>User this</li>
-                                                                <li>User Email</li>
-                                                                <li>User this</li>
-                                                                <li>User Email</li>
-                                                                <li>User this</li>
-                                                            </ul>
+                                                    </Form>
 
-                                                        </div>
+                                                </Formik>
 
 
-                                                    </div>
-                                                </div>
+
                                                 :
 
                                                 <>
