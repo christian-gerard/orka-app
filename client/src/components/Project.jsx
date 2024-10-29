@@ -282,6 +282,9 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
     }, [route.id])
 
+
+    console.log("Selected Users:", userFormik.values.users);
+
     return(
         <>
 
@@ -412,13 +415,28 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                                                     name='users'
                                                                     as='select'
                                                                     multiple
-                                                                    // value={userFormik.values.users}
-                                                                    onChange={userFormik.handleChange}
+                                                                    value={userFormik.values.users}
+                                                                    onChange={(e) => {
+                                                                        const selectedUserId = parseInt(e.target.value); // Get the selected user ID
+                                                                        const currentUsers = userFormik.values.users;
+
+                                                                        // Toggle the selected user ID in the users array
+                                                                        if (currentUsers.includes(selectedUserId)) {
+                                                                            // If already selected, remove it
+                                                                            userFormik.setFieldValue(
+                                                                                'users',
+                                                                                currentUsers.filter((id) => id !== selectedUserId)
+                                                                            );
+                                                                        } else {
+                                                                            // If not selected, add it
+                                                                            userFormik.setFieldValue('users', [...currentUsers, selectedUserId]);
+                                                                        }
+                                                                    }}
                                                                     onBlur={userFormik.handleBlur}
                                                                     className='border h-full'
                                                                 >
                                                                     {
-                                                                        users
+                                                                        users && users.map(user => <option value={user.id}>{user.email}</option>)
 
                                                                     }
 

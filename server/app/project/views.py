@@ -101,12 +101,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def add_user(self, request, pk=None):
         """Add a user to a project"""
         project = self.get_object()
-        user_id = request.data.get('user')
+        users = request.data.get('user')
         try:
-            user = get_user_model().objects.get(id=user_id)
-            if user in project.users.all():
-                return Response({"detail": "User already in project."}, status=status.HTTP_400_BAD_REQUEST)
-            project.users.add(user)
+            for user_id in users:
+                user = get_user_model().objects.get(id=user_id)
+                if user in project.users.all():
+                    return Response({"detail": "User already in project."}, status=status.HTTP_400_BAD_REQUEST)
+                project.users.add(user)
             return Response({"detail": "User added to project."}, status=status.HTTP_201_CREATED)
         except get_user_model().DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
@@ -115,11 +116,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def delete_user(self, request, pk=None):
         """Add a user to a project"""
         project = self.get_object()
-        user_id = request.data.get('user')
+        users = request.data.get('user')
         try:
-            user = get_user_model().objects.get(id=user_id)
-            if user in project.users.all():
-                project.users.remove(user)
-                return Response({"detail": "User added to project."}, status=status.HTTP_204_NO_CONTENT)
+            for user_id in users:
+                user = get_user_model().objects.get(id=user_id)
+                if user in project.users.all():
+                    project.users.remove(user)
+            return Response({"detail": "Users deleted project."}, status=status.HTTP_204_NO_CONTENT)
         except get_user_model().DoesNotExist:
             return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
