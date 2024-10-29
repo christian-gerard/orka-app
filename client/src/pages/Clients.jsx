@@ -17,6 +17,7 @@ function Clients() {
     const [files, setFiles] = useState([]);
 
     const handleNewClient = () => {
+        setFiles([])
         formik.resetForm()
         setNewClient(!newClient)
     }
@@ -36,13 +37,14 @@ function Clients() {
     const initialValues = {
         name: '',
         description: '',
-        industry: '',
-        ein: '',
+        client_type: '',
         address_one: '',
         address_two: '',
         city: '',
         state: '',
-        zip_code: ''
+        zip_code: '',
+        country: '',
+        ein: ''
     }
 
 
@@ -173,8 +175,8 @@ function Clients() {
                                 </div>
 
                                 <div className='h-[95%] w-full flex flex-col lg:gap-2 overflow-scroll scrollbar scrollbar-thumb-ocean'>
-                                    <div className='flex flex-row p-2 gap-2'>
-                                        <div className='rounded-[100%] h-[125px] w-[125px] bg-ocean flex justify-center items-center'>
+                                    <div className='flex flex-row gap-2'>
+                                        <div className='w-[40%] flex justify-center items-center'>
                                             <Dropzone onDrop={acceptedFiles => {
                                                 setFiles(acceptedFiles.map(file => Object.assign(file, {
                                                 preview: URL.createObjectURL(file)
@@ -192,12 +194,11 @@ function Clients() {
                                                                 alt='client'
                                                             />
                                                             :
-                                                            <div className='flex justify-between items-center text-white'>
-                                                                <UploadFileIcon style={{width:'45px', height:'45px'}} />
-                                                                <div className='flex flex-col justify-center'>
-                                                                    <p>Drag</p>
-                                                                    <p>or</p>
-                                                                    <p>Click Here</p>
+                                                            <div className='rounded-[100%] h-[125px] w-[125px] bg-ocean flex items-center text-white'>
+                                                                <UploadFileIcon style={{width:'35px', height:'35px'}} />
+                                                                <div className='flex flex-col justify-center text-xs'>
+                                                                    <p className='text-sm'>Img Upload</p>
+                                                                    <p className='italic'>Drag or Click</p>
                                                                 </div>
                                                             </div>
                                                         }
@@ -209,7 +210,7 @@ function Clients() {
                                             </Dropzone>
 
                                         </div>
-                                        <div className='flex flex-col justify-end'>
+                                        <div className='w-[60%] flex flex-col justify-end'>
                                             <label className='ml-2'> Name </label>
                                             <Field
                                                 name='name'
@@ -229,7 +230,7 @@ function Clients() {
                                     </div>
                                     <label className='ml-2'> Description </label>
                                     <Field
-                                        name='description'
+                                        name='client_type'
                                         value={formik.values.description}
                                         onChange={formik.handleChange}
                                         as='textarea'
@@ -239,17 +240,17 @@ function Clients() {
                                     {formik.errors.description && formik.touched.description && (
                                         <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
                                     )}
-                                    <label className='ml-2'> Industry </label>
+                                    <label className='ml-2'> Client Type</label>
                                     <Field
-                                        name='industry'
+                                        name='client_type'
                                         type='text'
-                                        value={formik.values.industry}
+                                        value={formik.values.client_type}
                                         onChange={formik.handleChange}
-                                        placeholder='industry'
+                                        placeholder='Client Type'
                                         className='border m-2 p-2'
                                     />
-                                    {formik.errors.industry && formik.touched.industry && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.industry.toUpperCase()}</div>
+                                    {formik.errors.client_type && formik.touched.client_type && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.client_type}</div>
                                     )}
                                     <label className='ml-2'> EIN </label>
                                     <Field
@@ -257,7 +258,7 @@ function Clients() {
                                         type='text'
                                         value={formik.values.ein}
                                         onChange={formik.handleChange}
-                                        placeholder='ein'
+                                        placeholder='Ein'
                                         className='border m-2 p-2'
                                     />
 
@@ -270,7 +271,7 @@ function Clients() {
                                         type='text'
                                         value={formik.values.address_one}
                                         onChange={formik.handleChange}
-                                        placeholder='address'
+                                        placeholder='Address'
                                         className='border m-2 p-2'
                                     />
 
@@ -296,7 +297,7 @@ function Clients() {
                                         type='text'
                                         value={formik.values.city}
                                         onChange={formik.handleChange}
-                                        placeholder='city'
+                                        placeholder='City'
                                         className='border m-2 p-2'
                                     />
                                     {formik.errors.city && formik.touched.city && (
@@ -308,7 +309,7 @@ function Clients() {
                                         type='text'
                                         value={formik.values.zip_code}
                                         onChange={formik.handleChange}
-                                        placeholder='zip_code'
+                                        placeholder='Zip Code'
                                         className='border m-2 p-2'
                                     />
 
