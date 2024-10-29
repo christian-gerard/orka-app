@@ -347,7 +347,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                     {/* Project Details */}
                                     <div className='h-[20%] flex flex-row gap-4 px-4'>
                                         {/* Project Client */}
-                                        <NavLink to={`/clients/${project.client.id}`} className='hover:bg-ocean flex items-end gap-2 p-1 text-3xl'>
+                                        <NavLink to={`/clients/${project.client.id}`} className='w-[50%] hover:bg-ocean flex items-end gap-2 p-1 text-3xl'>
                                             {project.client.client_img &&
                                                 <img
                                                 src={project.client.client_img}
@@ -359,7 +359,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                         </NavLink>
 
                                         {/* Project Deadline*/}
-                                        <div className='flex justify-center items-end text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
+                                        <div className='w-[50%] flex justify-end items-end text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
 
                                     </div>
                                     {/* Project Description */}

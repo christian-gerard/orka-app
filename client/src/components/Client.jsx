@@ -223,7 +223,7 @@ function Client({ id, name, client_img}) {
                                 <div className='h-[90%] w-full scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
 
                                 {
-                                    client.projects ?
+                                    client.projects.length !== 0 ?
 
                                     client.projects
                                     .map(project => <Project key={project.id} {...project} />)
