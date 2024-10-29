@@ -9,13 +9,12 @@ import { object, string, array, number, bool } from "yup";
 import { toast } from 'react-hot-toast'
 import CloseIcon from '@mui/icons-material/Close';
 import Project from '../components/Project'
+import Contact from '../components/Contact'
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL
-
-function Client({ id, name}) {
+function Client({ id, name, client_img}) {
     const route = useParams()
     const nav = useNavigate()
     const {  accessToken } = useContext(UserContext)
@@ -100,7 +99,7 @@ function Client({ id, name}) {
 
         if(route.id !== undefined){
 
-            axios.get(`${API_URL}/api/clients/${route.id}`, {
+            axios.get(`/api/clients/${route.id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -117,6 +116,7 @@ function Client({ id, name}) {
 
     },[route.id])
 
+    console.log(client)
 
     return(
         <>
@@ -126,120 +126,102 @@ function Client({ id, name}) {
 
             <div className='border w-full h-full'>
 
-                <div className='h-[5%] flex flex-row justify-between'>
+                {/* Client Back + Edit + Delete */}
+                <div className='h-[5%] flex flex-row justify-between p-2 bg-black text-white items-center'>
 
-                <div>
+                    <div>
 
                     <NavLink to='/clients'>
-                        <ArrowBackIcon style={{ width: '45px', height: '45px' }}/>
-                    </NavLink>
-
-                </div>
-
-                <div className='flex gap-2'>
-
-
-                    <NavLink onClick={handleDeleteClient}>
-                        <DeleteIcon style={{ width: '45px', height: '45px' }}/>
+                        <ArrowBackIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
                     </NavLink>
 
 
-                    <NavLink onClick={handleEditClient}>
-                        <EditIcon style={{ width: '45px', height: '45px' }}/>
-                    </NavLink>
+                    </div>
+
+                    <div className='flex gap-2'>
+
+
+                        <NavLink onClick={handleDeleteClient}>
+                            <DeleteIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black' />
+                        </NavLink>
+
+
+                        <NavLink onClick={handleEditClient}>
+                            <EditIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
+                        </NavLink>
+
+                    </div>
+
 
                 </div>
 
 
-                </div>
 
                 {
                     client ?
 
-                        <div className='w-full h-[95%] px-6 flex flex-col'>
+                        <div className='w-full h-[95%] flex flex-col'>
+                            {/* Client Info + Img */}
+                            <div className='flex flex-row items-end justify-between h-[10%] p-2 bg-black text-white'>
 
-                            <div className='flex flex-row justify-between h-[10%]'>
+                                <div className='flex flex-row items-end gap-2'>
+                                    <img
+                                        src={client ? client.client_img : ' '  }
+                                        className='rounded-[100%] border size-[100px] sm:size-[80px] bg-ocean object-cover'
+                                        alt='client'
+                                    />
 
-                                <p className='text-4xl'>{client.name ? client.name : 'No Name'}</p>
+                                    <p className='text-5xl'>{client.name ? client.name : 'No Name'}</p>
+                                </div>
 
-                                <p className='text-2xl'>{client.industry ? client.industry : 'Industry Not Listed'}</p>
+                                <div>
+                                    <p className='text-2xl'>{client.industry ? client.industry : 'Industry Not Listed'}</p>
+                                </div>
+
+
 
                             </div>
+                            {/* Client Contacts */}
+                            <div className='scrollbar-thumb-ocean border-t h-[45%] w-full  scrollbar-thumb-ocean'>
+                                <div className='h-[10%] flex flex-row gap-4 items-center bg-ocean text-white p-1'>
+                                    <p>Contacts</p>
+                                    <p className='bg-white text-black '></p>
+                                </div>
+                                <div className='h-[90%] w-full scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
+                                {client.contacts.length !== 0 ?
 
-                            <p className='text-xl'>Client Projects</p>
-                            <div className='w-full h-[50%] border scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
-                                {/* {
-                                    projects ?
+                                    client.contacts.map(contact => <Contact key={contact.id} {...contact} />)
 
-                                    projects
-                                    .filter(project => project.client === client.id)
+                                    :
+
+                                    <p className='text-xl w-full h-[90%] flex justify-center items-center'>No Client Contacts</p>
+
+                                }
+                                </div>
+                            </div>
+                            {/* Client Projects */}
+                            <div className='w-full h-[45%] border-t '>
+                                <div className='h-[10%] flex flex-row gap-4 items-center bg-ocean text-white p-1'>
+                                    <p>Client Projects</p>
+                                    <p className='bg-white text-black '></p>
+                                </div>
+                                <div className='h-[90%] w-full scrollbar overflow-y-scroll scrollbar-thumb-ocean'>
+
+                                {
+                                    client.projects ?
+
+                                    client.projects
                                     .map(project => <Project key={project.id} {...project} />)
 
                                     :
 
-                                    <p className='text-xl w-full flex justify-center items-center'>No Projects</p>
+                                    <p className='text-xl w-full h-[90%] flex justify-center items-center'>No Current Projects</p>
 
-
-                                } */}
-                            </div>
-
-
-
-                            <p className='text-xl'>Assigned Users</p>
-                            <div className='h-[15%]  border'>
-                                {client.users ?
-
-                                    client.users.map(user =>
-                                        <div className='flex flex-row border'>
-                                            <div className='px-2'>
-                                                <p>{user.first_name} {user.last_name}</p>
-                                            </div>
-
-                                            <div className='px-2'>
-                                                <p>{user.email}</p>
-                                            </div>
-
-                                        </div>
-                                    )
-
-                                    :
-
-                                    <div className='w-full h-[95%] flex flex-col items-center'>
-
-
-                                    </div>
 
                                 }
+
+                                </div>
                             </div>
-
-                            <p className='text-xl'>Contacts</p>
-                            <div className=' scrollbar-thumb-ocean h-[25%] w-full  scrollbar-thumb-ocean border'>
-                                {client.contacts ?
-
-                                    client.contacts.map(contact =>
-                                        <div className='flex flex-row border'>
-                                            <div className='px-2'>
-                                                <p>{contact ? contact.first_name: "NONE"}</p>
-                                            </div>
-
-                                            <div className='px-2'>
-
-                                            </div>
-
-                                        </div>
-                                    )
-
-                                    :
-
-                                    <div className='w-full h-[95%] flex flex-col items-center'>
-
-
-
-                                    </div>
-
-                                }
-                            </div>
-
                         </div>
 
                     :
@@ -256,9 +238,13 @@ function Client({ id, name}) {
             :
 
             <NavLink to={`/clients/${id}`} className='flex flex-col items-center justify-center size-[200px] sm:w-[175px] sm:h-[225px] lg:w-[250px] lg:h-[275px] '>
-                <div className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean'>
-                </div>
-                <p className='text-md sm:text-2xl'>{name ? name : 'UNNAMED'}</p>
+                <img
+                src={client_img ? client_img : ' '  }
+                className='rounded-[100%] border size-[100px] sm:w-[150px] sm:h-[150px] bg-ocean object-cover'
+                alt='client'
+                />
+
+                <p className='text-md sm:text-2xl truncate'>{name ? name : 'UNNAMED'}</p>
                 {/* <p className='text-md sm:text-lg'>{projects ? projects.filter(project => project.id === id).length : '0'} Active Projects</p> */}
             </NavLink>
 

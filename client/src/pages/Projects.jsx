@@ -61,7 +61,7 @@ function Projects() {
                 if(clientData && clientData.length !== 0) {
                     setClients(
                         clientData
-                        .map(client => <option value={client}>{client.name}</option> )
+                        .map(client => <option value={client.id}>{client.name}</option> )
                     )
                 }
             } else if (resp.status == 401){
@@ -104,6 +104,8 @@ function Projects() {
             /^\d+(\.\d{1,2})?$/,
             "Please enter a valid budget with up to two decimal places (e.g., 12345.67)"
         ),
+        client: string()
+        .required('Please provide a valid client')
     });
 
     const initialValues = {
@@ -129,11 +131,10 @@ function Projects() {
             budget:formData.budget,
             project_type: formData.projectType,
             project_budget: formData.projectBudget,
-            client: formData.client,
+            client_id: parseInt(formData.client),
             tasks: [],
             users: []
         }
-
 
         axios.post('/api/projects/', requestData, {
             headers: {
@@ -178,13 +179,13 @@ function Projects() {
                 </div>
             </div>
 
-
-
             {/* Projects */}
-            <div className='h-[95%] w-full flex flex-col border scrollbar scrollbar-thumb-ocean overflow-scroll p-2'>
+            <div className='w-full h-[95%] p-2 sm:grid sm:grid-cols-2 gap-4 border scrollbar scrollbar-thumb-ocean overflow-scroll '>
+                <div>
                 {
                     projects
                 }
+                </div>
             </div>
 
             {
@@ -316,8 +317,8 @@ function Projects() {
 
                                     </Field>
 
-                                    {formik.errors.budget && formik.touched.budget && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.budget.toUpperCase()}</div>
+                                    {formik.errors.client && formik.touched.client && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.client}</div>
                                     )}
 
                                     <label className='ml-2'> Description </label>

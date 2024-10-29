@@ -130,20 +130,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
     }
 
-    const findClientName = () => {
-
-        axios.get(`/api/clients/${project.client}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-              }
-        })
-        .then(resp => {
-            if(resp.status == 200){
-                return resp.data.name
-            }
-        })
-    }
-
     const today = new Date().toISOString().split('T')[0];
 
     const projectSchema = object({
@@ -350,7 +336,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
                             <p className='text-5xl flex items-center'>{project.name ? project.name : "name not known"}</p>
                             <p className='text-2xl flex items-center'>{project.project_type ? project.project_type : "name not known"}</p>
 
-
                         </div>
 
                         {/* Project Body */}
@@ -470,8 +455,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
                                                 </Formik>
 
-
-
                                                 :
 
                                                 <>
@@ -538,22 +521,29 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
             // Project Card
             <NavLink to={`/projects/${id}`} className='' >
-                <div className='w-full h-[175px] p-2 border'>
+                <div className='h-[150px] w-[700px] p-2 border'>
 
                     {/* Project Box Header */}
-                    <div className='flex flex-row justify-between h-[20%] border-b text-white bg-black p-1'>
-                        <p className='text-[0.8em] sm:text-xl'>{name ? name.slice(0,30) : 'Untitled'}</p>
+                    <div className='text-2xl flex flex-row justify-between items-center h-[50%] border-b text-white bg-black p-2'>
+                        <p className='text-[0.8em] sm:text-xl'>{name ? name : 'Untitled'}</p>
                         <p className='text-[0.8em] sm:text-lg'>{deadline ? deadline.slice(5,12) : 'No Deadline'}</p>
                     </div>
 
                     {/* Project Details */}
-                    <div className='flex flex-col justify-between h-[80%]'>
-                        <p className='scrollbar overflow-scroll text-[0.8em] sm:text-lg h-[75%]'>
-                            {description ? description.slice(0,125) : "No Description Available"}
+                    <div className='flex flex-col justify-between h-[50%]'>
+                        <p className='scrollbar overflow-scroll text-[0.8em] sm:text-base h-[75%] truncate'>
+                            {description ? description : "No Description Available"}
                         </p>
-                        <p className='h-[25%] text-[0.8em] sm:text-lg'>
-                            {project_type ? project_type : 'No Type'}
-                        </p>
+
+                        <div className='flex flex-row justify-between'>
+                            <p className='text-[0.8em] sm:text-lg'>
+                                {project_type ? project_type : 'No Type'}
+                            </p>
+                            <p className='text-[0.8em] sm:text-lg'>
+                                ${project_budget ? project_budget : 'No Budget'}
+                            </p>
+
+                        </div>
                     </div>
 
                 </div>
