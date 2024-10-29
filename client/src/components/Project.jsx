@@ -72,10 +72,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
             if(resp.status == 200){
                 userData = resp.data
                 if(userData && userData.length !== 0) {
-                    setUsers(
-                        userData
-                        .map(user => <option value={user.id}>{user.email}</option> )
-                    )
+                    setUsers(userData)
                 }
             } else if (resp.status == 401){
                 toast.error('Unauthorized')
