@@ -130,7 +130,7 @@ function Client({ id, name, client_img}) {
 
                     <div>
 
-                    <NavLink to='/projects'>
+                    <NavLink to='/clients'>
                         <ArrowBackIcon style={{ width: '40px', height: '40px' }} className='hover:bg-white hover:text-black'/>
                     </NavLink>
 
