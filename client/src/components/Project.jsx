@@ -21,7 +21,7 @@ import axios from 'axios'
 
 function Project({id, name, deadline, description, project_type, project_budget}) {
 
-    const { accessToken, tasks, projects, setProjects} = useContext(UserContext)
+    const { accessToken, tasks, projects, setProjects, API_URL} = useContext(UserContext)
     const nav = useNavigate()
     const route = useParams()
     const path = useLocation()

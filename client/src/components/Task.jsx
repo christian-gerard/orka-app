@@ -5,7 +5,7 @@ import Close from '@mui/icons-material/Close';
 import CloseIcon from '@mui/icons-material/Close';
 
 function Task({id, deadline, description, category, status, project, users}) {
-    const { } = useContext(UserContext)
+    const { API_URL } = useContext(UserContext)
 
     const [isChecked, setIsChecked] = useState(false)
 

@@ -14,7 +14,7 @@ import axios from 'axios'
 
 function Clients() {
 
-    const { accessToken, user } = useContext(UserContext)
+    const { accessToken, user, API_URL } = useContext(UserContext)
     const [clients, setClients] = useState(null)
     const [newClient, setNewClient] = useState(false)
     const [files, setFiles] = useState(['']);

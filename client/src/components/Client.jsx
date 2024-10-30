@@ -19,7 +19,7 @@ import axios from 'axios'
 function Client({ id, name, client_img}) {
     const route = useParams()
     const nav = useNavigate()
-    const {  accessToken, user } = useContext(UserContext)
+    const {  accessToken, user, API_URL } = useContext(UserContext)
     const [client, setClient] = useState(null)
     const [deleteClient, setDeleteClient] = useState(false)
     const [editClient, setEditClient] = useState(false)

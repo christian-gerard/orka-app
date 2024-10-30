@@ -12,7 +12,7 @@ import axios from 'axios'
 
 function Tasks(){
 
-    const { accessToken } = useContext(UserContext)
+    const { accessToken, API_URL } = useContext(UserContext)
     const [projects, setProjects] = useState(null)
     const [newTask, setNewTask] = useState(false)
     const [tasks, setTasks] = useState(null)

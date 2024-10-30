@@ -8,7 +8,7 @@ import { object, string, array, number, bool } from "yup";
 import axios from 'axios'
 
 function Projects() {
-    const { accessToken } = useContext(UserContext)
+    const { accessToken, API_URL } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
     const [projects, setProjects] = useState([])
     const [clients, setClients] = useState([])

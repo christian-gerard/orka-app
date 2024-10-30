@@ -8,7 +8,7 @@ import axios from 'axios'
 const API_URL = import.meta.env.VITE_API_URL
 
 function Dashboard() {
-    const {accessToken} = useContext(UserContext)
+    const {accessToken, API_URL} = useContext(UserContext)
 
     const [outstandingTasks, setOutstandingTasks] = useState(null)
     const [myProjects, setMyProjects] = useState(null)
