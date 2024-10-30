@@ -70,7 +70,7 @@ function Clients() {
             for(let key in formData) { fd.set(key, formData[key])}
 
 
-            axios.post('/api/clients/',fd, {
+            axios.post(`${API_URL}/api/clients/`,fd, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -83,7 +83,7 @@ function Clients() {
                         const image_data = {
                             "client_img": files[0]
                         }
-                        axios.post(`/api/clients/${resp.data.id}/upload-image/`, image_data, {
+                        axios.post(`${API_URL}/api/clients/${resp.data.id}/upload-image/`, image_data, {
                             headers: {
                                 Authorization: `Bearer ${token}`
                             }
@@ -118,7 +118,7 @@ function Clients() {
         const token = accessToken
 
 
-        axios.get('/api/clients/', {
+        axios.get(`${API_URL}/api/clients/`, {
             headers: {
               Authorization: `Bearer ${token}`
             }

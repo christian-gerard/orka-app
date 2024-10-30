@@ -36,7 +36,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
     const executeDeleteProject = () => {
 
-        axios.delete(`/api/projects/${route.id}`, {
+        axios.delete(`${API_URL}/api/projects/${route.id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -64,7 +64,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
         let clientData = null
 
 
-        axios.get('/api/clients/', {
+        axios.get(`${API_URL}/api/clients/`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -90,7 +90,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
         let userData = null
 
 
-        axios.get('/api/user/', {
+        axios.get(`${API_URL}/api/user/`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -192,7 +192,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
             client: formData.client
         }
 
-        axios.patch(`/api/projects/${route.id}/`, requestData, {
+        axios.patch(`${API_URL}/api/projects/${route.id}/`, requestData, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -229,7 +229,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
         }
 
 
-            axios.post(`/api/projects/${route.id}/update-users/`, requestData, {
+            axios.post(`${API_URL}/api/projects/${route.id}/update-users/`, requestData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -261,7 +261,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
         if(route.id !== undefined && path.pathname.includes('projects')) {
 
-            axios.get(`/api/projects/${route.id}`, {
+            axios.get(`${API_URL}/api/projects/${route.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
