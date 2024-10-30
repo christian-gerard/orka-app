@@ -12,7 +12,7 @@ import axios from 'axios'
 
 function Tasks(){
 
-    const { accessToken } = useContext(UserContext)
+    const { accessToken, API_URL } = useContext(UserContext)
     const [projects, setProjects] = useState(null)
     const [newTask, setNewTask] = useState(false)
     const [tasks, setTasks] = useState(null)
@@ -27,7 +27,7 @@ function Tasks(){
         const token = accessToken
 
 
-        axios.get('/api/projects/', {
+        axios.get(`${API_URL}/api/projects/`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -68,7 +68,7 @@ function Tasks(){
         const token = accessToken
 
 
-        axios.get('/api/tasks/', {
+        axios.get(`${API_URL}/api/tasks/`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -101,7 +101,7 @@ function Tasks(){
             users: []
         }
 
-        axios.post('/api/tasks/', requestData, {
+        axios.post(`${API_URL}/api/tasks/`, requestData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

@@ -8,7 +8,7 @@ import axios from 'axios'
 const API_URL = import.meta.env.VITE_API_URL
 
 function Dashboard() {
-    const {accessToken} = useContext(UserContext)
+    const {accessToken, API_URL} = useContext(UserContext)
 
     const [outstandingTasks, setOutstandingTasks] = useState(null)
     const [myProjects, setMyProjects] = useState(null)
@@ -19,7 +19,7 @@ function Dashboard() {
         let tasks = null
 
 
-        axios.get('/api/tasks/', {
+        axios.get(`${API_URL}/api/tasks/`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -52,7 +52,7 @@ function Dashboard() {
         let projects = null
 
 
-        axios.get('/api/projects/', {
+        axios.get(`${API_URL}/api/projects/`, {
             headers: {
               Authorization: `Bearer ${token}`
             }

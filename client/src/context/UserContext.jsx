@@ -8,8 +8,10 @@ import Cookies from 'js-cookie'
 
 export const UserContext = createContext()
 
-const UserProvider = ({children}) => {
 
+
+const UserProvider = ({children}) => {
+    const API_URL = import.meta.env.VITE_API_URL
     const [user, setUser] = useState(null)
     const [accessToken, setAccessToken] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -30,7 +32,7 @@ const UserProvider = ({children}) => {
 
       if(refreshData["refresh"]) {
 
-        axios.post(`/api/user/refresh/`, refreshData)
+        axios.post(`${API_URL}/api/user/refresh/`, refreshData)
         .then(resp => {
           if(resp.status == 200){
             setUser(resp.data.user)
@@ -63,6 +65,7 @@ const UserProvider = ({children}) => {
 
     <UserContext.Provider
       value={{
+        API_URL,
         user,
         setUser,
         accessToken,

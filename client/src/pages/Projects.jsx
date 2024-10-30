@@ -8,7 +8,7 @@ import { object, string, array, number, bool } from "yup";
 import axios from 'axios'
 
 function Projects() {
-    const { accessToken } = useContext(UserContext)
+    const { accessToken, API_URL } = useContext(UserContext)
     const [newProject, setNewProject] = useState(false)
     const [projects, setProjects] = useState([])
     const [clients, setClients] = useState([])
@@ -20,7 +20,7 @@ function Projects() {
         let projectData = null
 
 
-        axios.get('/api/projects/', {
+        axios.get(`${API_URL}/api/projects/`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -49,7 +49,7 @@ function Projects() {
         let clientData = null
 
 
-        axios.get('/api/clients/', {
+        axios.get(`${API_URL}/api/clients/`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -136,7 +136,7 @@ function Projects() {
             users: []
         }
 
-        axios.post('/api/projects/', requestData, {
+        axios.post(`${API_URL}/api/projects/`, requestData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

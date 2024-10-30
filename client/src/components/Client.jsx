@@ -19,7 +19,7 @@ import axios from 'axios'
 function Client({ id, name, client_img}) {
     const route = useParams()
     const nav = useNavigate()
-    const {  accessToken, user } = useContext(UserContext)
+    const {  accessToken, user, API_URL } = useContext(UserContext)
     const [client, setClient] = useState(null)
     const [deleteClient, setDeleteClient] = useState(false)
     const [editClient, setEditClient] = useState(false)
@@ -38,7 +38,7 @@ function Client({ id, name, client_img}) {
     }
 
     const handleDeleteClient = () => {
-        axios.delete(`/api/clients/${route.id}`, {
+        axios.delete(`${API_URL}/api/clients/${route.id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -96,7 +96,7 @@ function Client({ id, name, client_img}) {
             for(let key in formData) { fd.set(key, formData[key])}
 
 
-            axios.patch(`/api/clients/${route.id}/`, fd, {
+            axios.patch(`${API_URL}/api/clients/${route.id}/`, fd, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -119,7 +119,7 @@ function Client({ id, name, client_img}) {
 
 
         if(route.id !== undefined){
-            axios.get(`/api/clients/${route.id}/`, {
+            axios.get(`${API_URL}/api/clients/${route.id}/`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
