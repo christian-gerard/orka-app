@@ -146,7 +146,7 @@ function Tasks(){
                         tasks && tasks.length !== 0 ?
 
                         tasks
-                        .filter(task => task.status !== 'Complete')
+                        .filter(task => task.status !== 'done')
                         .sort((a, b) => a.status.localeCompare(b.status))
                         .map(task => <Task key={task.id} {...task} />)
 
@@ -308,11 +308,11 @@ function Tasks(){
                                         </div>
 
 
-                                        <div className='bg-black text-white hover:text-ocean h-[40px] flex items-center justify-center mt-4'>
+                                        <button type='submit' className='bg-black text-white hover:text-ocean h-[40px] flex items-center justify-center mt-4'>
 
-                                            <button type='submit' className=''> Add Task</button>
+                                            <p>+ Add Task</p>
 
-                                        </div>
+                                        </button>
 
                                     </div>
 
