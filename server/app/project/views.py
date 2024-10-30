@@ -75,7 +75,24 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Override the create method to add the authenticated user"""
-        serializer.save(users=self.request.user)
+        serializer.save()
+
+    @action(detail=True, methods=['post'], url_path='update-users', url_name='update-users')
+    def update_task_users(self, request, pk=None):
+        """Add a user to a project"""
+        task = self.get_object()
+        users = request.data.get('user', [])
+        res = []
+        try:
+            task.users.clear()
+            for user_id in users:
+                user = get_user_model().objects.get(id=user_id)
+                user_data = UserSerializer(user).data
+                res.append(user_data)
+                task.users.add(user)
+            return Response(res, status=status.HTTP_200_OK)
+        except get_user_model().DoesNotExist:
+            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):

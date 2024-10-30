@@ -2,17 +2,18 @@ import { useState, useEffect, useContext } from 'react'
 import { UserContext } from '../context/UserContext'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import { object, string, array, number, bool } from "yup";
 import { useFormik, Formik, Form, Field } from 'formik'
 import { toast } from 'react-hot-toast'
 import Task from '../components/Task'
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL
-
 function Tasks(){
 
     const { accessToken } = useContext(UserContext)
+    const [projects, setProjects] = useState(null)
     const [newTask, setNewTask] = useState(false)
     const [tasks, setTasks] = useState(null)
 
@@ -21,47 +22,62 @@ function Tasks(){
         setNewTask(!newTask)
     }
 
+    const renderProjects = () => {
+
+        const token = accessToken
+
+
+        axios.get('/api/projects/', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+
+            if(resp.status == 200){
+                setProjects(resp.data)
+            } else if (resp.status == 401){
+                toast.error('Unauthorized')
+            }
+        })
+    }
+
     const taskSchema = object({
-        description: string(),
-        deadline: string(),
+        description: string()
+        .required('Please Provide a descripion of the task'),
+        note: string(),
+        deadline: string()
+        .required('Please provide a date'),
+        category: string(),
         status: string(),
-        category: string()
+        project: number()
+        .required('Please provide a project')
       });
 
     const initialValues = {
         description: '',
         deadline:  '',
+        note: '',
         category:  '',
-        status: '',
+        status: 'not started',
         project: ''
     }
 
     const renderTasks = () => {
 
         const token = accessToken
-        let taskData = null
 
 
-        axios.get(`${API_URL}/api/tasks/`, {
+        axios.get('/api/tasks/', {
             headers: {
               Authorization: `Bearer ${token}`
             }
         })
         .then(resp => {
             if(resp.status == 200){
-                taskData = resp.data
-                if(taskData && taskData.length !== 0) {
-                    setTasks(
-                        taskData
-                        .filter(task => task.status !== 'Complete')
-                        .sort((a, b) => a.status.localeCompare(b.status))
-                        .map(task => <Task key={task.id} {...task} />)
-                    )
+                    setTasks(resp.data)
 
-                } else {
-                    setTasks(<p className='text-3xl w-full h-full flex justify-center items-center'>No Current Tasks</p>)
-                }
-            } else if (resp.status == 401){
+            } else {
                 toast.error('Unauthorized')
             }
         })
@@ -74,23 +90,26 @@ function Tasks(){
         validationSchema: taskSchema,
         onSubmit: (formData) => {
 
+        const token = accessToken
         const requestData = {
             description: formData.description,
+            note: formData.note,
             deadline: formData.deadline,
             category: formData.category,
             status: formData.status,
-            project: formData.project
+            project: formData.project,
+            users: []
         }
 
-        axios.post(`${API_URL}/api/tasks/`, requestData, {
+        axios.post('/api/tasks/', requestData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
         .then(resp => {
-            if(resp.status == 200){
+            if(resp.status == 201){
                 formik.resetForm()
-                setTasks([data, ...tasks])
+                setTasks([resp.data, ...tasks])
                 toast.success('Task Added')
             }
         })
@@ -102,6 +121,7 @@ function Tasks(){
 
     useEffect(() => {
         renderTasks()
+        renderProjects()
 
     },[])
 
@@ -119,22 +139,43 @@ function Tasks(){
             {/* main body */}
             <div className='h-[95%] w-full flex flex-col gap-4 border scrollbar-thin scrollbar-thumb-ocean overflow-scroll'>
 
-                <div className='w-full h-full'>
+                <div className='w-full h-full flex flex-row'>
+
+                    <div className={newTask ? 'w-[60%] p-2' : 'w-full'}>
                     {
-                        newTask ?
+                        tasks && tasks.length !== 0 ?
+
+                        tasks
+                        .filter(task => task.status !== 'Complete')
+                        .sort((a, b) => a.status.localeCompare(b.status))
+                        .map(task => <Task key={task.id} {...task} />)
+
+
+                        :
+
+                        <p className='text-3xl w-full h-full text- flex justify-center items-center'>No Current Tasks</p>
+                    }
+
+                    </div>
+
+
+                    <div className={newTask ? 'w-[40%] p-4' : 'w-none'}>
+
+                    {
+                        newTask &&
 
                             <Formik
                             onSubmit={formik.handleSubmit}
                             initialValues={initialValues}
                             >
                                 <Form
-                                className='flex h-full lg:justify-center w-full border'
+                                className='h-full w-full border p-2 '
                                 onSubmit={formik.handleSubmit}
                                 initialValues={initialValues}
                                 >
-                                    <div className='w-full'>
+                                    <div className='w-full h-full flex flex-col justify-between'>
 
-                                        <div className='flex flex-col'>
+                                        <div className='flex flex-col gap-2'>
 
                                                 <label className='ml-2'> Description </label>
                                                 <Field
@@ -144,6 +185,20 @@ function Tasks(){
                                                     type='text'
                                                     placeholder='Description'
                                                     className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                                                />
+
+                                                {formik.errors.description && formik.touched.description && (
+                                                    <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
+                                                )}
+
+                                                <label className='ml-2'> Note </label>
+                                                <Field
+                                                    name='note'
+                                                    value={formik.values.note}
+                                                    onChange={formik.handleChange}
+                                                    as='textarea'
+                                                    placeholder='Write notes here...'
+                                                    className='ml-2 mr-2 border min-h-[100px] lg:h-[40px]'
                                                 />
 
                                                 {formik.errors.description && formik.touched.description && (
@@ -181,11 +236,10 @@ function Tasks(){
                                                     placeholder='Status'
                                                     className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                                                 >
-                                                    <option value=''>Select Status</option>
-                                                    <option value='Not Started'>Not Started</option>
-                                                    <option value='Doing'>Doing</option>
-                                                    <option value='Blocked'>Blocked</option>
-                                                    <option value='Complete'>Complete</option>
+                                                    <option value='not started'>Not Started</option>
+                                                    <option value='doing'>Doing</option>
+                                                    <option value='blocked'>Blocked</option>
+                                                    <option value='complete'>Complete</option>
 
                                                 </Field>
 
@@ -219,21 +273,37 @@ function Tasks(){
                                                 >
                                                     <option value=''>Select Project</option>
                                                     {
-                                                        // projects ?
+                                                        projects ?
 
-                                                        // projects.map(project =>
-                                                        //     <option value={project.id}>{project.name}</option>
-                                                        // )
-                                                        // :
+                                                        projects.map(project =>
+                                                            <option value={project.id}>{project.name}</option>
+                                                        )
+                                                        :
 
-                                                        // <></>
+                                                        <></>
                                                     }
 
                                                 </Field>
 
-                                                {formik.errors.deadline && formik.touched.deadline && (
-                                                    <div className="text-sm text-red ml-2"> **{formik.errors.deadline.toUpperCase()}</div>
+                                                {formik.errors.project && formik.touched.project && (
+                                                    <div className="text-sm text-red ml-2"> **{formik.errors.project}</div>
                                                 )}
+
+                                                <label className='ml-2 line-through'> User </label>
+                                                <Field
+                                                    name='users'
+                                                    as='select'
+                                                    value={formik.values.users}
+                                                    onChange={formik.handleChange}
+                                                    onBlur={formik.handleBlur}
+                                                    className='ml-2 mr-2 border h-[30px] lg:h-[40px] bg-black line-through'
+                                                >
+                                                    {
+                                                        // users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option value={user.id}>{user.email}</option>)
+
+                                                    }
+
+                                                </Field>
 
                                         </div>
 
@@ -250,18 +320,9 @@ function Tasks(){
 
                                 </Form>
                             </Formik>
-
-                        :
-
-                            <>
-                            </>
                     }
 
-
-
-                    {
-                        tasks
-                    }
+                    </div>
 
                 </div>
 

@@ -129,9 +129,9 @@ function Nav() {
                             <TaskAltIcon style={{ width: '45px', height: '45px' }}/>
                         </NavLink>
 
-                        <NavLink to='/budgets' className={ loc.pathname === '/budgets' ? 'hover:text-white text-ocean' : 'hover:text-ocean text-white'}>
+                        {/* <NavLink to='/budgets' className={ loc.pathname === '/budgets' ? 'hover:text-white text-ocean' : 'hover:text-ocean text-white'}>
                             <AttachMoneyIcon style={{ width: '45px', height: '45px' }}/>
-                        </NavLink>
+                        </NavLink> */}
 
                     </div>
 

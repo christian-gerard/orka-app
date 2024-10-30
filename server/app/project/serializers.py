@@ -46,16 +46,23 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'deadline', 'description', 'category', 'status', 'project']
+        fields = ['id', 'deadline', 'description', 'note', 'category', 'status', 'project']
         read_only_fields = ["id"]
 
 
 class TaskDetailSerializer(TaskSerializer):
     """Serializes Account Detail Data"""
-    # users = UserSerializer(many=True, read_only=True)
+
+    def __init__(self, *args, **kwargs):
+        # Import UserSerializer lazily to avoid circular import
+        from user.serializers import UserSerializer
+        self.fields['users'] = UserSerializer(many=True, read_only=True)
+        super().__init__(*args, **kwargs)
 
     class Meta(TaskSerializer.Meta):
-        fields = TaskSerializer.Meta.fields
+        fields = TaskSerializer.Meta.fields + ['users']
+        read_only_fields = ["users"]
+
 
 
 class ProjectSerializer(serializers.ModelSerializer):
