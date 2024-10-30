@@ -75,7 +75,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Override the create method to add the authenticated user"""
-        serializer.save(users=self.request.user)
+        serializer.save()
 
     @action(detail=True, methods=['post'], url_path='update-users', url_name='update-users')
     def update_task_users(self, request, pk=None):

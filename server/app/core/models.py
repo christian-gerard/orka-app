@@ -391,9 +391,9 @@ class Expense(models.Model):
 
 class Task(models.Model):
     """Task Model"""
-    task_name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    note = models.TextField(blank=True, null=True)
     deadline = models.DateField(default=date.today)
-    description = models.TextField(blank=True, null=True)
     category = models.CharField(max_length=255, blank=True, null=True)
     status = models.CharField(max_length=255, choices=task_status, default='not started')
     project = models.ForeignKey(
