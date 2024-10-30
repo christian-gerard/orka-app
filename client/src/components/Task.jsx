@@ -35,7 +35,7 @@ function Task({id, deadline, description, category, status, project, users}) {
 
     return (
         <div className={isChecked ?
-        'bg-gray line-through p-1 m-2 border flex flex-row justify-between items-center h-[40px] text-sm'
+        'text-gray border-gray line-through p-1 m-2 border flex flex-row justify-between items-center h-[40px] text-sm'
         : 'p-1 m-2 border flex flex-row justify-between items-center h-[40px] text-sm'
         }>
 
