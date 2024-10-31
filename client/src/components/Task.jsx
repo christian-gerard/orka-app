@@ -79,9 +79,17 @@ function Task({id, deadline, description, category, status, project, users}) {
 
     }
 
+    const userSchema = object({
+        user: string()
+      });
+
+    const initialValues = {
+        user: []
+    }
+
     const formik = useFormik({
         initialValues,
-        validationSchema: taskSchema,
+        validationSchema: userSchema,
         onSubmit: (formData) => {
 
         const token = accessToken
@@ -115,12 +123,8 @@ function Task({id, deadline, description, category, status, project, users}) {
 
 
     return (
-        // <div  onClick={handleOpen} className={isChecked ?
-        // 'text-gray border-gray p-1 m-2 border flex flex-col justify-between items-center h-[40px] text-sm'
-        // : ''
-        // }>
 
-            <div onClick={handleOpen} className={`p-1 border flex flex-col text-sm ${isChecked && 'text-gray'} ${isOpen ? 'h-[100px]' : 'h-[40px]'}`}>
+            <div onClick={handleOpen} className={`p-1 border flex flex-col text-sm ${isChecked && 'text-gray'} ${isOpen ? 'h-[200px]' : 'h-[40px]'}`}>
                 <div className=' w-full flex flex-row justify-between items-center'>
 
                     <div className='w-[70%] flex flex-row items-center gap-2'>
@@ -145,7 +149,48 @@ function Task({id, deadline, description, category, status, project, users}) {
                 isOpen && !isChecked &&
 
                 <div>
-                    opening
+                    <label className='ml-2 '> Users </label>
+
+                    <Formik
+                    onSubmit={formik.handleSubmit}
+                    initialValues={initialValues}
+                    >
+                        <Form
+                        className='h-full w-full border p-2 '
+                        onSubmit={formik.handleSubmit}
+                        initialValues={initialValues}
+                        >
+                            <Field
+                                name='users'
+                                as='select'
+                                multiple
+                                value={formik.values.user}
+                                onChange={(e) => {
+                                    const selectedUserId = parseInt(e.target.value); // Get the selected user ID
+                                    const currentUsers = formik.values.user;
+
+                                    // Toggle the selected user ID in the users array
+                                    if (currentUsers.includes(selectedUserId)) {
+                                        // If already selected, remove it
+                                        formik.setFieldValue(
+                                            'users',
+                                            currentUsers.filter((id) => id !== selectedUserId)
+                                        );
+                                    } else {
+                                        // If not selected, add it
+                                        formik.setFieldValue('users', [...currentUsers, selectedUserId]);
+                                    }
+                                }}
+                                onBlur={formik.handleBlur}
+                                className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
+                            >
+                                {
+                                    users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-lg border p-1 m-2' value={user.id}>{user.email}</option>)
+                                }
+
+                            </Field>
+                            </Form>
+                            </Formik>
 
                 </div>
             }

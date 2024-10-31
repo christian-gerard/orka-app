@@ -256,25 +256,6 @@ function Tasks(){
                                                 )}
 
 
-
-
-
-
-
-                                                <label className='ml-2'> Deadline </label>
-                                                <Field
-                                                    name='deadline'
-                                                    type='date'
-                                                    value={formik.values.deadline}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
-                                                    placeholder='Deadline'
-                                                    className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
-                                                />
-
-                                                {formik.errors.deadline && formik.touched.deadline && (
-                                                    <div className="text-sm text-red ml-2"> **{formik.errors.deadline}</div>
-                                                )}
                                                 <label className='ml-2'> Project </label>
                                                 <Field
                                                     name='project'
@@ -303,36 +284,24 @@ function Tasks(){
                                                     <div className="text-sm text-red ml-2"> **{formik.errors.project}</div>
                                                 )}
 
-                                                <label className='ml-2 '> Users </label>
+
+
+
+                                                <label className='ml-2'> Deadline </label>
                                                 <Field
-                                                    name='users'
-                                                    as='select'
-                                                    multiple
-                                                    value={formik.values.users}
-                                                    onChange={(e) => {
-                                                        const selectedUserId = parseInt(e.target.value); // Get the selected user ID
-                                                        const currentUsers = formik.values.users;
-
-                                                        // Toggle the selected user ID in the users array
-                                                        if (currentUsers.includes(selectedUserId)) {
-                                                            // If already selected, remove it
-                                                            formik.setFieldValue(
-                                                                'users',
-                                                                currentUsers.filter((id) => id !== selectedUserId)
-                                                            );
-                                                        } else {
-                                                            // If not selected, add it
-                                                            formik.setFieldValue('users', [...currentUsers, selectedUserId]);
-                                                        }
-                                                    }}
+                                                    name='deadline'
+                                                    type='date'
+                                                    value={formik.values.deadline}
+                                                    onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
-                                                    className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
-                                                >
-                                                    {
-                                                        users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-lg border p-1 m-2' value={user.id}>{user.email}</option>)
-                                                    }
+                                                    placeholder='Deadline'
+                                                    className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                                                />
 
-                                                </Field>
+                                                {formik.errors.deadline && formik.touched.deadline && (
+                                                    <div className="text-sm text-red ml-2"> **{formik.errors.deadline}</div>
+                                                )}
+
 
                                                 <div onClick={handleExtraFields} className='flex flex-row items-center gap-2 border-b pb-1  my-1'>
                                                     <p>{extraFields ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}</p>
