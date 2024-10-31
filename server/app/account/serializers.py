@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from core.models import Account
 from client.serializers import ClientSerializer
-from project.serializers import TaskSerializer, ExpenseSerializer
+# from project.serializers import TaskSerializer, ExpenseSerializer
 
 
 class AccountSerializer(serializers.ModelSerializer):

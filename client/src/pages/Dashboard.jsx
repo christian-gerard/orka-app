@@ -30,7 +30,7 @@ function Dashboard() {
                 if(tasks && tasks.length !== 0) {
                     setOutstandingTasks(
                         tasks
-                        .filter(task => task.status !== 'Complete')
+                        .filter(task => task.status !== 'done')
                         .sort((a, b) => a.status.localeCompare(b.status))
                         .map(task => <Task key={task.id} {...task} />)
                     )

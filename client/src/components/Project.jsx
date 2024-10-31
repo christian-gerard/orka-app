@@ -478,7 +478,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                 <div className=' h-full w-[60%]'>
                                 <div className='w-full h-[10%] bg-ocean flex gap-4 items-center text-white border-y border-black p-1'>
                                     <p>Tasks</p>
-                                    <p className='bg-white text-black p-1 text-xl'>{project.tasks.length !== 0 ? project.tasks.length : ""}</p>
                                 </div>
                                     {
                                         project.tasks && project.tasks.length !== 0 ?
