@@ -73,14 +73,13 @@ class TaskViewSet(viewsets.ModelViewSet):
             return TaskSerializer
         return self.serializer_class
 
-    def perform_create(self, serializer):
-        """Override the create method to add the authenticated user"""
-        serializer.save()
 
     @action(detail=True, methods=['post'], url_path='update-users', url_name='update-users')
     def update_task_users(self, request, pk=None):
         """Add a user to a project"""
         task = self.get_object()
+        if not task:
+            return Response({"detail": "Task not found."}, status=status.HTTP_404_NOT_FOUND)
         users = request.data.get('user', [])
         res = []
         try:

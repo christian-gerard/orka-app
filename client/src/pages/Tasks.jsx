@@ -14,7 +14,7 @@ function Tasks(){
 
     const { accessToken, API_URL } = useContext(UserContext)
     const [projects, setProjects] = useState(null)
-    const [newTask, setNewTask] = useState(false)
+    const [newTask, setNewTask] = useState(true)
     const [tasks, setTasks] = useState(null)
     const [users, setUsers] = useState(null)
     const [extraFields, setExtraFields] = useState(false)
@@ -103,7 +103,7 @@ function Tasks(){
         category:  '',
         status: 'not started',
         project: '',
-        users: ''
+        users: []
     }
 
     const renderTasks = () => {
@@ -141,7 +141,11 @@ function Tasks(){
             category: formData.category,
             status: formData.status,
             project: formData.project,
-            users: formData.users[0]
+            users: formData.users
+        }
+
+        const userRequestData = {
+            user: formData.users
         }
 
         axios.post(`${API_URL}/api/tasks/`, requestData, {
@@ -151,9 +155,24 @@ function Tasks(){
         })
         .then(resp => {
             if(resp.status == 201){
+
+
+
+
                 formik.resetForm()
                 setTasks([resp.data, ...tasks])
                 toast.success('Task Added')
+            }
+        })
+
+        axios.post(`${API_URL}/api/tasks/${resp.data.id}/update-users/`, userRequestData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+            if(resp.status == 200){
+                console.log(resp.data)
             }
         })
 
@@ -168,6 +187,8 @@ function Tasks(){
         renderUsers()
 
     },[])
+
+    console.log(formik.values.users)
 
     return(
         <div className='h-full w-full'>
@@ -185,7 +206,7 @@ function Tasks(){
 
                 <div className='w-full h-full flex flex-row'>
 
-                    <div className={newTask ? 'w-[60%] p-2' : 'w-full'}>
+                    <div className={`flex flex-col gap-2 ${newTask ? 'w-[60%] p-2' : 'w-full'}`}>
                     {
                         tasks && tasks.length !== 0 ?
 
@@ -288,9 +309,24 @@ function Tasks(){
                                                     as='select'
                                                     multiple
                                                     value={formik.values.users}
-                                                    onChange={formik.handleChange}
+                                                    onChange={(e) => {
+                                                        const selectedUserId = parseInt(e.target.value); // Get the selected user ID
+                                                        const currentUsers = formik.values.users;
+
+                                                        // Toggle the selected user ID in the users array
+                                                        if (currentUsers.includes(selectedUserId)) {
+                                                            // If already selected, remove it
+                                                            formik.setFieldValue(
+                                                                'users',
+                                                                currentUsers.filter((id) => id !== selectedUserId)
+                                                            );
+                                                        } else {
+                                                            // If not selected, add it
+                                                            formik.setFieldValue('users', [...currentUsers, selectedUserId]);
+                                                        }
+                                                    }}
                                                     onBlur={formik.handleBlur}
-                                                    className='ml-2 mr-2 border h-[150px] scrollbar scrollbar-thumb-ocean'
+                                                    className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
                                                 >
                                                     {
                                                         users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-lg border p-1 m-2' value={user.id}>{user.email}</option>)
@@ -357,8 +393,8 @@ function Tasks(){
                                                             className='ml-2 mr-2 border min-h-[100px] lg:h-[40px]'
                                                         />
 
-                                                        {formik.errors.description && formik.touched.description && (
-                                                            <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
+                                                        {formik.errors.note && formik.touched.note && (
+                                                            <div className="text-sm text-red ml-2"> **{formik.errors.note}</div>
                                                         )}
 
 
