@@ -401,12 +401,9 @@ class Task(models.Model):
         related_name='tasks',
         on_delete=models.CASCADE,
     )
-    users = models.ForeignKey(
+    users = models.ManyToManyField(
         User,
-        blank=True,
-        null=True,
-        related_name='tasks',
-        on_delete=models.CASCADE,
+        related_name='tasks'
     )
 
     def __str__(self):

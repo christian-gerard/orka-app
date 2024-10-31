@@ -47,6 +47,7 @@ class BudgetDetailSerializer(BudgetSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
 
+
     class Meta:
         model = Task
         fields = ['id', 'deadline', 'description', 'note', 'category', 'status', 'project']

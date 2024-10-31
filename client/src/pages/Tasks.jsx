@@ -12,7 +12,7 @@ import axios from 'axios'
 
 function Tasks(){
 
-    const { accessToken, API_URL } = useContext(UserContext)
+    const { accessToken, API_URL, accountUsers, renderUsers } = useContext(UserContext)
     const [projects, setProjects] = useState(null)
     const [newTask, setNewTask] = useState(true)
     const [tasks, setTasks] = useState(null)
@@ -23,26 +23,7 @@ function Tasks(){
         setExtraFields(!extraFields)
     }
 
-    const renderUsers = () => {
-        const token = accessToken
 
-
-        axios.get(`${API_URL}/api/user/`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-
-            if(resp.status == 200){
-                setUsers(resp.data)
-
-            } else if (resp.status == 401){
-                toast.error('Unauthorized')
-            }
-        })
-
-    }
 
     const handleNewTask = () => {
         formik.resetForm()
@@ -107,6 +88,7 @@ function Tasks(){
     }
 
     const renderTasks = () => {
+        console.log(accountUsers)
 
         const token = accessToken
 
@@ -118,7 +100,7 @@ function Tasks(){
         })
         .then(resp => {
             if(resp.status == 200){
-                    setTasks(resp.data)
+                    setTasks(resp.data.map(task => ({...task, users: accountUsers})))
 
             } else {
                 toast.error('Unauthorized')
@@ -182,13 +164,13 @@ function Tasks(){
     })
 
     useEffect(() => {
-        renderTasks()
-        renderProjects()
         renderUsers()
+        renderProjects()
+        renderTasks()
 
     },[])
 
-    console.log(formik.values.users)
+console.log(tasks)
 
     return(
         <div className='h-full w-full'>

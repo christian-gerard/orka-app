@@ -6,6 +6,7 @@ from rest_framework import viewsets, status, permissions
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
 from core.models import Project, Task, Budget, Expense
@@ -73,14 +74,20 @@ class TaskViewSet(viewsets.ModelViewSet):
             return TaskSerializer
         return self.serializer_class
 
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = get_object_or_404(queryset, id=self.kwargs['pk'])
+        self.check_object_permissions(self.request, obj)
+        return obj
+
 
     @action(detail=True, methods=['post'], url_path='update-users', url_name='update-users')
     def update_task_users(self, request, pk=None):
-        """Add a user to a project"""
+        """Add a user to a task"""
         task = self.get_object()
         if not task:
             return Response({"detail": "Task not found."}, status=status.HTTP_404_NOT_FOUND)
-        users = request.data.get('user', [])
+        users = request.data.get('users', [])
         res = []
         try:
             task.users.clear()
