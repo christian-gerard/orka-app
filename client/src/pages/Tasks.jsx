@@ -12,9 +12,9 @@ import axios from 'axios'
 
 function Tasks(){
 
-    const { accessToken, API_URL } = useContext(UserContext)
+    const { accessToken, API_URL, accountUsers, renderUsers } = useContext(UserContext)
     const [projects, setProjects] = useState(null)
-    const [newTask, setNewTask] = useState(false)
+    const [newTask, setNewTask] = useState(true)
     const [tasks, setTasks] = useState(null)
     const [users, setUsers] = useState(null)
     const [extraFields, setExtraFields] = useState(false)
@@ -23,26 +23,7 @@ function Tasks(){
         setExtraFields(!extraFields)
     }
 
-    const renderUsers = () => {
-        const token = accessToken
 
-
-        axios.get(`${API_URL}/api/user/`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-
-            if(resp.status == 200){
-                setUsers(resp.data)
-
-            } else if (resp.status == 401){
-                toast.error('Unauthorized')
-            }
-        })
-
-    }
 
     const handleNewTask = () => {
         formik.resetForm()
@@ -103,10 +84,11 @@ function Tasks(){
         category:  '',
         status: 'not started',
         project: '',
-        users: ''
+        users: []
     }
 
     const renderTasks = () => {
+        console.log(accountUsers)
 
         const token = accessToken
 
@@ -118,7 +100,7 @@ function Tasks(){
         })
         .then(resp => {
             if(resp.status == 200){
-                    setTasks(resp.data)
+                    setTasks(resp.data.map(task => ({...task, users: accountUsers})))
 
             } else {
                 toast.error('Unauthorized')
@@ -141,7 +123,11 @@ function Tasks(){
             category: formData.category,
             status: formData.status,
             project: formData.project,
-            users: formData.users[0]
+            users: formData.users
+        }
+
+        const userRequestData = {
+            user: formData.users
         }
 
         axios.post(`${API_URL}/api/tasks/`, requestData, {
@@ -151,9 +137,24 @@ function Tasks(){
         })
         .then(resp => {
             if(resp.status == 201){
+
+
+
+
                 formik.resetForm()
                 setTasks([resp.data, ...tasks])
                 toast.success('Task Added')
+            }
+        })
+
+        axios.post(`${API_URL}/api/tasks/${resp.data.id}/update-users/`, userRequestData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+            if(resp.status == 200){
+                console.log(resp.data)
             }
         })
 
@@ -163,11 +164,13 @@ function Tasks(){
     })
 
     useEffect(() => {
-        renderTasks()
-        renderProjects()
         renderUsers()
+        renderProjects()
+        renderTasks()
 
     },[])
+
+console.log(tasks)
 
     return(
         <div className='h-full w-full'>
@@ -185,7 +188,7 @@ function Tasks(){
 
                 <div className='w-full h-full flex flex-row'>
 
-                    <div className={newTask ? 'w-[60%] p-2' : 'w-full'}>
+                    <div className={`flex flex-col gap-2 ${newTask ? 'w-[60%] p-2' : 'w-full'}`}>
                     {
                         tasks && tasks.length !== 0 ?
 
@@ -235,25 +238,6 @@ function Tasks(){
                                                 )}
 
 
-
-
-
-
-
-                                                <label className='ml-2'> Deadline </label>
-                                                <Field
-                                                    name='deadline'
-                                                    type='date'
-                                                    value={formik.values.deadline}
-                                                    onChange={formik.handleChange}
-                                                    onBlur={formik.handleBlur}
-                                                    placeholder='Deadline'
-                                                    className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
-                                                />
-
-                                                {formik.errors.deadline && formik.touched.deadline && (
-                                                    <div className="text-sm text-red ml-2"> **{formik.errors.deadline}</div>
-                                                )}
                                                 <label className='ml-2'> Project </label>
                                                 <Field
                                                     name='project'
@@ -282,21 +266,24 @@ function Tasks(){
                                                     <div className="text-sm text-red ml-2"> **{formik.errors.project}</div>
                                                 )}
 
-                                                <label className='ml-2 '> Users </label>
+
+
+
+                                                <label className='ml-2'> Deadline </label>
                                                 <Field
-                                                    name='users'
-                                                    as='select'
-                                                    multiple
-                                                    value={formik.values.users}
+                                                    name='deadline'
+                                                    type='date'
+                                                    value={formik.values.deadline}
                                                     onChange={formik.handleChange}
                                                     onBlur={formik.handleBlur}
-                                                    className='ml-2 mr-2 border h-[150px] scrollbar scrollbar-thumb-ocean'
-                                                >
-                                                    {
-                                                        users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-lg border p-1 m-2' value={user.id}>{user.email}</option>)
-                                                    }
+                                                    placeholder='Deadline'
+                                                    className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                                                />
 
-                                                </Field>
+                                                {formik.errors.deadline && formik.touched.deadline && (
+                                                    <div className="text-sm text-red ml-2"> **{formik.errors.deadline}</div>
+                                                )}
+
 
                                                 <div onClick={handleExtraFields} className='flex flex-row items-center gap-2 border-b pb-1  my-1'>
                                                     <p>{extraFields ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}</p>
@@ -357,8 +344,8 @@ function Tasks(){
                                                             className='ml-2 mr-2 border min-h-[100px] lg:h-[40px]'
                                                         />
 
-                                                        {formik.errors.description && formik.touched.description && (
-                                                            <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
+                                                        {formik.errors.note && formik.touched.note && (
+                                                            <div className="text-sm text-red ml-2"> **{formik.errors.note}</div>
                                                         )}
 
 

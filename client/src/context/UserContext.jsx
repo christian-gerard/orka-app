@@ -13,6 +13,7 @@ export const UserContext = createContext()
 const UserProvider = ({children}) => {
     const API_URL = import.meta.env.VITE_API_URL
     const [user, setUser] = useState(null)
+    const [accountUsers, setAccountUsers] = useState(null)
     const [accessToken, setAccessToken] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -21,6 +22,27 @@ const UserProvider = ({children}) => {
       setAccessToken(null)
 
     }
+
+    const renderUsers = () => {
+      const token = accessToken
+
+
+      axios.get(`${API_URL}/api/user/`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+      })
+      .then(resp => {
+
+          if(resp.status == 200){
+              setAccountUsers(resp.data)
+
+          } else if (resp.status == 401){
+              toast.error('Unauthorized')
+          }
+      })
+
+  }
 
     const refreshToken = () => {
 
@@ -58,6 +80,7 @@ const UserProvider = ({children}) => {
 
     useEffect(() => {
       refreshToken()
+      renderUsers()
 
     }, [])
 
@@ -68,6 +91,8 @@ const UserProvider = ({children}) => {
         API_URL,
         user,
         setUser,
+        accountUsers,
+        renderUsers,
         accessToken,
         setAccessToken,
         isLoading,
