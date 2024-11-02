@@ -210,7 +210,7 @@ function Task({id, deadline, description, note, category, status, project, users
                                 <div className='border h-[80px] flex flex-row flex-wrap'>
                                     <div>
                                         {
-                                            users.length &&
+                                            users &&
 
                                             users.map(user =>
                                                 <div key={user.id}>

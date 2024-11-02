@@ -83,52 +83,36 @@ class TaskViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         """Custom create method for POST requests"""
         try:
-            # Extract `user_ids` from the request data
             user_ids = request.data.pop('users', None)
-
-            # Validate and save task data without `users`
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-
-            # Create the Task instance
-            task = serializer.save()  # Save task without users
-
-            # If `user_ids` are provided, associate users with the task
+            task = serializer.save()
             if user_ids:
-                task.users.set(user_ids)  # Assuming `users` is a ManyToMany field
-
-            # Re-serialize the task to include all fields (including users)
+                task.users.set(user_ids)
             response_serializer = self.get_serializer(task)
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-            # Return the specific error message
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        # try:
-        #     task = self.get_object()
-        #     users = request.data.get('users', [])
-        #     res = []
-        #     task.users.clear()
-        #     for user_id in users:
-        #         user = get_user_model().objects.get(id=user_id)
-        #         user_data = UserSerializer(user).data
-        #         res.append(user_data)
-        #         task.users.add(user)
-        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # except get_user_model().DoesNotExist:
-        #     return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+    def partial_update(self, request, *args, **kwargs):
+        """Custom PATCH request handling"""
+        try:
+            # Retrieve the object to update
+            instance = self.get_object()
+            user_ids = request.data.pop('users', None)
+            serializer = self.get_serializer(instance, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            task = serializer.save()
+            if user_ids:
+                task.users.set(user_ids)
+            response_serializer = self.get_serializer(task)
+            return Response(response_serializer.data, status=status.HTTP_200_OK)
 
+        except Exception as e:
+            # Handle any errors
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-    def perform_create(self, serializer):
-        """Custom save behavior if needed"""
-        user_instances = [User.objects.get(user) for user in serializer.data.users]
-
-        print(f"USER INST: ${user_instances}")
-
-        # Customize how the object is saved here
-        # For example, you could add the requesting user to the created task
-        serializer.save()  # Assuming Task has a user field
 
 
     # @action(detail=True, methods=['post'], url_path='update-users', url_name='update-users')
