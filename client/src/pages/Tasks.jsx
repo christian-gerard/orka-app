@@ -12,11 +12,9 @@ import axios from 'axios'
 
 function Tasks(){
 
-    const { accessToken, API_URL, accountUsers, renderUsers } = useContext(UserContext)
-    const [projects, setProjects] = useState(null)
+    const { accessToken, API_URL, accountUsers, renderUsers, accountProjects, renderProjects, accountTasks, renderTasks } = useContext(UserContext)
     const [newTask, setNewTask] = useState(true)
     const [tasks, setTasks] = useState(null)
-    const [users, setUsers] = useState(null)
     const [extraFields, setExtraFields] = useState(false)
 
     const handleExtraFields = () => {
@@ -26,26 +24,6 @@ function Tasks(){
     const handleNewTask = () => {
         formik.resetForm()
         setNewTask(!newTask)
-    }
-
-    const renderProjects = () => {
-
-        const token = accessToken
-
-
-        axios.get(`${API_URL}/api/projects/`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-
-            if(resp.status == 200){
-                setProjects(resp.data)
-            } else if (resp.status == 401){
-                toast.error('Unauthorized')
-            }
-        })
     }
 
     const today = new Date().toISOString().split('T')[0];
@@ -85,25 +63,6 @@ function Tasks(){
         users: []
     }
 
-    const renderTasks = () => {
-        const token = accessToken
-
-        axios.get(`${API_URL}/api/tasks/`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-            if(resp.status == 200){
-                    setTasks(resp.data.map(task => ({...task, users: accountUsers})))
-
-            } else {
-                toast.error('Unauthorized')
-            }
-        })
-
-
-    }
 
     const formik = useFormik({
         initialValues,
@@ -121,10 +80,6 @@ function Tasks(){
             users: formData.users
         }
 
-        const userRequestData = {
-            user: formData.users
-        }
-
         axios.post(`${API_URL}/api/tasks/`, requestData, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -132,24 +87,9 @@ function Tasks(){
         })
         .then(resp => {
             if(resp.status == 201){
-
-
-
-
                 formik.resetForm()
                 setTasks([resp.data, ...tasks])
                 toast.success('Task Added')
-            }
-        })
-
-        axios.post(`${API_URL}/api/tasks/${resp.data.id}/update-users/`, userRequestData, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-            if(resp.status == 200){
-                console.log(resp.data)
             }
         })
 
@@ -159,9 +99,9 @@ function Tasks(){
     })
 
     useEffect(() => {
+        renderTasks()
         renderUsers()
         renderProjects()
-        renderTasks()
 
     },[])
 
@@ -183,12 +123,13 @@ function Tasks(){
 
                     <div className={`${newTask ? 'w-[60%] p-2' : 'w-full p-2'}`}>
                     {
-                        tasks && tasks.length !== 0 ?
+                        accountTasks && accountTasks.length !== 0 ?
 
                         <div className='flex flex-col gap-2 h-full overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                             {
-                            tasks
+                            accountTasks
                             .filter(task => task.status !== 'done')
+                            .sort((a, b) => a.description.localeCompare(b.status))
                             .sort((a, b) => a.status.localeCompare(b.status))
                             .map(task => <Task key={task.id} {...task} />)
                             }
@@ -248,9 +189,9 @@ function Tasks(){
                                                 >
                                                     <option value=''>Select Project</option>
                                                     {
-                                                        projects ?
+                                                        accountProjects ?
 
-                                                        projects.map(project =>
+                                                        accountProjects.map(project =>
                                                             <option key={project.id} value={project.id}>{project.name}</option>
                                                         )
                                                         :
@@ -281,6 +222,39 @@ function Tasks(){
                                                 {formik.errors.deadline && formik.touched.deadline && (
                                                     <div className="text-sm text-red ml-2"> **{formik.errors.deadline}</div>
                                                 )}
+
+                                                <label className='ml-2'> Assigned Users</label>
+
+                                                <Field
+                                                    name='users'
+                                                    as='select'
+                                                    multiple
+                                                    value={formik.values.users}
+                                                    onChange={(e) => {
+                                                        const selectedUserId = parseInt(e.target.value); // Get the selected user ID
+                                                        const currentUsers = formik.values.users;
+
+                                                        // Toggle the selected user ID in the users array
+                                                        if (currentUsers.includes(selectedUserId)) {
+                                                            // If already selected, remove it
+                                                            formik.setFieldValue(
+                                                                'users',
+                                                                currentUsers.filter((id) => id !== selectedUserId)
+                                                            );
+                                                        } else {
+                                                            // If not selected, add it
+                                                            formik.setFieldValue('users', [...currentUsers, selectedUserId]);
+                                                        }
+
+                                                    }}
+                                                    onBlur={formik.handleBlur}
+                                                    className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
+                                                >
+                                                    {
+                                                        accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
+                                                    }
+
+                                                </Field>
 
 
                                                 <div onClick={handleExtraFields} className='flex flex-row items-center gap-2 border-b pb-1  my-1'>

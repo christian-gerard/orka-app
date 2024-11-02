@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
-from core.models import Project, Task, Budget, Expense
+from core.models import Project, Task, Budget, Expense, User
 from user.serializers import UserSerializer
 from project.serializers import (
     ProjectDetailSerializer,
@@ -80,25 +80,38 @@ class TaskViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
         return obj
 
-
-    @action(detail=True, methods=['post'], url_path='update-users', url_name='update-users')
-    def update_task_users(self, request, pk=None):
-        """Add a user to a task"""
-        task = self.get_object()
-        if not task:
-            return Response({"detail": "Task not found."}, status=status.HTTP_404_NOT_FOUND)
-        users = request.data.get('users', [])
-        res = []
+    def create(self, request, *args, **kwargs):
+        """Custom create method for POST requests"""
         try:
-            task.users.clear()
-            for user_id in users:
-                user = get_user_model().objects.get(id=user_id)
-                user_data = UserSerializer(user).data
-                res.append(user_data)
-                task.users.add(user)
-            return Response(res, status=status.HTTP_200_OK)
-        except get_user_model().DoesNotExist:
-            return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+            user_ids = request.data.pop('users', None)
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            task = serializer.save()
+            if user_ids:
+                task.users.set(user_ids)
+            response_serializer = self.get_serializer(task)
+            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def partial_update(self, request, *args, **kwargs):
+        """Custom PATCH request handling"""
+        try:
+            # Retrieve the object to update
+            instance = self.get_object()
+            user_ids = request.data.pop('users', None)
+            serializer = self.get_serializer(instance, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            task = serializer.save()
+            if user_ids:
+                task.users.set(user_ids)
+            response_serializer = self.get_serializer(task)
+            return Response(response_serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            # Handle any errors
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
