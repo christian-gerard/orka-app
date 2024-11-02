@@ -23,8 +23,6 @@ function Tasks(){
         setExtraFields(!extraFields)
     }
 
-
-
     const handleNewTask = () => {
         formik.resetForm()
         setNewTask(!newTask)
@@ -88,10 +86,7 @@ function Tasks(){
     }
 
     const renderTasks = () => {
-        console.log(accountUsers)
-
         const token = accessToken
-
 
         axios.get(`${API_URL}/api/tasks/`, {
             headers: {
@@ -170,17 +165,15 @@ function Tasks(){
 
     },[])
 
-console.log(tasks)
-
     return(
         <div className='h-full w-full'>
             {/* Page Header 10%*/}
             <div className='h-[5%] w-full text-3xl flex justify-between items-bottom'>
                 <p className=''>Tasks</p>
                 <p className='flex items-center text-xl text-white bg-black pr-2' onClick={handleNewTask}>
-                            { newTask ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon /> }
-                            Add Task
-                        </p>
+                { newTask ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon /> }
+                Add Task
+                </p>
             </div>
 
             {/* main body */}
@@ -188,14 +181,19 @@ console.log(tasks)
 
                 <div className='w-full h-full flex flex-row'>
 
-                    <div className={`flex flex-col gap-2 ${newTask ? 'w-[60%] p-2' : 'w-full'}`}>
+                    <div className={`${newTask ? 'w-[60%] p-2' : 'w-full p-2'}`}>
                     {
                         tasks && tasks.length !== 0 ?
 
-                        tasks
-                        .filter(task => task.status !== 'done')
-                        .sort((a, b) => a.status.localeCompare(b.status))
-                        .map(task => <Task key={task.id} {...task} />)
+                        <div className='flex flex-col gap-2 h-full overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
+                            {
+                            tasks
+                            .filter(task => task.status !== 'done')
+                            .sort((a, b) => a.status.localeCompare(b.status))
+                            .map(task => <Task key={task.id} {...task} />)
+                            }
+                        </div>
+
 
                         :
 
@@ -205,7 +203,7 @@ console.log(tasks)
                     </div>
 
 
-                    <div className={newTask ? 'w-[40%] p-4' : 'w-none'}>
+                    <div className={newTask ? 'w-[40%] p-2' : 'w-none'}>
 
                     {
                         newTask &&
