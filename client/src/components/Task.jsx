@@ -168,30 +168,37 @@ function Task({id, deadline, description, category, status, project, users}) {
                 <div className={`overflow-hidden w-full text-sm h-full mt-1 `}>
 
                     {/* Header */}
-                    <div className='flex flex-row justify-between p-1 bg-black text-white'>
-                        <p>More Details</p>
-                        <div>
-                            <DeleteIcon onClick={handleTaskDelete} />
-                            <EditIcon onClick={handleEditTask}/>
+                    <div className=' bg-black text-white'>
+                        <div className='flex flex-row justify-between p-1 bg-black text-white'>
+                            <div className='flex flex-row items-center gap-2'>
+                                <p className='text-lg'>Project</p>
+                                <p>Client</p>
+                            </div>
+                            <div>
+                                <DeleteIcon onClick={handleTaskDelete} />
+                                <EditIcon onClick={handleEditTask}/>
+                            </div>
                         </div>
-                    </div>
-                    {/* More Details */}
-                    <div className='flex flex-row w-full'>
-                        <div className='w-[50%]'>
-                            <div className='text-base'> Users </div>
-                            <div className='border h-[100px]'>
-                                <User />
+                        {/* Assigned */}
+                        <div className=''>
+                            <div className='p-1'>Assigned</div>
+                            <div className='border h-[100px] flex flex-row flex-wrap bg-gray overflow-y-scroll'>
+                                <div>
+
+                                    <User />
+                                    <User />
+                                    <User />
+                                    <User />
+                                    <User />
+
+                                </div>
                             </div>
                         </div>
 
-                        <div className='w-[50%]'>
-                            <div className='ml-2 text-base'> Other Details </div>
-                            <div className='border w-full'>
-                                <p>{project && project.name}</p>
-                                <p>{deadline && deadline.slice(5,10)}</p>
-                            </div>
-                        </div>
                     </div>
+
+
+
                     {/* Thread */}
                     <div className=''>
                         <p>Thread</p>
