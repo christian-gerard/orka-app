@@ -82,7 +82,7 @@ function Tasks(){
         category:  '',
         status: 'not started',
         project: '',
-        users: []
+        user: []
     }
 
     const renderTasks = () => {
@@ -118,11 +118,11 @@ function Tasks(){
             category: formData.category,
             status: formData.status,
             project: formData.project,
-            users: formData.users
+            user: formData.user
         }
 
         const userRequestData = {
-            user: formData.users
+            user: formData.user
         }
 
         axios.post(`${API_URL}/api/tasks/`, requestData, {
@@ -281,6 +281,39 @@ function Tasks(){
                                                 {formik.errors.deadline && formik.touched.deadline && (
                                                     <div className="text-sm text-red ml-2"> **{formik.errors.deadline}</div>
                                                 )}
+
+                                                <label className='ml-2'> Assigned Users</label>
+
+                                                <Field
+                                                    name='user'
+                                                    as='select'
+                                                    multiple
+                                                    value={formik.values.user}
+                                                    onChange={(e) => {
+                                                        const selectedUserId = parseInt(e.target.value); // Get the selected user ID
+                                                        const currentUsers = formik.values.user;
+
+                                                        // Toggle the selected user ID in the users array
+                                                        if (currentUsers.includes(selectedUserId)) {
+                                                            // If already selected, remove it
+                                                            formik.setFieldValue(
+                                                                'user',
+                                                                currentUsers.filter((id) => id !== selectedUserId)
+                                                            );
+                                                        } else {
+                                                            // If not selected, add it
+                                                            formik.setFieldValue('user', [...currentUsers, selectedUserId]);
+                                                        }
+
+                                                    }}
+                                                    onBlur={formik.handleBlur}
+                                                    className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
+                                                >
+                                                    {
+                                                        accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
+                                                    }
+
+                                                </Field>
 
 
                                                 <div onClick={handleExtraFields} className='flex flex-row items-center gap-2 border-b pb-1  my-1'>
