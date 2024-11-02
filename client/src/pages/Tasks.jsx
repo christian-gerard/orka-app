@@ -16,7 +16,6 @@ function Tasks(){
     const [projects, setProjects] = useState(null)
     const [newTask, setNewTask] = useState(true)
     const [tasks, setTasks] = useState(null)
-    const [users, setUsers] = useState(null)
     const [extraFields, setExtraFields] = useState(false)
 
     const handleExtraFields = () => {
@@ -82,7 +81,7 @@ function Tasks(){
         category:  '',
         status: 'not started',
         project: '',
-        user: []
+        users: []
     }
 
     const renderTasks = () => {
@@ -95,7 +94,7 @@ function Tasks(){
         })
         .then(resp => {
             if(resp.status == 200){
-                    setTasks(resp.data.map(task => ({...task, users: accountUsers})))
+                    setTasks(resp.data)
 
             } else {
                 toast.error('Unauthorized')
@@ -118,11 +117,7 @@ function Tasks(){
             category: formData.category,
             status: formData.status,
             project: formData.project,
-            user: formData.user
-        }
-
-        const userRequestData = {
-            user: formData.user
+            users: formData.users
         }
 
         axios.post(`${API_URL}/api/tasks/`, requestData, {
@@ -132,24 +127,9 @@ function Tasks(){
         })
         .then(resp => {
             if(resp.status == 201){
-
-
-
-
                 formik.resetForm()
                 setTasks([resp.data, ...tasks])
                 toast.success('Task Added')
-            }
-        })
-
-        axios.post(`${API_URL}/api/tasks/${resp.data.id}/update-users/`, userRequestData, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-            if(resp.status == 200){
-                console.log(resp.data)
             }
         })
 
@@ -189,6 +169,7 @@ function Tasks(){
                             {
                             tasks
                             .filter(task => task.status !== 'done')
+                            .sort((a, b) => a.description.localeCompare(b.status))
                             .sort((a, b) => a.status.localeCompare(b.status))
                             .map(task => <Task key={task.id} {...task} />)
                             }
@@ -285,24 +266,24 @@ function Tasks(){
                                                 <label className='ml-2'> Assigned Users</label>
 
                                                 <Field
-                                                    name='user'
+                                                    name='users'
                                                     as='select'
                                                     multiple
-                                                    value={formik.values.user}
+                                                    value={formik.values.users}
                                                     onChange={(e) => {
                                                         const selectedUserId = parseInt(e.target.value); // Get the selected user ID
-                                                        const currentUsers = formik.values.user;
+                                                        const currentUsers = formik.values.users;
 
                                                         // Toggle the selected user ID in the users array
                                                         if (currentUsers.includes(selectedUserId)) {
                                                             // If already selected, remove it
                                                             formik.setFieldValue(
-                                                                'user',
+                                                                'users',
                                                                 currentUsers.filter((id) => id !== selectedUserId)
                                                             );
                                                         } else {
                                                             // If not selected, add it
-                                                            formik.setFieldValue('user', [...currentUsers, selectedUserId]);
+                                                            formik.setFieldValue('users', [...currentUsers, selectedUserId]);
                                                         }
 
                                                     }}

@@ -46,11 +46,15 @@ class BudgetDetailSerializer(BudgetSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
-
+    def __init__(self, *args, **kwargs):
+        # Import UserSerializer lazily to avoid circular import
+        from user.serializers import UserSerializer
+        self.fields['users'] = UserSerializer(many=True, read_only=True)
+        super().__init__(*args, **kwargs)
 
     class Meta:
         model = Task
-        fields = ['id', 'deadline', 'description', 'note', 'category', 'status', 'project']
+        fields = ['id', 'deadline', 'description', 'note', 'category', 'status', 'project', 'users']
         read_only_fields = ["id"]
 
 
@@ -59,14 +63,10 @@ class TaskSerializer(serializers.ModelSerializer):
 class TaskDetailSerializer(TaskSerializer):
     """Serializes Account Detail Data"""
 
-    def __init__(self, *args, **kwargs):
-        # Import UserSerializer lazily to avoid circular import
-        from user.serializers import UserSerializer
-        self.fields['users'] = UserSerializer(many=True, read_only=True)
-        super().__init__(*args, **kwargs)
+
 
     class Meta(TaskSerializer.Meta):
-        fields = TaskSerializer.Meta.fields + ['users']
+        fields = TaskSerializer.Meta.fields
 
 
 

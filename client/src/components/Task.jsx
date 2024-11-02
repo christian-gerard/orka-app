@@ -12,9 +12,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios'
 
-function Task({id, deadline, description, category, status, project, users}) {
+function Task({id, deadline, description, note, category, status, project, users}) {
 
-    const { API_URL, accessToken } = useContext(UserContext)
+    const { API_URL, accessToken, accountUsers, accountProjects } = useContext(UserContext)
     const oldStatus = status
     const [isChecked, setIsChecked] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
@@ -28,6 +28,7 @@ function Task({id, deadline, description, category, status, project, users}) {
     const token = accessToken
 
     const handleEditTask = () => {
+        formik.resetForm()
         setEditTask(!editTask)
     }
 
@@ -119,17 +120,21 @@ function Task({id, deadline, description, category, status, project, users}) {
 
     const initialValues = {
         description: description,
-        user: []
+        deadline: deadline,
+        note: note,
+        category:  category,
+        status: status,
+        project: project,
+        users: users.map(user => user.id)
     }
 
     const formik = useFormik({
         initialValues,
         validationSchema: userSchema,
         onSubmit: (formData) => {
-            console.log(formData)
         const token = accessToken
 
-        axios.post(`${API_URL}/api/tasks/${id}/update-users/`, formData, {
+        axios.patch(`${API_URL}/api/tasks/${id}/`, formData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -137,7 +142,9 @@ function Task({id, deadline, description, category, status, project, users}) {
         .then(resp => {
             if(resp.status == 200){
                 formik.resetForm()
-                toast.success('Users Updated')
+                toast.success('Task Updated')
+            } else {
+                toast.error('Error Occured')
             }
         })
 
@@ -153,7 +160,7 @@ function Task({id, deadline, description, category, status, project, users}) {
     return (
 
         <div  className={`transition-all duration-800 ease-in-out p-1 border hover:duration-200 hover:border-[3px] flex flex-col text-sm ${isChecked && 'text-gray'} ${isOpen ? 'h-screen max-h-[90%]' : 'h-[40px] max-h-[40px]'}`}>
-                <div className='w-full flex flex-row justify-between items-center' onClick={handleOpen}>
+                <div className='w-full flex flex-row justify-between items-center' >
 
                     <div className='w-[70%] flex flex-row items-center gap-2 ' >
                         { isChecked ?
@@ -161,7 +168,7 @@ function Task({id, deadline, description, category, status, project, users}) {
                             :
                             <div className='peer w-[25px] h-[25px] border bg-white' onClick={handleMarkAsDone}></div>
                         }
-                        <p  className='truncate'>{description ? description : "No Description"}</p>
+                        <p  onClick={handleOpen} className='truncate'>{description ? description : "No Description"}</p>
                     </div>
 
                     <div className='w-[30%] flex flex-row justify-end items-center gap-2'>
@@ -200,13 +207,16 @@ function Task({id, deadline, description, category, status, project, users}) {
 
                             <div className='w-[40%]'>
                                 <div className='p-1'>Assigned</div>
-                                <div className='border h-[80px] flex flex-row flex-wrap bg-gray overflow-y-scroll'>
+                                <div className='border h-[80px] flex flex-row flex-wrap'>
                                     <div>
-                                        <User />
-                                        <User />
-                                        <User />
-                                        <User />
-                                        <User />
+                                        {
+                                            users.length &&
+
+                                            users.map(user =>
+                                                <div key={user.id}>
+                                                    <p>{user.first_name} {user.last_name}</p>
+                                                </div>)
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -299,24 +309,24 @@ function Task({id, deadline, description, category, status, project, users}) {
                             <label className='ml-2'> Assigned Users</label>
 
                             <Field
-                                name='user'
+                                name='users'
                                 as='select'
                                 multiple
-                                value={formik.values.user}
+                                value={formik.values.users}
                                 onChange={(e) => {
                                     const selectedUserId = parseInt(e.target.value); // Get the selected user ID
-                                    const currentUsers = formik.values.user;
+                                    const currentUsers = formik.values.users;
 
                                     // Toggle the selected user ID in the users array
                                     if (currentUsers.includes(selectedUserId)) {
                                         // If already selected, remove it
                                         formik.setFieldValue(
-                                            'user',
+                                            'users',
                                             currentUsers.filter((id) => id !== selectedUserId)
                                         );
                                     } else {
                                         // If not selected, add it
-                                        formik.setFieldValue('user', [...currentUsers, selectedUserId]);
+                                        formik.setFieldValue('users', [...currentUsers, selectedUserId]);
                                     }
 
                                 }}
@@ -324,7 +334,7 @@ function Task({id, deadline, description, category, status, project, users}) {
                                 className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
                             >
                                 {
-                                    users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
+                                    accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
                                 }
 
                             </Field>
