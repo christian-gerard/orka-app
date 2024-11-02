@@ -288,16 +288,16 @@ function Task({id, deadline, description, note, category, status, project, users
                                 className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
                             >
                                 <option value=''>Select Project</option>
-                                {/* {
-                                    projects ?
+                                {
+                                    accountProjects ?
 
-                                    projects.map(project =>
+                                    accountProjects.map(project =>
                                         <option key={project.id} value={project.id}>{project.name}</option>
                                     )
                                     :
 
                                     <></>
-                                } */}
+                                }
 
                             </Field>
 

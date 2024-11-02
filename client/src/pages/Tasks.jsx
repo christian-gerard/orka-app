@@ -12,8 +12,7 @@ import axios from 'axios'
 
 function Tasks(){
 
-    const { accessToken, API_URL, accountUsers, renderUsers } = useContext(UserContext)
-    const [projects, setProjects] = useState(null)
+    const { accessToken, API_URL, accountUsers, renderUsers, accountProjects, renderProjects } = useContext(UserContext)
     const [newTask, setNewTask] = useState(true)
     const [tasks, setTasks] = useState(null)
     const [extraFields, setExtraFields] = useState(false)
@@ -25,26 +24,6 @@ function Tasks(){
     const handleNewTask = () => {
         formik.resetForm()
         setNewTask(!newTask)
-    }
-
-    const renderProjects = () => {
-
-        const token = accessToken
-
-
-        axios.get(`${API_URL}/api/projects/`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-
-            if(resp.status == 200){
-                setProjects(resp.data)
-            } else if (resp.status == 401){
-                toast.error('Unauthorized')
-            }
-        })
     }
 
     const today = new Date().toISOString().split('T')[0];
@@ -229,9 +208,9 @@ function Tasks(){
                                                 >
                                                     <option value=''>Select Project</option>
                                                     {
-                                                        projects ?
+                                                        accountProjects ?
 
-                                                        projects.map(project =>
+                                                        accountProjects.map(project =>
                                                             <option key={project.id} value={project.id}>{project.name}</option>
                                                         )
                                                         :
