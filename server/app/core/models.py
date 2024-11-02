@@ -408,3 +408,22 @@ class Task(models.Model):
 
     def __str__(self):
         return self.description
+
+
+class Message(models.Model):
+    """Message Model"""
+    message = models.TextField()
+    date_sent = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(
+        User,
+        related_name='messages',
+        on_delete=models.CASCADE
+    )
+    task = models.ForeignKey(
+        Task,
+        related_name='messages',
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.message
