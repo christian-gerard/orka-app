@@ -5,6 +5,8 @@ import { object, string, array, number, bool } from "yup";
 import { useFormik, Formik, Form, Field } from 'formik'
 import Message from '../components/Message'
 import User from '../components/User'
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
@@ -17,6 +19,11 @@ function Task({id, deadline, description, category, status, project, users}) {
     const [isChecked, setIsChecked] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
     const [editTask, setEditTask] = useState(false)
+    const [extraFields, setExtraFields] = useState(false)
+
+    const handleExtraFields = () => {
+        setExtraFields(!extraFields)
+    }
 
     const token = accessToken
 
@@ -165,10 +172,10 @@ function Task({id, deadline, description, category, status, project, users}) {
                 </div>
 
 
-                <div className={`overflow-hidden w-full text-sm h-full mt-1 `}>
+                <div className={`overflow-hidden w-full text-sm h-full mt-1`}>
 
                     {/* Header */}
-                    <div className=' bg-black text-white'>
+                    <div className=''>
                         <div className='flex flex-row justify-between p-1 bg-black text-white'>
                             <div className='flex flex-row items-center gap-2'>
                                 <p className='text-lg'>Project</p>
@@ -179,20 +186,32 @@ function Task({id, deadline, description, category, status, project, users}) {
                                 <EditIcon onClick={handleEditTask}/>
                             </div>
                         </div>
-                        {/* Assigned */}
-                        <div className=''>
-                            <div className='p-1'>Assigned</div>
-                            <div className='border h-[100px] flex flex-row flex-wrap bg-gray overflow-y-scroll'>
+                        {/* Details */}
+                        <div className='flex flex-row w-full'>
+                            <div className='w-[60%] p-1'>
+                                <div className='border-b pb-1'>Details</div>
                                 <div>
+                                    <p>Category</p>
+                                    <p>Days Till Deadline</p>
+                                </div>
 
-                                    <User />
-                                    <User />
-                                    <User />
-                                    <User />
-                                    <User />
+                            </div>
 
+                            <div className='w-[40%]'>
+                                <div className='p-1'>Assigned</div>
+                                <div className='border h-[80px] flex flex-row flex-wrap bg-gray overflow-y-scroll'>
+                                    <div>
+
+                                        <User />
+                                        <User />
+                                        <User />
+                                        <User />
+                                        <User />
+
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
@@ -200,9 +219,9 @@ function Task({id, deadline, description, category, status, project, users}) {
 
 
                     {/* Thread */}
-                    <div className=''>
+                    <div className='h-screen'>
                         <p>Thread</p>
-                        <div className='h-[600px] overflow-y-scroll scrollbar scrollbar-thumb-ocean scrollbar-track-gray border flex flex-col gap-4'>
+                        <div className='h-[500px] overflow-y-scroll scrollbar scrollbar-thumb-ocean border flex flex-col gap-4'>
                             <Message outgoing={true} message={'Should we push the deadline back'}/>
                             <Message outgoing={false} message={'Hello'}/>
                             <Message outgoing={false} message={'Working on something good'}/>
@@ -212,61 +231,196 @@ function Task({id, deadline, description, category, status, project, users}) {
                             <Message outgoing={false} message={'Working on something good'}/>
                             <Message outgoing={true} message={'Wellp'}/>
                             <Message outgoing={false} message={'Working on something good'}/>
-                            <Message outgoing={true} message={'Wellp'}/>
+                            <Message outgoing={true} message={'Last Message'}/>
                         </div>
                     </div>
-                    {
-                        editTask &&
-
-                        <Formik
-                        onSubmit={formik.handleSubmit}
-                        initialValues={initialValues}
-                        >
-                            <Form
-                            className='absolute h-[90%] inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur-sm'
-                            onSubmit={formik.handleSubmit}
-                            initialValues={initialValues}
-                            >
-                                <CloseIcon onClick={handleEditTask}/>
-
-                                <Field
-                                    name='user'
-                                    as='select'
-                                    multiple
-                                    value={formik.values.user}
-                                    onChange={(e) => {
-                                        const selectedUserId = parseInt(e.target.value); // Get the selected user ID
-                                        const currentUsers = formik.values.user;
-
-                                        // Toggle the selected user ID in the users array
-                                        if (currentUsers.includes(selectedUserId)) {
-                                            // If already selected, remove it
-                                            formik.setFieldValue(
-                                                'user',
-                                                currentUsers.filter((id) => id !== selectedUserId)
-                                            );
-                                        } else {
-                                            // If not selected, add it
-                                            formik.setFieldValue('user', [...currentUsers, selectedUserId]);
-                                        }
-
-                                    }}
-                                    onBlur={formik.handleBlur}
-                                    className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
-                                >
-                                    {
-                                        users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
-                                    }
-
-                                </Field>
-
-                                <button type='submit' className={'bg-black text-white'}>Update</button>
-                            </Form>
-                        </Formik>
-                    }
 
                 </div>
 
+            {
+                editTask &&
+
+                <Formik
+                onSubmit={formik.handleSubmit}
+                initialValues={initialValues}
+                >
+                    <Form
+                    className='fixed inset-0 flex flex-col justify-center items-center transition-colors backdrop-blur '
+                    onSubmit={formik.handleSubmit}
+                    initialValues={initialValues}
+                    >
+                        <div className='bg-white border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%]'>
+
+                            <CloseIcon onClick={handleEditTask}/>
+
+                            <label className='ml-2'> Description </label>
+                            <Field
+                                name='description'
+                                value={formik.values.description}
+                                onChange={formik.handleChange}
+                                type='text'
+                                placeholder='Description'
+                                className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                            />
+
+                            {formik.errors.description && formik.touched.description && (
+                                <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
+                            )}
+
+
+                            <label className='ml-2'> Project </label>
+                            <Field
+                                name='project'
+                                type='date'
+                                as='select'
+                                value={formik.values.project}
+                                onChange={formik.handleChange}
+                                placeholder='Project'
+                                className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                            >
+                                <option value=''>Select Project</option>
+                                {/* {
+                                    projects ?
+
+                                    projects.map(project =>
+                                        <option key={project.id} value={project.id}>{project.name}</option>
+                                    )
+                                    :
+
+                                    <></>
+                                } */}
+
+                            </Field>
+
+                            {formik.errors.project && formik.touched.project && (
+                                <div className="text-sm text-red ml-2"> **{formik.errors.project}</div>
+                            )}
+
+
+
+
+                            <label className='ml-2'> Deadline </label>
+                            <Field
+                                name='deadline'
+                                type='date'
+                                value={formik.values.deadline}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                placeholder='Deadline'
+                                className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                            />
+
+                            {formik.errors.deadline && formik.touched.deadline && (
+                                <div className="text-sm text-red ml-2"> **{formik.errors.deadline}</div>
+                            )}
+
+
+                            <div onClick={handleExtraFields} className='flex flex-row items-center gap-2 border-b pb-1  my-1'>
+                                <p>{extraFields ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}</p>
+                                <p>Additional Fields</p>
+                            </div>
+
+                            {
+                                extraFields &&
+                                <>
+
+
+                                    <label className='ml-2'> Status </label>
+                                    <Field
+                                        name='status'
+                                        as='select'
+                                        value={formik.values.status}
+                                        onChange={formik.handleChange}
+                                        placeholder='Status'
+                                        className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                                    >
+                                        <option value='not started'>Not Started</option>
+                                        <option value='doing'>Doing</option>
+                                        <option value='blocked'>Blocked</option>
+                                        <option value='complete'>Complete</option>
+
+                                    </Field>
+
+
+                                    <label className='ml-2'> Category </label>
+                                    <Field
+                                        name='category'
+                                        as='select'
+                                        value={formik.values.category}
+                                        onChange={formik.handleChange}
+                                        type='text'
+                                        placeholder='Status'
+                                        className='ml-2 mr-2 border h-[30px] lg:h-[40px]'
+                                    >
+                                        <option value=''>Select Type</option>
+                                        <option value='Finance'>Finance</option>
+                                        <option value='Creative'>Creative</option>
+                                        <option value='Client'>Production</option>
+                                        <option value='Client'>Client</option>
+
+                                    </Field>
+
+                                    {formik.errors.projectType && formik.touched.projectType && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.projectType}</div>
+                                        )}
+
+                                    <label className='ml-2'> Note </label>
+                                    <Field
+                                        name='note'
+                                        value={formik.values.note}
+                                        onChange={formik.handleChange}
+                                        as='textarea'
+                                        placeholder='Write notes here...'
+                                        className='ml-2 mr-2 border min-h-[100px] lg:h-[40px]'
+                                    />
+
+                                    {formik.errors.note && formik.touched.note && (
+                                        <div className="text-sm text-red ml-2"> **{formik.errors.note}</div>
+                                    )}
+
+
+                                </>
+
+                            }
+
+
+                            <Field
+                                name='user'
+                                as='select'
+                                multiple
+                                value={formik.values.user}
+                                onChange={(e) => {
+                                    const selectedUserId = parseInt(e.target.value); // Get the selected user ID
+                                    const currentUsers = formik.values.user;
+
+                                    // Toggle the selected user ID in the users array
+                                    if (currentUsers.includes(selectedUserId)) {
+                                        // If already selected, remove it
+                                        formik.setFieldValue(
+                                            'user',
+                                            currentUsers.filter((id) => id !== selectedUserId)
+                                        );
+                                    } else {
+                                        // If not selected, add it
+                                        formik.setFieldValue('user', [...currentUsers, selectedUserId]);
+                                    }
+
+                                }}
+                                onBlur={formik.handleBlur}
+                                className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
+                            >
+                                {
+                                    users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
+                                }
+
+                            </Field>
+
+                            <button type='submit' className={'bg-black text-white'}>Update</button>
+
+                        </div>
+                    </Form>
+                </Formik>
+            }
         </div>
     )
 }
