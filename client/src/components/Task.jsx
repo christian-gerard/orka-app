@@ -118,6 +118,7 @@ function Task({id, deadline, description, category, status, project, users}) {
     });
 
     const initialValues = {
+        description: description,
         user: []
     }
 
@@ -191,7 +192,7 @@ function Task({id, deadline, description, category, status, project, users}) {
                             <div className='w-[60%] p-1'>
                                 <div className='border-b pb-1'>Details</div>
                                 <div>
-                                    <p>Category</p>
+                                    <p>{category ? `Category: ${category}` : ''}</p>
                                     <p>Days Till Deadline</p>
                                 </div>
 
@@ -201,13 +202,11 @@ function Task({id, deadline, description, category, status, project, users}) {
                                 <div className='p-1'>Assigned</div>
                                 <div className='border h-[80px] flex flex-row flex-wrap bg-gray overflow-y-scroll'>
                                     <div>
-
                                         <User />
                                         <User />
                                         <User />
                                         <User />
                                         <User />
-
                                     </div>
                                 </div>
                             </div>
@@ -219,19 +218,19 @@ function Task({id, deadline, description, category, status, project, users}) {
 
 
                     {/* Thread */}
-                    <div className='h-screen'>
+                    <div className='h-screen p-1'>
                         <p>Thread</p>
                         <div className='h-[500px] overflow-y-scroll scrollbar scrollbar-thumb-ocean border flex flex-col gap-4'>
-                            <Message outgoing={true} message={'Should we push the deadline back'}/>
-                            <Message outgoing={false} message={'Hello'}/>
-                            <Message outgoing={false} message={'Working on something good'}/>
+                            <Message outgoing={true} message={' TEST TEST TEST TEST TEST TEST TEST TEST'}/>
+                            <Message outgoing={false} message={'TEST TEST TEST'}/>
+                            <Message outgoing={false} message={'TEST TEST TEST'}/>
                             <Message outgoing={true} message={'Wellp'}/>
-                            <Message outgoing={false} message={'Working on something good'}/>
-                            <Message outgoing={true} message={'Wellp'}/>
-                            <Message outgoing={false} message={'Working on something good'}/>
-                            <Message outgoing={true} message={'Wellp'}/>
-                            <Message outgoing={false} message={'Working on something good'}/>
-                            <Message outgoing={true} message={'Last Message'}/>
+                            <Message outgoing={false} message={'TEST TEST TEST'}/>
+                            <Message outgoing={true} message={'TEST TEST TEST'}/>
+                            <Message outgoing={false} message={'TEST TEST TEST'}/>
+                            <Message outgoing={true} message={'TEST TEST TEST'}/>
+                            <Message outgoing={false} message={'TEST TEST TEST'}/>
+                            <Message outgoing={true} message={'TEST TEST TEST'}/>
                         </div>
                     </div>
 
@@ -249,7 +248,7 @@ function Task({id, deadline, description, category, status, project, users}) {
                     onSubmit={formik.handleSubmit}
                     initialValues={initialValues}
                     >
-                        <div className='bg-white border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%]'>
+                        <div className='bg-white border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%] flex flex-col gap-2 p-2'>
 
                             <CloseIcon onClick={handleEditTask}/>
 
@@ -296,6 +295,39 @@ function Task({id, deadline, description, category, status, project, users}) {
                                 <div className="text-sm text-red ml-2"> **{formik.errors.project}</div>
                             )}
 
+
+                            <label className='ml-2'> Assigned Users</label>
+
+                            <Field
+                                name='user'
+                                as='select'
+                                multiple
+                                value={formik.values.user}
+                                onChange={(e) => {
+                                    const selectedUserId = parseInt(e.target.value); // Get the selected user ID
+                                    const currentUsers = formik.values.user;
+
+                                    // Toggle the selected user ID in the users array
+                                    if (currentUsers.includes(selectedUserId)) {
+                                        // If already selected, remove it
+                                        formik.setFieldValue(
+                                            'user',
+                                            currentUsers.filter((id) => id !== selectedUserId)
+                                        );
+                                    } else {
+                                        // If not selected, add it
+                                        formik.setFieldValue('user', [...currentUsers, selectedUserId]);
+                                    }
+
+                                }}
+                                onBlur={formik.handleBlur}
+                                className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
+                            >
+                                {
+                                    users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
+                                }
+
+                            </Field>
 
 
 
@@ -384,36 +416,7 @@ function Task({id, deadline, description, category, status, project, users}) {
                             }
 
 
-                            <Field
-                                name='user'
-                                as='select'
-                                multiple
-                                value={formik.values.user}
-                                onChange={(e) => {
-                                    const selectedUserId = parseInt(e.target.value); // Get the selected user ID
-                                    const currentUsers = formik.values.user;
 
-                                    // Toggle the selected user ID in the users array
-                                    if (currentUsers.includes(selectedUserId)) {
-                                        // If already selected, remove it
-                                        formik.setFieldValue(
-                                            'user',
-                                            currentUsers.filter((id) => id !== selectedUserId)
-                                        );
-                                    } else {
-                                        // If not selected, add it
-                                        formik.setFieldValue('user', [...currentUsers, selectedUserId]);
-                                    }
-
-                                }}
-                                onBlur={formik.handleBlur}
-                                className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
-                            >
-                                {
-                                    users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
-                                }
-
-                            </Field>
 
                             <button type='submit' className={'bg-black text-white'}>Update</button>
 
