@@ -14,7 +14,7 @@ import axios from 'axios'
 
 function Task({id, deadline, description, note, category, status, project, users}) {
 
-    const { API_URL, accessToken, accountUsers, accountProjects } = useContext(UserContext)
+    const { API_URL, accessToken, accountUsers, accountProjects, accountTasks, updateAccountTasks } = useContext(UserContext)
     const oldStatus = status
     const [isChecked, setIsChecked] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
@@ -141,7 +141,8 @@ function Task({id, deadline, description, note, category, status, project, users
         })
         .then(resp => {
             if(resp.status == 200){
-                formik.resetForm()
+                updateAccountTasks(resp.data)
+                handleEditTask()
                 toast.success('Task Updated')
             } else {
                 toast.error('Error Occured')
@@ -154,7 +155,6 @@ function Task({id, deadline, description, note, category, status, project, users
     })
 
     useEffect(() => {
-
     },[])
 
     return (

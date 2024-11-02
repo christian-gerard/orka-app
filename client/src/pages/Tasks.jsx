@@ -12,7 +12,7 @@ import axios from 'axios'
 
 function Tasks(){
 
-    const { accessToken, API_URL, accountUsers, renderUsers, accountProjects, renderProjects } = useContext(UserContext)
+    const { accessToken, API_URL, accountUsers, renderUsers, accountProjects, renderProjects, accountTasks, renderTasks } = useContext(UserContext)
     const [newTask, setNewTask] = useState(true)
     const [tasks, setTasks] = useState(null)
     const [extraFields, setExtraFields] = useState(false)
@@ -63,25 +63,6 @@ function Tasks(){
         users: []
     }
 
-    const renderTasks = () => {
-        const token = accessToken
-
-        axios.get(`${API_URL}/api/tasks/`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-        })
-        .then(resp => {
-            if(resp.status == 200){
-                    setTasks(resp.data)
-
-            } else {
-                toast.error('Unauthorized')
-            }
-        })
-
-
-    }
 
     const formik = useFormik({
         initialValues,
@@ -118,9 +99,9 @@ function Tasks(){
     })
 
     useEffect(() => {
+        renderTasks()
         renderUsers()
         renderProjects()
-        renderTasks()
 
     },[])
 
@@ -142,11 +123,11 @@ function Tasks(){
 
                     <div className={`${newTask ? 'w-[60%] p-2' : 'w-full p-2'}`}>
                     {
-                        tasks && tasks.length !== 0 ?
+                        accountTasks && accountTasks.length !== 0 ?
 
                         <div className='flex flex-col gap-2 h-full overflow-y-scroll scrollbar scrollbar-thumb-ocean'>
                             {
-                            tasks
+                            accountTasks
                             .filter(task => task.status !== 'done')
                             .sort((a, b) => a.description.localeCompare(b.status))
                             .sort((a, b) => a.status.localeCompare(b.status))
