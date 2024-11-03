@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'email', 'first_name', 'last_name' , 'account']
+        fields = ['id', 'email', 'first_name', 'last_name', 'profile_img', 'account']
 
 
 class UserDetailSerializer(UserSerializer):
@@ -35,23 +35,6 @@ class ProfileImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'profile_img']
         extra_kwargs = {'profile_img': {'required': 'True'}}
 
-    # SAVING FOR POST MVP
-
-    # def create(self, validated_data):
-    #     """Create and Return user with encrypted password"""
-
-    #     return get_user_model().objects.create_user(**validated_data)
-
-    # def update(self, instance, validated_data):
-    #     """Update and Return User"""
-    #     password = validated_data.pop('password', None)
-    #     user = super().update(instance, validated_data)
-
-    #     if password:
-    #         user.set_password(password)
-    #         user.save()
-
-    #     return user
 
 class RefreshSerializer(TokenRefreshSerializer):
     """Getting Access Token after Refresh"""

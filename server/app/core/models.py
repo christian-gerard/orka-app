@@ -227,7 +227,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    profile_img = models.ImageField(null=True, upload_to=image_file_path)
+    profile_img = models.ImageField(null=True, blank=True, upload_to=image_file_path)
     account = models.ForeignKey(
         Account,
         related_name='users',
