@@ -27,6 +27,13 @@ class UserDetailSerializer(UserSerializer):
         fields = UserSerializer.Meta.fields
 
 
+class ProfileImageSerializer(serializers.ModelSerializer):
+    """Serializer for Uploading Images to Clients"""
+
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'profile_img']
+        extra_kwargs = {'profile_img': {'required': 'True'}}
 
     # SAVING FOR POST MVP
 

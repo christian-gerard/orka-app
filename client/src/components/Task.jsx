@@ -12,7 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios'
 
-function Task({id, deadline, description, note, category, status, project, users}) {
+function Task({id, deadline, description, note, category, status, project, users, project_name, client_name}) {
 
     const { API_URL, accessToken, accountUsers, accountProjects, accountTasks, updateAccountTasks, setAccountTasks } = useContext(UserContext)
     const oldStatus = status
@@ -186,8 +186,8 @@ function Task({id, deadline, description, note, category, status, project, users
                     <div className=''>
                         <div className='flex flex-row justify-between p-1 bg-black text-white'>
                             <div className='flex flex-row items-center gap-2'>
-                                <p className='text-lg'>Project</p>
-                                <p>Client</p>
+                                <p className='text-lg'>{project_name}</p>
+                                <p>{client_name}</p>
                             </div>
                             <div>
                                 <DeleteIcon onClick={handleTaskDelete} />

@@ -54,6 +54,8 @@ class BudgetDetailSerializer(BudgetSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
+    project_name = serializers.SerializerMethodField()
+    client_name = serializers.SerializerMethodField()
 
     def __init__(self, *args, **kwargs):
         # Import UserSerializer lazily to avoid circular import
@@ -63,8 +65,17 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'deadline', 'description', 'note', 'category', 'status', 'project', 'users']
+        fields = ['id', 'deadline', 'description', 'note', 'category', 'status', 'project', 'project_name', 'client_name', 'users']
         read_only_fields = ["id"]
+
+    def get_project_name(self, obj):
+        """Retrieve the name of the project associated with the task"""
+        # Ensure project exists before trying to access its name
+        return obj.project.name if obj.project else None
+
+    def get_client_name(self,obj):
+        """Retrieve the name of the client"""
+        return obj.project.client.name if obj.project else None
 
 
 
@@ -72,8 +83,6 @@ class TaskSerializer(serializers.ModelSerializer):
 
 class TaskDetailSerializer(TaskSerializer):
     """Serializes Account Detail Data"""
-
-
 
     class Meta(TaskSerializer.Meta):
         fields = TaskSerializer.Meta.fields
@@ -89,12 +98,10 @@ class ProjectSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
-
     class Meta:
         model = Project
         fields = ['id', 'name', 'deadline', 'description', 'project_budget', 'project_type', 'client_id']
         read_only_fields = ["id"]
-
 
 
 class ProjectDetailSerializer(ProjectSerializer):
