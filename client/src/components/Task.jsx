@@ -213,7 +213,8 @@ function Task({id, deadline, description, note, category, status, project, users
                                             users &&
 
                                             users.map(user =>
-                                                <div key={user.id}>
+                                                <div key={user.id} className='flex flex-row p-1 items-center gap-1'>
+                                                    <img src={user.profile_img} className='size-[30px] rounded-[100%]' />
                                                     <p>{user.first_name} {user.last_name}</p>
                                                 </div>)
                                         }
@@ -334,7 +335,12 @@ function Task({id, deadline, description, note, category, status, project, users
                                 className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
                             >
                                 {
-                                    accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
+                                    accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user =>
+                                    <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>
+                                        <img src={user.profile_img} className='size-[40px] rounded-[100%]' />
+                                        <p>{user.first_name} {user.last_name}</p>
+                                    </option>
+                                    )
                                 }
 
                             </Field>
