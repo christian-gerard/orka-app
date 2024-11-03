@@ -54,6 +54,7 @@ class BudgetDetailSerializer(BudgetSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
+
     def __init__(self, *args, **kwargs):
         # Import UserSerializer lazily to avoid circular import
         from user.serializers import UserSerializer
@@ -64,6 +65,7 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = ['id', 'deadline', 'description', 'note', 'category', 'status', 'project', 'users']
         read_only_fields = ["id"]
+
 
 
 

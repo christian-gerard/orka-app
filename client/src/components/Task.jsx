@@ -14,7 +14,7 @@ import axios from 'axios'
 
 function Task({id, deadline, description, note, category, status, project, users}) {
 
-    const { API_URL, accessToken, accountUsers, accountProjects, accountTasks, updateAccountTasks } = useContext(UserContext)
+    const { API_URL, accessToken, accountUsers, accountProjects, accountTasks, updateAccountTasks, setAccountTasks } = useContext(UserContext)
     const oldStatus = status
     const [isChecked, setIsChecked] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
@@ -40,7 +40,7 @@ function Task({id, deadline, description, note, category, status, project, users
         })
         .then(resp => {
             if(resp.status == 204) {
-
+                setAccountTasks(accountTasks.filter(task => task.id !== id))
                 toast.success('Deleted')
             } else {
                 toast.error('Error Occured')
