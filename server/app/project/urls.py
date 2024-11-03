@@ -16,6 +16,7 @@ router.register('projects', views.ProjectViewSet)
 router.register('tasks', views.TaskViewSet)
 router.register('budgets', views.BudgetViewSet)
 router.register('expenses', views.BudgetViewSet)
+router.register('messages', views.MessageViewSet)
 
 app_name = 'project'
 

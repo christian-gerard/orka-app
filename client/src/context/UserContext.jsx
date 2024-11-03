@@ -101,7 +101,6 @@ const UserProvider = ({children}) => {
           if(resp.status == 200){
             setUser(resp.data.user)
             setAccessToken(resp.data.access)
-
           } else if(resp.status == 401) {
             toast.error('Timed Out: Please Login')
           } else {

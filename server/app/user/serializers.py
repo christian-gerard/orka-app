@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 from account.serializers import AccountSerializer
 from django.utils.translation import gettext as _
 
@@ -39,15 +40,17 @@ class ProfileImageSerializer(serializers.ModelSerializer):
 class RefreshSerializer(TokenRefreshSerializer):
     """Getting Access Token after Refresh"""
 
-    def __init__(self, *args, **kwargs):
-    # Import UserSerializer lazily to avoid circular import
-        from user.serializers import UserSerializer
-        self.fields['user'] = UserSerializer(read_only=True)
-        super().__init__(*args, **kwargs)
+    def validate(self, attrs):
+        # Call the superclass's validate method to get the refresh and access tokens
+        data = super().validate(attrs)
 
-    class Meta:
-        model = get_user_model()
-        fields = ['user']
+        # Retrieve the user from the token
+        refresh = RefreshToken(attrs['refresh'])
+        user = get_user_model().objects.get(id=refresh['user_id'])
+
+        # Serialize the user data and add it to the response
+        data['user'] = UserSerializer(user).data
+        return data
 
 
 class AuthSerializer(TokenObtainPairSerializer):

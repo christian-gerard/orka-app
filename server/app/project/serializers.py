@@ -28,10 +28,22 @@ class ExpenseDetailSerializer(ExpenseSerializer):
 
 class MessageSerializer(serializers.ModelSerializer):
     """Serializes Message Data"""
+    user_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
-        fields = ['message', 'time_sent', 'user']
+        fields = ['message', 'time_sent', 'user', 'task', 'user_name']
+
+    def get_user_name(self,obj):
+        """Retrieve and Return User Name"""
+        return f"{obj.user.first_name} {obj.user.last_name}" if obj.user else None
+
+
+class MessageDetailSerializer(MessageSerializer):
+    """Serializes Message Data"""
+
+    class Meta(MessageSerializer.Meta):
+        fields = MessageSerializer.Meta.fields
 
 
 
@@ -54,6 +66,7 @@ class BudgetDetailSerializer(BudgetSerializer):
 
 class TaskSerializer(serializers.ModelSerializer):
     """Serializes Account Data"""
+    messages = MessageSerializer(many=True, read_only=True)
     project_name = serializers.SerializerMethodField()
     client_name = serializers.SerializerMethodField()
 
@@ -65,7 +78,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'deadline', 'description', 'note', 'category', 'status', 'project', 'project_name', 'client_name', 'users']
+        fields = ['id', 'deadline', 'description', 'note', 'category', 'status', 'project', 'project_name', 'client_name', 'users', 'messages']
         read_only_fields = ["id"]
 
     def get_project_name(self, obj):
