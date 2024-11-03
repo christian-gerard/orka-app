@@ -5,7 +5,7 @@ from rest_framework import serializers
 from user.serializers import UserSerializer
 from client.serializers import ClientSerializer
 
-from core.models import Task, Expense, Project, Budget, Expense, Client, User
+from core.models import Task, Expense, Project, Budget, Expense, Client, User, Message
 
 import pdb
 
@@ -25,6 +25,14 @@ class ExpenseDetailSerializer(ExpenseSerializer):
 
     class Meta(ExpenseSerializer.Meta):
         fields = ExpenseSerializer.Meta.fields
+
+class MessageSerializer(serializers.ModelSerializer):
+    """Serializes Message Data"""
+
+    class Meta:
+        model = Message
+        fields = ['message', 'time_sent', 'user']
+
 
 
 class BudgetSerializer(serializers.ModelSerializer):

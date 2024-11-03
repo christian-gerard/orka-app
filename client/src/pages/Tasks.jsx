@@ -12,7 +12,7 @@ import axios from 'axios'
 
 function Tasks(){
 
-    const { accessToken, API_URL, accountUsers, renderUsers, accountProjects, renderProjects, accountTasks, renderTasks } = useContext(UserContext)
+    const { accessToken, API_URL, accountUsers, renderUsers, accountProjects, renderProjects, accountTasks, renderTasks, setAccountTasks } = useContext(UserContext)
     const [newTask, setNewTask] = useState(true)
     const [tasks, setTasks] = useState(null)
     const [extraFields, setExtraFields] = useState(false)
@@ -88,7 +88,7 @@ function Tasks(){
         .then(resp => {
             if(resp.status == 201){
                 formik.resetForm()
-                setTasks([resp.data, ...tasks])
+                setAccountTasks([resp.data, ...accountTasks])
                 toast.success('Task Added')
             }
         })

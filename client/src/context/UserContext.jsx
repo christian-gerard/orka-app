@@ -122,10 +122,7 @@ const UserProvider = ({children}) => {
 
     const updateAccountTasks = (editedTask) => {
       const newTasks = accountTasks.filter(task => task.id !== editedTask.id)
-
       setAccountTasks([...newTasks, editedTask])
-
-      renderTasks()
 
     }
 
@@ -147,6 +144,7 @@ const UserProvider = ({children}) => {
         renderProjects,
         renderTasks,
         accountTasks,
+        setAccountTasks,
         renderUsers,
         updateAccountTasks,
         accessToken,

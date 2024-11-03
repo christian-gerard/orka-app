@@ -413,7 +413,7 @@ class Task(models.Model):
 class Message(models.Model):
     """Message Model"""
     message = models.TextField()
-    date_sent = models.DateTimeField(auto_now_add=True)
+    time_sent = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
         User,
         related_name='messages',
