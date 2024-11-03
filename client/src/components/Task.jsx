@@ -412,8 +412,6 @@ function Task({id, deadline, description, note, category, status, project, users
 
                             </Field>
 
-
-
                             <label className='ml-2'> Deadline </label>
                             <Field
                                 name='deadline'
