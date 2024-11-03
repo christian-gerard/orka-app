@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
-from core.models import Project, Task, Budget, Expense, User
+from core.models import Project, Task, Budget, Expense, User, Message
 from user.serializers import UserSerializer
 from project.serializers import (
     ProjectDetailSerializer,
@@ -19,10 +19,28 @@ from project.serializers import (
     BudgetSerializer,
     BudgetDetailSerializer,
     ExpenseDetailSerializer,
-    ExpenseSerializer
+    ExpenseSerializer,
+    MessageSerializer,
+    MessageDetailSerializer
 )
 
 import pdb
+
+class MessageViewSet(viewsets.ModelViewSet):
+    """View for Manage Client APIs"""
+    serializer_class = MessageDetailSerializer
+    queryset = Message.objects.all()
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        """Retrieves Accounts for Authenticated User"""
+        return self.queryset.all().order_by('id')
+
+    def get_serializer_class(self):
+        """Return the serializer per request"""
+        if self.action == 'list':
+            return MessageSerializer
+        return self.serializer_class
 
 class ExpenseViewSet(viewsets.ModelViewSet):
     """View for Manage Client APIs"""

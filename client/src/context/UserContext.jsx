@@ -101,7 +101,6 @@ const UserProvider = ({children}) => {
           if(resp.status == 200){
             setUser(resp.data.user)
             setAccessToken(resp.data.access)
-
           } else if(resp.status == 401) {
             toast.error('Timed Out: Please Login')
           } else {
@@ -122,10 +121,7 @@ const UserProvider = ({children}) => {
 
     const updateAccountTasks = (editedTask) => {
       const newTasks = accountTasks.filter(task => task.id !== editedTask.id)
-
       setAccountTasks([...newTasks, editedTask])
-
-      renderTasks()
 
     }
 
@@ -147,6 +143,7 @@ const UserProvider = ({children}) => {
         renderProjects,
         renderTasks,
         accountTasks,
+        setAccountTasks,
         renderUsers,
         updateAccountTasks,
         accessToken,

@@ -12,7 +12,7 @@ import axios from 'axios'
 
 function Tasks(){
 
-    const { accessToken, API_URL, accountUsers, renderUsers, accountProjects, renderProjects, accountTasks, renderTasks } = useContext(UserContext)
+    const { accessToken, API_URL, accountUsers, renderUsers, accountProjects, renderProjects, accountTasks, renderTasks, setAccountTasks } = useContext(UserContext)
     const [newTask, setNewTask] = useState(true)
     const [tasks, setTasks] = useState(null)
     const [extraFields, setExtraFields] = useState(false)
@@ -88,7 +88,7 @@ function Tasks(){
         .then(resp => {
             if(resp.status == 201){
                 formik.resetForm()
-                setTasks([resp.data, ...tasks])
+                setAccountTasks([resp.data, ...accountTasks])
                 toast.success('Task Added')
             }
         })
@@ -251,7 +251,11 @@ function Tasks(){
                                                     className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
                                                 >
                                                     {
-                                                        accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
+                                                        accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user =>
+                                                        <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>
+                                                            {user.first_name} {user.last_name}
+                                                        </option>
+                                                        )
                                                     }
 
                                                 </Field>

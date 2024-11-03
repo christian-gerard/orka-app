@@ -10,11 +10,12 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
+import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios'
 
-function Task({id, deadline, description, note, category, status, project, users}) {
+function Task({id, deadline, description, note, category, status, project, users, project_name, client_name, messages}) {
 
-    const { API_URL, accessToken, accountUsers, accountProjects, accountTasks, updateAccountTasks } = useContext(UserContext)
+    const { API_URL, accessToken, accountUsers, accountProjects, accountTasks, updateAccountTasks, setAccountTasks, user } = useContext(UserContext)
     const oldStatus = status
     const [isChecked, setIsChecked] = useState(false)
     const [isOpen, setIsOpen] = useState(false)
@@ -40,7 +41,7 @@ function Task({id, deadline, description, note, category, status, project, users
         })
         .then(resp => {
             if(resp.status == 204) {
-
+                setAccountTasks(accountTasks.filter(task => task.id !== id))
                 toast.success('Deleted')
             } else {
                 toast.error('Error Occured')
@@ -128,6 +129,12 @@ function Task({id, deadline, description, note, category, status, project, users
         users: users.map(user => user.id)
     }
 
+    const messageInit = {
+        message: '',
+        user: user && user.id,
+        task: id
+    }
+
     const formik = useFormik({
         initialValues,
         validationSchema: userSchema,
@@ -144,6 +151,39 @@ function Task({id, deadline, description, note, category, status, project, users
                 updateAccountTasks(resp.data)
                 handleEditTask()
                 toast.success('Task Updated')
+            } else {
+                toast.error('Error Occured')
+            }
+        })
+
+
+
+        }
+    })
+
+    const messageFormik = useFormik({
+        initialValues: messageInit,
+        onSubmit: (formData) => {
+        const token = accessToken
+
+        axios.post(`${API_URL}/api/messages/`, formData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(resp => {
+            if(resp.status == 201){
+               setAccountTasks(
+                accountTasks.map(task => id === task.id ?
+                    {
+                        ...task,
+                        messages: [...task.messages, resp.data]
+                    }
+                    :
+                    task
+                )
+               )
+                messageFormik.resetForm()
             } else {
                 toast.error('Error Occured')
             }
@@ -186,8 +226,8 @@ function Task({id, deadline, description, note, category, status, project, users
                     <div className=''>
                         <div className='flex flex-row justify-between p-1 bg-black text-white'>
                             <div className='flex flex-row items-center gap-2'>
-                                <p className='text-lg'>Project</p>
-                                <p>Client</p>
+                                <p className='text-lg'>{project_name}</p>
+                                <p>{client_name}</p>
                             </div>
                             <div>
                                 <DeleteIcon onClick={handleTaskDelete} />
@@ -213,7 +253,8 @@ function Task({id, deadline, description, note, category, status, project, users
                                             users &&
 
                                             users.map(user =>
-                                                <div key={user.id}>
+                                                <div key={user.id} className='flex flex-row p-1 items-center gap-1'>
+                                                    <img src={user.profile_img} className='size-[30px] rounded-[100%]' />
                                                     <p>{user.first_name} {user.last_name}</p>
                                                 </div>)
                                         }
@@ -231,17 +272,44 @@ function Task({id, deadline, description, note, category, status, project, users
                     <div className='h-screen p-1'>
                         <p>Thread</p>
                         <div className='h-[500px] overflow-y-scroll scrollbar scrollbar-thumb-ocean border flex flex-col gap-4'>
-                            <Message outgoing={true} message={' TEST TEST TEST TEST TEST TEST TEST TEST'}/>
-                            <Message outgoing={false} message={'TEST TEST TEST'}/>
-                            <Message outgoing={false} message={'TEST TEST TEST'}/>
-                            <Message outgoing={true} message={'Wellp'}/>
-                            <Message outgoing={false} message={'TEST TEST TEST'}/>
-                            <Message outgoing={true} message={'TEST TEST TEST'}/>
-                            <Message outgoing={false} message={'TEST TEST TEST'}/>
-                            <Message outgoing={true} message={'TEST TEST TEST'}/>
-                            <Message outgoing={false} message={'TEST TEST TEST'}/>
-                            <Message outgoing={true} message={'TEST TEST TEST'}/>
+                            {
+                                messages.length !== 0 &&
+
+                                messages
+                                .sort((a,b) => a.time_sent.localeCompare(b.time_sent))
+                                .map(message => <Message key={message.id} {...message} />)
+                            }
                         </div>
+
+                        <Formik
+                        onSubmit={messageFormik.handleSubmit}
+                        initialValues={messageInit}
+                        >
+                            <Form
+                            className='bg-ocean w-full h-[40px] flex flex-row justify-between items-center'
+                            onSubmit={messageFormik.handleSubmit}
+                            initialValues={messageInit}
+                            >
+
+
+                                <div className='w-[90%]'>
+
+                                    <Field
+                                        name='message'
+                                        value={messageFormik.values.message}
+                                        onChange={messageFormik.handleChange}
+                                        type='text'
+                                        placeholder='Write Message...'
+                                        className='ml-2 mr-2 border w-full h-[30px]'
+                                    />
+                                </div>
+                                <button type='submit'>
+                                    <SendIcon className='text-white hover:text-black'/>
+                                </button>
+                            </Form>
+                        </Formik>
+
+
                     </div>
 
                 </div>
@@ -334,7 +402,12 @@ function Task({id, deadline, description, note, category, status, project, users
                                 className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
                             >
                                 {
-                                    accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>{user.email}</option>)
+                                    accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user =>
+                                    <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>
+                                        <img src={user.profile_img} className='size-[40px] rounded-[100%]' />
+                                        <p>{user.first_name} {user.last_name}</p>
+                                    </option>
+                                    )
                                 }
 
                             </Field>

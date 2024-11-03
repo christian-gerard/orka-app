@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 from account.serializers import AccountSerializer
 from django.utils.translation import gettext as _
 
@@ -16,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'email', 'first_name', 'last_name' , 'account']
+        fields = ['id', 'email', 'first_name', 'last_name', 'profile_img', 'account']
 
 
 class UserDetailSerializer(UserSerializer):
@@ -27,37 +28,29 @@ class UserDetailSerializer(UserSerializer):
         fields = UserSerializer.Meta.fields
 
 
+class ProfileImageSerializer(serializers.ModelSerializer):
+    """Serializer for Uploading Images to Clients"""
 
-    # SAVING FOR POST MVP
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'profile_img']
+        extra_kwargs = {'profile_img': {'required': 'True'}}
 
-    # def create(self, validated_data):
-    #     """Create and Return user with encrypted password"""
-
-    #     return get_user_model().objects.create_user(**validated_data)
-
-    # def update(self, instance, validated_data):
-    #     """Update and Return User"""
-    #     password = validated_data.pop('password', None)
-    #     user = super().update(instance, validated_data)
-
-    #     if password:
-    #         user.set_password(password)
-    #         user.save()
-
-    #     return user
 
 class RefreshSerializer(TokenRefreshSerializer):
     """Getting Access Token after Refresh"""
 
-    def __init__(self, *args, **kwargs):
-    # Import UserSerializer lazily to avoid circular import
-        from user.serializers import UserSerializer
-        self.fields['user'] = UserSerializer(read_only=True)
-        super().__init__(*args, **kwargs)
+    def validate(self, attrs):
+        # Call the superclass's validate method to get the refresh and access tokens
+        data = super().validate(attrs)
 
-    class Meta:
-        model = get_user_model()
-        fields = ['user']
+        # Retrieve the user from the token
+        refresh = RefreshToken(attrs['refresh'])
+        user = get_user_model().objects.get(id=refresh['user_id'])
+
+        # Serialize the user data and add it to the response
+        data['user'] = UserSerializer(user).data
+        return data
 
 
 class AuthSerializer(TokenObtainPairSerializer):

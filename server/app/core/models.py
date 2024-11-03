@@ -82,7 +82,7 @@ states = {
     'WY': 'Wyoming'
 }
 
-def recipe_image_file_path(instance, filename):
+def image_file_path(instance, filename):
     """Generate File Path for New Recipe"""
     ext = os.path.splitext(filename)[1]
     filename = f'{uuid.uuid4()}{ext}'
@@ -227,6 +227,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    profile_img = models.ImageField(null=True, blank=True, upload_to=image_file_path)
     account = models.ForeignKey(
         Account,
         related_name='users',
@@ -276,7 +277,7 @@ class Client(models.Model):
         ],
         help_text="Enter EIN in the format '12-3456789'."
     )
-    client_img = models.ImageField(null=True, upload_to=recipe_image_file_path)
+    client_img = models.ImageField(null=True, upload_to=image_file_path)
 
     account = models.ForeignKey(
         Account,
@@ -413,7 +414,7 @@ class Task(models.Model):
 class Message(models.Model):
     """Message Model"""
     message = models.TextField()
-    date_sent = models.DateTimeField(auto_now_add=True)
+    time_sent = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
         User,
         related_name='messages',
