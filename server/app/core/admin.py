@@ -67,7 +67,7 @@ class AccountAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(models.User)
+admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Account)
 admin.site.register(models.Client)
 admin.site.register(models.Project)
