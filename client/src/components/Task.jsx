@@ -237,25 +237,25 @@ function Task({id, deadline, description, note, category, status, project, users
                         {/* Details */}
                         <div className='flex flex-row w-full'>
                             <div className='w-[60%] p-1'>
-                                <div className='border-b pb-1'>Details</div>
-                                <div>
+                                <div className='pb-1'>Details</div>
+                                <div className='border h-[100px]'>
                                     <p>{category ? `Category: ${category}` : ''}</p>
-                                    <p>Days Till Deadline</p>
+                                    <p>{deadline ? `Deadline: ${deadline}` : ''}</p>
                                 </div>
 
                             </div>
 
                             <div className='w-[40%]'>
-                                <div className='p-1'>Assigned</div>
-                                <div className='border h-[80px] flex flex-row flex-wrap'>
-                                    <div>
+                                <div className='p-1'>Assigned Users</div>
+                                <div className='border h-[100px] overflow-y-scroll scrollbar scrollbar-track-ocean'>
+                                    <div className='flex flex-row flex-wrap grid grid-cols-2 gap-2 p-2'>
                                         {
                                             users &&
 
                                             users.map(user =>
-                                                <div key={user.id} className='flex flex-row p-1 items-center gap-1'>
-                                                    <img src={user.profile_img} className='size-[30px] rounded-[100%]' />
-                                                    <p>{user.first_name} {user.last_name}</p>
+                                                <div key={user.id} className='flex flex-row p-1 items-center gap-1 border text-xs h-[30px]'>
+                                                    <img src={user.profile_img} className='size-[25px] rounded-[100%]' />
+                                                    <p className='truncate'>{user.first_name} {user.last_name}</p>
                                                 </div>)
                                         }
                                     </div>
@@ -270,8 +270,8 @@ function Task({id, deadline, description, note, category, status, project, users
 
                     {/* Thread */}
                     <div className='h-screen p-1'>
-                        <p>Thread</p>
-                        <div className='h-[500px] overflow-y-scroll scrollbar scrollbar-thumb-ocean border flex flex-col gap-4'>
+                        <p className='p-1'>Thread</p>
+                        <div className='h-[460px] overflow-y-scroll scrollbar scrollbar-thumb-ocean border flex flex-col gap-4'>
                             {
                                 messages.length !== 0 &&
 
@@ -280,19 +280,18 @@ function Task({id, deadline, description, note, category, status, project, users
                                 .map(message => <Message key={message.id} {...message} />)
                             }
                         </div>
-
                         <Formik
-                        onSubmit={messageFormik.handleSubmit}
-                        initialValues={messageInit}
-                        >
-                            <Form
-                            className='bg-ocean w-full h-[40px] flex flex-row justify-between items-center'
                             onSubmit={messageFormik.handleSubmit}
                             initialValues={messageInit}
+                        >
+                            <Form
+                                className='w-full h-[40px] flex flex-row justify-between items-center border-r'
+                                onSubmit={messageFormik.handleSubmit}
+                                initialValues={messageInit}
                             >
 
 
-                                <div className='w-[90%]'>
+                                <div className='w-[94%]'>
 
                                     <Field
                                         name='message'
@@ -300,16 +299,14 @@ function Task({id, deadline, description, note, category, status, project, users
                                         onChange={messageFormik.handleChange}
                                         type='text'
                                         placeholder='Write Message...'
-                                        className='ml-2 mr-2 border w-full h-[30px]'
+                                        className='w-full h-[40px] p-1 border-x border-b'
                                     />
                                 </div>
-                                <button type='submit'>
-                                    <SendIcon className='text-white hover:text-black'/>
+                                <button type='submit' className='w-[6%] h-[40px] flex justify-center items-center border-b hover:bg-black hover:text-white'>
+                                    <SendIcon className=''/>
                                 </button>
                             </Form>
                         </Formik>
-
-
                     </div>
 
                 </div>
@@ -493,10 +490,6 @@ function Task({id, deadline, description, note, category, status, project, users
                                 </>
 
                             }
-
-
-
-
                             <button type='submit' className={'bg-black text-white'}>Update</button>
 
                         </div>

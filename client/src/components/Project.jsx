@@ -343,7 +343,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                             {/* Upper Half */}
                             <div className='h-[40%] flex flex-col sm:flex-row'>
                                 {/* Left */}
-                                <div className='w-[60%] h-full'>
+                                <div className='w-[50%] h-full'>
                                     {/* Project Details */}
                                     <div className='h-[20%] flex flex-row gap-4 px-4'>
                                         {/* Project Client */}
@@ -368,7 +368,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                     </div>
                                 </div>
                                 {/* Right */}
-                                <div className='w-[40%] h-full'>
+                                <div className='w-[50%] h-full'>
                                     {/* Project Users */}
                                     <div className='sm:h-full w-full'>
                                         <div className='flex flex-row items-center justify-between w-full h-[10%] bg-ocean text-white '>
@@ -383,7 +383,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                             </div>
                                         </div>
 
-                                        <div className='relative h-full overflow-scroll scrollbar scrollbar-track-border-r scrollbar-thumb-ocean border-l border-black p-1 flex flex-col gap-1 p-2'>
+                                        <div className='relative h-[90%] w-full overflow-y-scroll scrollbar scrollbar-track-border-r scrollbar-thumb-ocean border-l border-black p-1 flex flex-col gap-1 p-2'>
 
                                             {project.users ?
 
@@ -475,7 +475,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                             {/* Bottom Half */}
                             <div className='h-[60%] flex flex-row'>
                                 {/* Tasks */}
-                                <div className=' h-full w-[60%]'>
+                                <div className=' h-full w-full'>
                                 <div className='w-full h-[10%] bg-ocean flex gap-4 items-center text-white border-y border-black p-1'>
                                     <p>Tasks</p>
                                 </div>
@@ -489,17 +489,6 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                         <p className='text-md sm:text-xl w-full h-full flex justify-center items-center'>No Current Tasks</p>
 
                                     }
-                                </div>
-                                {/* Budgets */}
-                                <div className='border-l h-full w-[40%]'>
-                                <div className='w-full h-[10%] bg-ocean flex gap-4 items-center text-white border-y border-black p-1'>
-                                    <p>Budget</p>
-                                    <p className='bg-white text-black p-1 text-xl'>${project ? project.project_budget : "0"}</p>
-                                </div>
-                                    <div className='w-full h-[95%] flex flex-col items-center'>
-
-
-                                    </div>
                                 </div>
                             </div>
                         </div>
