@@ -271,7 +271,7 @@ function Task({id, deadline, description, note, category, status, project, users
                     {/* Thread */}
                     <div className='h-screen p-1'>
                         <p>Thread</p>
-                        <div className='h-[500px] overflow-y-scroll scrollbar scrollbar-thumb-ocean border flex flex-col gap-4'>
+                        <div className='h-[400px] overflow-y-scroll scrollbar scrollbar-thumb-ocean border flex flex-col gap-4'>
                             {
                                 messages.length !== 0 &&
 
@@ -280,19 +280,18 @@ function Task({id, deadline, description, note, category, status, project, users
                                 .map(message => <Message key={message.id} {...message} />)
                             }
                         </div>
-
                         <Formik
-                        onSubmit={messageFormik.handleSubmit}
-                        initialValues={messageInit}
-                        >
-                            <Form
-                            className='bg-ocean w-full h-[40px] flex flex-row justify-between items-center'
                             onSubmit={messageFormik.handleSubmit}
                             initialValues={messageInit}
+                        >
+                            <Form
+                                className='w-full h-[40px] flex flex-row justify-between items-center border-r'
+                                onSubmit={messageFormik.handleSubmit}
+                                initialValues={messageInit}
                             >
 
 
-                                <div className='w-[90%]'>
+                                <div className='w-[94%]'>
 
                                     <Field
                                         name='message'
@@ -300,16 +299,14 @@ function Task({id, deadline, description, note, category, status, project, users
                                         onChange={messageFormik.handleChange}
                                         type='text'
                                         placeholder='Write Message...'
-                                        className='ml-2 mr-2 border w-full h-[30px]'
+                                        className='w-full h-[40px] p-1 border-x border-b'
                                     />
                                 </div>
-                                <button type='submit'>
-                                    <SendIcon className='text-white hover:text-black'/>
+                                <button type='submit' className='w-[6%] h-[40px] flex justify-center items-center border-b hover:bg-black hover:text-white'>
+                                    <SendIcon className=''/>
                                 </button>
                             </Form>
                         </Formik>
-
-
                     </div>
 
                 </div>
@@ -493,10 +490,6 @@ function Task({id, deadline, description, note, category, status, project, users
                                 </>
 
                             }
-
-
-
-
                             <button type='submit' className={'bg-black text-white'}>Update</button>
 
                         </div>
