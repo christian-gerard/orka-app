@@ -220,7 +220,7 @@ function Task({id, deadline, description, note, category, status, project, users
                 </div>
 
 
-                <div className={`overflow-hidden w-full text-sm h-full mt-1`}>
+                <div className={`overflow-hidden w-full text-sgim h-full mt-1`}>
 
                     {/* Header */}
                     <div className=''>
@@ -372,8 +372,6 @@ function Task({id, deadline, description, note, category, status, project, users
                             {formik.errors.project && formik.touched.project && (
                                 <div className="text-sm text-red ml-2"> **{formik.errors.project}</div>
                             )}
-
-
                             <label className='ml-2'> Assigned Users</label>
 
                             <Field
