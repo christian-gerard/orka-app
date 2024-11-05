@@ -237,8 +237,8 @@ function Task({id, deadline, description, note, category, status, project, users
                         {/* Details */}
                         <div className='flex flex-row w-full'>
                             <div className='w-[60%] p-1'>
-                                <div className='border-b pb-1'>Details</div>
-                                <div>
+                                <div className='pb-1'>Details</div>
+                                <div className='border h-[100px]'>
                                     <p>{category ? `Category: ${category}` : ''}</p>
                                     <p>{deadline ? `Deadline: ${deadline}` : ''}</p>
                                 </div>
@@ -246,15 +246,15 @@ function Task({id, deadline, description, note, category, status, project, users
                             </div>
 
                             <div className='w-[40%]'>
-                                <div className='p-1'>Assigned</div>
+                                <div className='p-1'>Assigned Users</div>
                                 <div className='border h-[100px] overflow-y-scroll scrollbar scrollbar-track-ocean'>
                                     <div className='flex flex-row flex-wrap grid grid-cols-2 gap-2 p-2'>
                                         {
                                             users &&
 
                                             users.map(user =>
-                                                <div key={user.id} className='flex flex-row p-1 items-center gap-1 border text-xs'>
-                                                    <img src={user.profile_img} className='size-[30px] rounded-[100%]' />
+                                                <div key={user.id} className='flex flex-row p-1 items-center gap-1 border text-xs h-[30px]'>
+                                                    <img src={user.profile_img} className='size-[25px] rounded-[100%]' />
                                                     <p className='truncate'>{user.first_name} {user.last_name}</p>
                                                 </div>)
                                         }
@@ -271,7 +271,7 @@ function Task({id, deadline, description, note, category, status, project, users
                     {/* Thread */}
                     <div className='h-screen p-1'>
                         <p className='p-1'>Thread</p>
-                        <div className='h-[400px] overflow-y-scroll scrollbar scrollbar-thumb-ocean border flex flex-col gap-4'>
+                        <div className='h-[460px] overflow-y-scroll scrollbar scrollbar-thumb-ocean border flex flex-col gap-4'>
                             {
                                 messages.length !== 0 &&
 
