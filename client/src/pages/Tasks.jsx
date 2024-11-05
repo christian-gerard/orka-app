@@ -251,7 +251,7 @@ function Tasks(){
                                                     className='ml-2 mr-2 border scrollbar scrollbar-thumb-ocean'
                                                 >
                                                     {
-                                                        accountUsers && accountUsers.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user =>
+                                                        accountUsers && accountUsers.map(user =>
                                                         <option key={user.id} className='text-sm border p-1 m-2' value={user.id}>
                                                             {user.first_name} {user.last_name}
                                                         </option>
