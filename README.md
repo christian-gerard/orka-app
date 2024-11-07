@@ -1,4 +1,3 @@
-
 ```
     .::::     .:::::::    .::   .::        .:
   .::    .::  .::    .::  .::  .::        .: ::
@@ -10,5 +9,6 @@
 
 ```
 
+### [VIDEO DEMO HERE](https://www.loom.com/share/85655ff9266e40c28865aeb90c2c7c02?sid=e4d47a18-49ee-4ba8-ab6c-77117b3784b1)
 
-### Project Management for Creatives
+### Project Management for Creative
