@@ -1,12 +1,16 @@
-# ORKA
-## Project Management for Creatives
 
-Orka is a project management tool built for small ad agencies that are looking for a simple, flexible solution to keep projects on time.
+```
+    .::::     .:::::::    .::   .::        .:
+  .::    .::  .::    .::  .::  .::        .: ::
+.::        .::.::    .::  .:: .::        .:  .::
+.::        .::.: .::      .: .:         .::   .::
+.::        .::.::  .::    .::  .::     .:::::: .::
+  .::     .:: .::    .::  .::   .::   .::       .::
+    .::::     .::      .::.::     .::.::         .::
 
-### Specs
-- BackEnd
-  - Django
-  - Docker
-  - Deployed on AWS
-- FrontEnd
-  - React   
+```
+
+### [VIDEO DEMO HERE](https://www.loom.com/share/85655ff9266e40c28865aeb90c2c7c02?sid=e4d47a18-49ee-4ba8-ab6c-77117b3784b1)
+
+### Project Management for Creative
+

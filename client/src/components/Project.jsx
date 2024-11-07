@@ -21,7 +21,7 @@ import axios from 'axios'
 
 function Project({id, name, deadline, description, project_type, project_budget}) {
 
-    const { accessToken, tasks, projects, setProjects, API_URL} = useContext(UserContext)
+    const { accessToken, accountTasks, renderTasks, projects, setProjects, API_URL} = useContext(UserContext)
     const nav = useNavigate()
     const route = useParams()
     const path = useLocation()
@@ -236,6 +236,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
             })
             .then( resp => {
                 if(resp.status == 200){
+                    console.log(resp.data)
                     setProject({ ...project, users: [...resp.data]})
                     handleProjectUsers()
                     toast.success("Users Updated")
@@ -282,11 +283,13 @@ function Project({id, name, deadline, description, project_type, project_budget}
 
 
         }
-
-
+        renderTasks()
 
 
     }, [route.id])
+
+
+
 
     return(
         <>
@@ -347,7 +350,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                     {/* Project Details */}
                                     <div className='h-[20%] flex flex-row gap-4 px-4'>
                                         {/* Project Client */}
-                                        <NavLink to={`/clients/${project.client.id}`} className='w-[50%] hover:bg-ocean flex items-end gap-2 p-1 text-3xl'>
+                                        <NavLink to={`/clients/${project.client.id}`} className='w-[50%] hover:bg-ocean flex items-center gap-2 p-1 text-3xl'>
                                             {project.client.client_img &&
                                                 <img
                                                 src={project.client.client_img}
@@ -359,11 +362,11 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                         </NavLink>
 
                                         {/* Project Deadline*/}
-                                        <div className='w-[50%] flex justify-end items-end text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
+                                        <div className='w-[50%] flex justify-end items-center text-3xl'>{project.deadline ? project.deadline.slice(5,10) : "Description Not Listed"}</div>
 
                                     </div>
                                     {/* Project Description */}
-                                    <div className='h-[80%] border-t text-black'>
+                                    <div className='h-[80%] border-t text-black p-2'>
                                         {project.description ? project.description : "Description Not Listed"}
                                     </div>
                                 </div>
@@ -447,7 +450,7 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                                                     className='border h-full'
                                                                 >
                                                                     {
-                                                                        users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option value={user.id}>{user.email}</option>)
+                                                                        users && users.sort((a, b) => a.first_name.localeCompare(b.first_name)).map(user => <option value={user.id}>{user.first_name} {user.last_name}</option>)
 
                                                                     }
 
@@ -479,16 +482,24 @@ function Project({id, name, deadline, description, project_type, project_budget}
                                 <div className='w-full h-[10%] bg-ocean flex gap-4 items-center text-white border-y border-black p-1'>
                                     <p>Tasks</p>
                                 </div>
-                                    {
-                                        project.tasks && project.tasks.length !== 0 ?
+                                <div className='h-full flex flex-col gap-2 p-2 overflow-y-scroll'>
 
-                                        project.tasks.map(task => <Task key={task.id} {...task} />)
+                                    {
+                                        accountTasks && accountTasks.length !== 0 ?
+
+                                        accountTasks
+                                        // .filter(task => task.project_name === name)
+                                        .map(task => <Task key={task.id} {...task} />)
 
                                         :
 
                                         <p className='text-md sm:text-xl w-full h-full flex justify-center items-center'>No Current Tasks</p>
 
                                     }
+
+
+                                </div>
+
                                 </div>
                             </div>
                         </div>
