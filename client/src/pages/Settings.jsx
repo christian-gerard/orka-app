@@ -15,20 +15,14 @@ import axios from 'axios'
 
 
 function Settings() {
-    const {API_URL, user} = useContext(UserContext)
+    const {API_URL, user, accessToken} = useContext(UserContext)
     const [files, setFiles] = useState([''])
 
-    const clientSchema = object({
-        name: string()
-        .required(),
-        description: string(),
-        client_type: string(),
-        ein: string(),
-        address_one: string(),
-        address_two: string(),
-        city: string(),
-        state: string(),
-        zip_code: string(),
+    const  userSchema = object({
+        first_name: string(),
+        last_name: string(),
+        email: string(),
+
     });
 
 
@@ -39,10 +33,9 @@ function Settings() {
         last_name: user ? user.last_name : ''
     }
 
-
     const formik = useFormik({
         initialValues: initialValues,
-        validationSchema: clientSchema,
+        validationSchema: userSchema,
         onSubmit: (formData) => {
 
             const token = accessToken
@@ -51,39 +44,17 @@ function Settings() {
 
             if(files[0] !== '') {
                 fd.set("profile_img", files[0])
-
+            }
 
             for(let key in formData) { fd.set(key, formData[key])}
 
-            }
-            axios.patch(`${API_URL}/api/user/${user.id}`,fd, {
+            axios.patch(`${API_URL}/api/user/${user.id}/`,fd, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             .then(resp => {
-                if(resp.status == 201){
-                    let newUser = resp.data
-
-                    if(files[0] !== '') {
-                        const image_data = {
-                            "profile_img": files[0]
-                        }
-                        axios.post(`${API_URL}/api/user/${resp.data.id}/upload-image/`, image_data, {
-                            headers: {
-                                Authorization: `Bearer ${token}`
-                            }
-                        })
-                        .then(resp => {
-                            if(resp.status == 201) {
-                                newUser['profile_img'] = resp.data.profile_img
-
-                            } else {
-                                toast.error('Image Upload Failed')
-                            }
-                        })
-
-                    }
+                if(resp.status == 200){s
 
                     toast.success('User Updated')
                 } else {
@@ -98,8 +69,6 @@ function Settings() {
         }
     })
 
-
-    console.log(user)
     return (
         <div className='h-full w-full overflow-scroll scrollbar scrollbar-thumb-ocean overflow-scroll'>
             <p className='text-4xl'>Settings</p>
@@ -132,7 +101,7 @@ function Settings() {
                                         <div className='w-[60%] flex flex-col justify-end'>
                                             <label className='ml-2'> First Name </label>
                                             <Field
-                                                name='First Name'
+                                                name='first_name'
                                                 value={formik.values.first_name}
                                                 onChange={formik.handleChange}
                                                 type='text'
@@ -148,7 +117,7 @@ function Settings() {
                                         <div className='w-[60%] flex flex-col justify-end'>
                                             <label className='ml-2'> Last Name </label>
                                             <Field
-                                                name='Last Name'
+                                                name='last_name'
                                                 value={formik.values.last_name}
                                                 onChange={formik.handleChange}
                                                 type='text'
@@ -205,7 +174,7 @@ function Settings() {
                                         <div className='w-[80%] flex flex-col justify-end'>
                                                 <label className='ml-2'> Email </label>
                                                 <Field
-                                                    name='name'
+                                                    name='email'
                                                     value={formik.values.email}
                                                     onChange={formik.handleChange}
                                                     type='text'
