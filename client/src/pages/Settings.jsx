@@ -103,15 +103,9 @@ function Settings() {
                                                                 alt='client'
                                                             />
                                                             :
-                                                            <div className=' '>
-                                                                { user.profile_img ?
-                                                                    <img
-                                                                    className='rounded-[100%] h-[125px] w-[125px] object-cover'
-                                                                    src={user.profile_img}
-                                                                    alt='profile_image'
-                                                                    />
 
-                                                                :
+
+
 
                                                                 <div className='rounded-[100%] h-[125px] w-[125px] bg-ocean flex items-center text-white'>
                                                                     <UploadFileIcon style={{width:'35px', height:'35px'}} />
@@ -122,8 +116,8 @@ function Settings() {
                                                                 </div>
 
 
-                                                            }
-                                                            </div>
+
+
                                                         }
 
                                                     </p>
