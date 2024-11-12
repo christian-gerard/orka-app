@@ -15,6 +15,8 @@ import axios from 'axios'
 
 
 function Settings() {
+    const {user} = useContext(UserContext)
+    const [files, setFiles] = useState([''])
 
     const clientSchema = object({
         name: string()
@@ -29,17 +31,18 @@ function Settings() {
         zip_code: string(),
     });
 
+    // email = models.EmailField(max_length=250, unique=True)
+    // first_name = models.CharField(max_length=255, blank=True, null=True)
+    // last_name = models.CharField(max_length=255, blank=True, null=True)
+    // is_active = models.BooleanField(default=True)
+    // is_staff = models.BooleanField(default=False)
+    // profile_img = models.ImageField(null=True, blank=True, upload_to=image_file_path)
+    // account
+
     const initialValues = {
-        name: '',
-        description: '',
-        client_type: '',
-        address_one: '',
-        address_two: '',
-        city: '',
-        state: '',
-        zip_code: '',
-        country: '',
-        ein: ''
+        email: user ? user.email : '',
+        first_name: user ? user.first_name : '',
+        last_name: user ? user.last_name : ''
     }
 
 
@@ -54,6 +57,8 @@ function Settings() {
         }
     })
 
+
+    console.log(user)
     return (
         <div className='h-full w-full overflow-scroll scrollbar scrollbar-thumb-ocean overflow-scroll'>
             <p className='text-4xl'>Settings</p>
@@ -71,19 +76,16 @@ function Settings() {
                         initialValues={initialValues}
                     >
                         <Form
-                        className=' flex flex-col justify-center items-center '
+                        className=' flex flex-col justify-center items-center w-full '
                         onSubmit={formik.handleSubmit}
                         initialValues={initialValues}
                         >
-                            {/* <div className='bg-white  border h-[700px] w-[350px] lg:h-[80%] lg:w-[40%] '>
-                                <div className='h-[5%] w-full flex items-center mb-2'>
-                                    <CloseIcon  style={{width: '40px', height: '40px'}} onClick={handleNewClient} />
-                                    <label className='ml-2 mt-1 text-2xl'> New Client </label>
-                                </div>
+
+
 
                                 <div className='h-[95%] w-full flex flex-col lg:gap-2 overflow-scroll scrollbar scrollbar-thumb-ocean'>
                                     <div className='flex flex-row gap-2'>
-                                        <div className='w-[40%] flex justify-center items-center'>
+                                        <div className='flex justify-center items-center'>
                                             <Dropzone onDrop={acceptedFiles => {
                                                 setFiles(acceptedFiles.map(file => Object.assign(file, {
                                                 preview: URL.createObjectURL(file)
@@ -101,12 +103,26 @@ function Settings() {
                                                                 alt='client'
                                                             />
                                                             :
-                                                            <div className='rounded-[100%] h-[125px] w-[125px] bg-ocean flex items-center text-white'>
-                                                                <UploadFileIcon style={{width:'35px', height:'35px'}} />
-                                                                <div className='flex flex-col justify-center text-xs'>
-                                                                    <p className='text-sm'>Img Upload</p>
-                                                                    <p className='italic'>Drag or Click</p>
+                                                            <div className=' '>
+                                                                { user.profile_img ?
+                                                                    <img
+                                                                    className='rounded-[100%] h-[125px] w-[125px] object-cover'
+                                                                    src={user.profile_img}
+                                                                    alt='profile_image'
+                                                                    />
+
+                                                                :
+
+                                                                <div className='rounded-[100%] h-[125px] w-[125px] bg-ocean flex items-center text-white'>
+                                                                    <UploadFileIcon style={{width:'35px', height:'35px'}} />
+                                                                    <div className='flex flex-col justify-center text-xs'>
+                                                                        <p className='text-sm'>Img Upload</p>
+                                                                        <p className='italic'>Drag or Click</p>
+                                                                    </div>
                                                                 </div>
+
+
+                                                            }
                                                             </div>
                                                         }
 
@@ -117,132 +133,63 @@ function Settings() {
                                             </Dropzone>
 
                                         </div>
+
                                         <div className='w-[60%] flex flex-col justify-end'>
-                                            <label className='ml-2'> Name </label>
+                                            <label className='ml-2'> First Name </label>
                                             <Field
-                                                name='name'
-                                                value={formik.values.name}
+                                                name='First Name'
+                                                value={formik.values.first_name}
                                                 onChange={formik.handleChange}
                                                 type='text'
-                                                placeholder='Name'
+                                                placeholder='First Name'
                                                 className='border m-2 p-2'
                                             />
-                                            {formik.errors.name && formik.touched.name && (
-                                                <div className="text-sm text-red ml-2"> **{formik.errors.name}</div>
+                                            {formik.errors.first_name && formik.touched.first_name && (
+                                                <div className="text-sm text-red ml-2"> **{formik.errors.first_name}</div>
                                             )}
 
                                         </div>
 
+                                        <div className='w-[60%] flex flex-col justify-end'>
+                                            <label className='ml-2'> Last Name </label>
+                                            <Field
+                                                name='Last Name'
+                                                value={formik.values.last_name}
+                                                onChange={formik.handleChange}
+                                                type='text'
+                                                placeholder='Last Name'
+                                                className='border m-2 p-2'
+                                            />
+                                            {formik.errors.last_name && formik.touched.last_name && (
+                                                <div className="text-sm text-red ml-2"> **{formik.errors.last_name}</div>
+                                            )}
+                                            </div>
+
+
 
                                     </div>
-                                    <label className='ml-2'> Description </label>
-                                    <Field
-                                        name='description'
-                                        value={formik.values.description}
-                                        onChange={formik.handleChange}
-                                        as='textarea'
-                                        placeholder='Description'
-                                        className='border m-2 p-2 min-h-[100px] lg:h-[200px]'
-                                    />
-                                    {formik.errors.description && formik.touched.description && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.description.toUpperCase()}</div>
-                                    )}
-                                    <label className='ml-2'> Client Type</label>
-                                    <Field
-                                        name='client_type'
-                                        type='text'
-                                        value={formik.values.client_type}
-                                        onChange={formik.handleChange}
-                                        placeholder='Client Type'
-                                        className='border m-2 p-2'
-                                    />
-                                    {formik.errors.client_type && formik.touched.client_type && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.client_type}</div>
-                                    )}
-                                    <label className='ml-2'> EIN </label>
-                                    <Field
-                                        name='ein'
-                                        type='text'
-                                        value={formik.values.ein}
-                                        onChange={formik.handleChange}
-                                        placeholder='Ein'
-                                        className='border m-2 p-2'
-                                    />
 
-                                    {formik.errors.ein && formik.touched.ein && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.ein.toUpperCase()}</div>
-                                    )}
-                                    <label className='ml-2'> Address </label>
-                                    <Field
-                                        name='address_one'
-                                        type='text'
-                                        value={formik.values.address_one}
-                                        onChange={formik.handleChange}
-                                        placeholder='Address'
-                                        className='border m-2 p-2'
-                                    />
+                                    <div className='w-[60%] flex flex-col justify-end'>
+                                            <label className='ml-2'> Email </label>
+                                            <Field
+                                                name='name'
+                                                value={formik.values.email}
+                                                onChange={formik.handleChange}
+                                                type='text'
+                                                placeholder='Email'
+                                                className='border m-2 p-2'
+                                            />
+                                            {formik.errors.email && formik.touched.email && (
+                                                <div className="text-sm text-red ml-2"> **{formik.errors.email}</div>
+                                            )}
 
-                                    {formik.errors.address_one && formik.touched.address_one && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.address_one.toUpperCase()}</div>
-                                    )}
-                                    <label className='ml-2'> Address (line 2) </label>
-                                    <Field
-                                        name='address_two'
-                                        type='text'
-                                        value={formik.values.address_two}
-                                        onChange={formik.handleChange}
-                                        placeholder='Secondary Address Line'
-                                        className='border m-2 p-2'
-                                    />
 
-                                    {formik.errors.address_two && formik.touched.address_two && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.address_two.toUpperCase()}</div>
-                                    )}
-                                    <label className='ml-2'> City </label>
-                                    <Field
-                                        name='city'
-                                        type='text'
-                                        value={formik.values.city}
-                                        onChange={formik.handleChange}
-                                        placeholder='City'
-                                        className='border m-2 p-2'
-                                    />
-                                    {formik.errors.city && formik.touched.city && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.city.toUpperCase()}</div>
-                                    )}
-                                    <label className='ml-2'> Zip Code </label>
-                                    <Field
-                                        name='zip_code'
-                                        type='text'
-                                        value={formik.values.zip_code}
-                                        onChange={formik.handleChange}
-                                        placeholder='Zip Code'
-                                        className='border m-2 p-2'
-                                    />
-
-                                    {formik.errors.zip_code && formik.touched.zip_code && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.zip_code.toUpperCase()}</div>
-                                    )}
-                                    <label className='ml-2'> State </label>
-                                    <Field
-                                        name='state'
-                                        type='text'
-                                        value={formik.values.state}
-                                        onChange={formik.handleChange}
-                                        placeholder='State'
-                                        className='border m-2 p-2'
-                                    />
-
-                                    {formik.errors.state && formik.touched.state && (
-                                        <div className="text-sm text-red ml-2"> **{formik.errors.zip_code.toUpperCase()}</div>
-                                    )}
-
+                                        </div>
                                 </div>
 
 
-                            </div> */}
 
-                            <button type='submit' className='bg-black w-[350px] lg:w-[40%] mt-3 text-white h-[50px] hover:text-ocean'> Update User </button>
+                            <button type='submit' className='bg-black mt-3 text-white h-[50px] hover:text-ocean'> Update User </button>
 
 
                         </Form>
