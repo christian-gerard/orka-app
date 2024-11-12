@@ -15,7 +15,7 @@ import axios from 'axios'
 
 
 function Settings() {
-    const {user} = useContext(UserContext)
+    const {API_URL, user} = useContext(UserContext)
     const [files, setFiles] = useState([''])
 
     const clientSchema = object({
@@ -31,13 +31,7 @@ function Settings() {
         zip_code: string(),
     });
 
-    // email = models.EmailField(max_length=250, unique=True)
-    // first_name = models.CharField(max_length=255, blank=True, null=True)
-    // last_name = models.CharField(max_length=255, blank=True, null=True)
-    // is_active = models.BooleanField(default=True)
-    // is_staff = models.BooleanField(default=False)
-    // profile_img = models.ImageField(null=True, blank=True, upload_to=image_file_path)
-    // account
+
 
     const initialValues = {
         email: user ? user.email : '',
@@ -50,6 +44,53 @@ function Settings() {
         initialValues: initialValues,
         validationSchema: clientSchema,
         onSubmit: (formData) => {
+
+            const token = accessToken
+
+            const fd = new FormData()
+
+            if(files[0] !== '') {
+                fd.set("profile_img", files[0])
+            s
+
+            for(let key in formData) { fd.set(key, formData[key])}
+
+
+            axios.patch(`${API_URL}/api/user/${user.id}`,fd, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(resp => {
+                if(resp.status == 201){
+                    let newUser = resp.data
+
+                    if(files[0] !== '') {
+                        const image_data = {
+                            "profile_img": files[0]
+                        }
+                        axios.post(`${API_URL}/api/user/${resp.data.id}/upload-image/`, image_data, {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        })
+                        .then(resp => {
+                            if(resp.status == 201) {
+                                newUser['profile_img'] = resp.data.profile_img
+
+                            } else {
+                                toast.error('Image Upload Failed')
+                            }
+                        })
+
+                    }
+
+                    toast.success('User Updated')
+                } else {
+                    toast.error('Error Occured During Update')
+                }
+            })
+            .catch(err => console.log(err))
 
 
 
@@ -122,7 +163,7 @@ function Settings() {
                                     </div>
 
                                     <div className='flex flex-row gap-2'>
-                                        <div className='flex justify-center items-center'>
+                                        <div className='w-[20%] flex justify-center items-center'>
                                             <Dropzone onDrop={acceptedFiles => {
                                                 setFiles(acceptedFiles.map(file => Object.assign(file, {
                                                 preview: URL.createObjectURL(file)
@@ -161,7 +202,7 @@ function Settings() {
 
                                         </div>
 
-                                        <div className='w-[60%] flex flex-col justify-end'>
+                                        <div className='w-[80%] flex flex-col justify-end'>
                                                 <label className='ml-2'> Email </label>
                                                 <Field
                                                     name='name'
