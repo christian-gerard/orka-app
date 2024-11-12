@@ -51,11 +51,11 @@ function Settings() {
 
             if(files[0] !== '') {
                 fd.set("profile_img", files[0])
-            s
+
 
             for(let key in formData) { fd.set(key, formData[key])}
 
-
+            }
             axios.patch(`${API_URL}/api/user/${user.id}`,fd, {
                 headers: {
                     Authorization: `Bearer ${token}`
